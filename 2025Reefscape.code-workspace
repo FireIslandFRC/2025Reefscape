@@ -37,6 +37,53 @@
 			"edu.wpi.first.math.proto.*",
 			"edu.wpi.first.math.**.proto.*",
 			"edu.wpi.first.math.**.struct.*"
-		]
+		],
+		"todohighlight.keywords":[ 
+			{
+			  "text": "TODO",
+			  "color": "black",
+			  "backgroundColor": "green",
+			  "overviewRulerColor": "green"
+			
+			},
+			{
+			  "text": "CHECKME",
+			  "color": "black",
+			  "backgroundColor": "yellow",
+			  "overviewRulerColor": "yellow"
+			
+			},
+			{
+			  "text": "FIXME",
+			  "color": "black",
+			  "backgroundColor": "orange",
+			  "overviewRulerColor": "orange"
+			
+			},
+			{
+			  "text": "KILLME",
+			  "color": "black",
+			  "backgroundColor": "red",
+			  "overviewRulerColor": "red"
+			
+			},
+			{
+			  "text": "WATCHME",
+			  "color": "black",
+			  "backgroundColor": "purple",
+			  "overviewRulerColor": "purple"
+			
+			},
+			{
+			  "text": "NOTE",
+			  "color": "black",
+			  "backgroundColor": "grey",
+			  "overviewRulerColor": "grey"
+			
+			}
+		],
+		"todohighlight.defaultStyle": {
+			
+		}
 	}
 }

@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Subsystems.SwerveSubsystem;
-import frc.robot.Commands.S_DriveCommand;
+import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.S_DriveCommand;
 
 public class RobotContainer extends SubsystemBase{
   //SUBSYSTEMS 

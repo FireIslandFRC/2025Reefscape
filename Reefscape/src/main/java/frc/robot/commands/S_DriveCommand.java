@@ -1,10 +1,10 @@
-package frc.robot.Commands;
+package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.SwerveSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class S_DriveCommand extends Command {
   private SwerveSubsystem swerveSubs; 
