@@ -69,14 +69,14 @@ public class Constants {
     );
 
     /* * * FRONT LEFT * * */
-    //FIXME FILL IN VALUES FOR FRONT LEFT
+    //FIXME FILL IN VALUES FOR FRONT LEFT 
     public static class FrontLeft {
-      public static final int DRIVE_PORT = 3;
-      public static final int ROTATION_PORT = 4;
-      public static final int ABSOLUTE_ENCODER_PORT = 22;
-      public static final double OFFSET = 10;
-      public static final boolean DRIVE_INVERTED = false;
-      public static final boolean ROTATION_INVERTED = false;
+      public static final int DRIVE_PORT = 1;
+      public static final int ROTATION_PORT = 2;
+      public static final int ABSOLUTE_ENCODER_PORT = 21;
+      public static final double OFFSET = -32.8;
+      public static final boolean DRIVE_INVERTED = true;
+      public static final boolean ROTATION_INVERTED = true;
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
     }
@@ -84,12 +84,12 @@ public class Constants {
     /* * * FRONT RIGHT * * */
     //FIXME FILL IN VALUES FOR FRONT RIGHT 
     public static class FrontRight {
-      public static final int DRIVE_PORT = 1;
-      public static final int ROTATION_PORT = 2;
-      public static final int ABSOLUTE_ENCODER_PORT = 21;
-      public static final double OFFSET = 0;
-      public static final boolean DRIVE_INVERTED = false; 
-      public static final boolean ROTATION_INVERTED = false; 
+      public static final int DRIVE_PORT = 3;
+      public static final int ROTATION_PORT = 4;
+      public static final int ABSOLUTE_ENCODER_PORT = 22;
+      public static final double OFFSET = -5.5;
+      public static final boolean DRIVE_INVERTED = true; 
+      public static final boolean ROTATION_INVERTED = true; 
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
     }
@@ -100,22 +100,22 @@ public class Constants {
       public static final int DRIVE_PORT = 5;
       public static final int ROTATION_PORT = 6;
       public static final int ABSOLUTE_ENCODER_PORT = 23;
-      public static final double OFFSET = 0;
+      public static final double OFFSET = -170;
       public static final boolean DRIVE_INVERTED = false; 
-      public static final boolean ROTATION_INVERTED = false; 
+      public static final boolean ROTATION_INVERTED = true; 
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
     }
 
     /* * * BACK RIGHT * * */
-    //FIXME FILL IN VALUES FOR BACK RIGHT
+    //FIXME FILL IN VALUES FOR BACK RIGHT 
     public static class BackRight {
       public static final int DRIVE_PORT = 7;
       public static final int ROTATION_PORT = 8;
       public static final int ABSOLUTE_ENCODER_PORT = 24;
-      public static final double OFFSET = 0;
-      public static final boolean DRIVE_INVERTED = false; 
-      public static final boolean ROTATION_INVERTED = false; 
+      public static final double OFFSET = -114.5;
+      public static final boolean DRIVE_INVERTED = true; 
+      public static final boolean ROTATION_INVERTED = true; 
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
     }
@@ -129,9 +129,9 @@ public class Constants {
     public static final double DRIVE_ENCODER_VELOCITY_CONVERSION = DRIVE_ENCODER_POSITION_CONVERSION / 60; //drive enc speed 
  
     /* * * PID VALUES FOR TURNING MOTOR PID * * */
-    public static final double KP_TURNING = 0.0048;
-    public static final double KI_TURNING = 0.0002;
-    public static final double KD_TURNING = 0.0001;
+    public static final double KP_TURNING = 0.0002;
+    public static final double KI_TURNING = 0.000;
+    public static final double KD_TURNING = 0.000;
 
     /* * * MAX * * */
     public static final double MAX_SPEED = 3; //12.0 ft/s 

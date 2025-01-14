@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SwerveModuleConstants;
 import frc.robot.Configs;
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
 
 //import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -134,6 +135,9 @@ public class SwerveModule {
                 SwerveConstants.KD_TURNING);
         rotationPID.enableContinuousInput(-180, 180); // Continuous input considers min & max to be the same point;
                                                       // calculates the shortest route to the setpoint
+
+                                      SmartDashboard.getNumber("PID", rotationPID.getSetpoint());
+                   
     }
 
     /* * * GET METHODS * * */
@@ -196,5 +200,7 @@ public class SwerveModule {
         SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION SPEED",
                 absoluteEncoder.getVelocity().getValueAsDouble());
         SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] CURRENT STATE", getState().toString());
+        SmartDashboard.putNumber("PID", rotationPID.getSetpoint());
+
     }
 }

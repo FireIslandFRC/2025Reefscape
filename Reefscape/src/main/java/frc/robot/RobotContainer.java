@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
@@ -25,7 +27,7 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton speedButton = new JoystickButton(drive, 1);
   private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
   private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
-  //private final JoystickButton resetPosButton = new JoystickButton(drive, 3);
+  private final JoystickButton resetPosButton = new JoystickButton(drive, 3);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
   //AXIS 
   //private final int joystickAxis = XboxController.Axis.kRightY.value;
@@ -57,7 +59,7 @@ public class RobotContainer extends SubsystemBase{
 
   private void configureBindings() {
     //TODO: all buttons
-    //resetPosButton.onTrue(new InstantCommand(() -> swerveSubs.resetOdometry()));
+    resetPosButton.onTrue(new InstantCommand(() -> swerveSubs.lock()));
     
   }
 
@@ -70,7 +72,9 @@ public class RobotContainer extends SubsystemBase{
 
   @Override
   public void periodic() {
-   //SmartDashboard.putNumber("ArmAngle", ArmSubs.GetArmPos());
+    SmartDashboard.putNumber("Kp", Constants.SwerveConstants.KP_TURNING);
+    SmartDashboard.putNumber("Ki", Constants.SwerveConstants.KI_TURNING);
+    SmartDashboard.putNumber("Kd", Constants.SwerveConstants.KD_TURNING);
     //m_field.setRobotPose(swerveSubs.getPose());
   }
 
