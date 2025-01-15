@@ -169,15 +169,20 @@ public class SwerveModule {
 
     public void setState(SwerveModuleState desiredState) {
         // optimize state so the rotation motor doesnt have to spin as much
-        SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
+        //SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
 
-        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees());
+        //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); //NOTE removed because optimized broken fix?
+        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
         rotationMotor.set(rotationOutput);
-        driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
+        //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
+        driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
 
-        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG",
-                getState().angle.getDegrees());
+        SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG",
+        desiredState.toString());
+        /*SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] OPTIMIZED STATE",
+        optimizedState.toString());*/ //NOTE optimized printing.
+        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] Rotation output", rotationOutput);
     }
 
     public void setAngle(SwerveModuleState desiredState) {

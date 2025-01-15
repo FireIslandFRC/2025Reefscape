@@ -129,9 +129,12 @@ public class Constants {
     public static final double DRIVE_ENCODER_VELOCITY_CONVERSION = DRIVE_ENCODER_POSITION_CONVERSION / 60; //drive enc speed 
  
     /* * * PID VALUES FOR TURNING MOTOR PID * * */
-    public static final double KP_TURNING = 0.0002;
+   /*  public static final double KP_TURNING = 0.0002;
+    public static final double KI_TURNING = 0.0001;
+    public static final double KD_TURNING = 0.00;*/
+    public static final double KP_TURNING = 0.000;
     public static final double KI_TURNING = 0.000;
-    public static final double KD_TURNING = 0.000;
+    public static final double KD_TURNING = 0.00;
 
     /* * * MAX * * */
     public static final double MAX_SPEED = 3; //12.0 ft/s 
