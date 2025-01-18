@@ -58,7 +58,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     //field2d on SD
     m_field = new Field2d();
-    SmartDashboard.putData(m_field);
+    //SmartDashboard.putData(m_field);
 
     //instantiate pigeon 
 
@@ -199,6 +199,7 @@ public class SwerveSubsystem extends SubsystemBase {
     states[3] = new SwerveModuleState(0, new Rotation2d(Math.toRadians(-45)));
 
     for (SwerveModule swerveMod : swerveModules) {
+      System.out.println(swerveMod.moduleID);
       swerveMod.setAngle(states[swerveMod.moduleID]);
     }
   }
@@ -246,9 +247,9 @@ public class SwerveSubsystem extends SubsystemBase {
     }*/
 
 
-    SmartDashboard.putNumber("Pigeon", pigeon.getYaw().getValueAsDouble());
-    /*SmartDashboard.putString("POSE INFO", m_poseEstimator.toString());*/
-    SmartDashboard.putString("WORKING DIR", System.getProperty("user.dir"));
+    // SmartDashboard.putNumber("Pigeon", pigeon.getYaw().getValueAsDouble());
+    //SmartDashboard.putString("POSE INFO", m_poseEstimator.toString());
+    // SmartDashboard.putString("WORKING DIR", System.getProperty("user.dir"));
     //m_field.setRobotPose(getPose());
   }
 }

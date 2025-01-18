@@ -120,21 +120,19 @@ public class Constants {
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
     }
 
-    
-    
     /* * * CONVERSIONS FOR ENCODERS * * */
     //velocity in meters per sec instead of RPM 
     public static final double DRIVE_ENCODER_POSITION_CONVERSION = ((2 * Math.PI * (WHEEL_DIAMETER/2))) / DRIVE_GEAR_RATIO; //drive enc rotation
     //velocity in meters instead of rotations 
     public static final double DRIVE_ENCODER_VELOCITY_CONVERSION = DRIVE_ENCODER_POSITION_CONVERSION / 60; //drive enc speed 
- 
+
     /* * * PID VALUES FOR TURNING MOTOR PID * * */
-   /*  public static final double KP_TURNING = 0.0002;
+    /*  public static final double KP_TURNING = 0.0002;
     public static final double KI_TURNING = 0.0001;
     public static final double KD_TURNING = 0.00;*/
-    public static final double KP_TURNING = 0.000;
-    public static final double KI_TURNING = 0.000;
-    public static final double KD_TURNING = 0.00;
+    public static final double KP_TURNING = 0.02;
+    public static final double KI_TURNING = 10;
+    public static final double KD_TURNING = 0.008;
 
     /* * * MAX * * */
     public static final double MAX_SPEED = 3; //12.0 ft/s 

@@ -2,7 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
@@ -27,7 +29,7 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton speedButton = new JoystickButton(drive, 1);
   private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
   private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
-  private final JoystickButton resetPosButton = new JoystickButton(drive, 3);
+  private final JoystickButton lockbutton = new JoystickButton(drive, 3);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
   //AXIS 
   //private final int joystickAxis = XboxController.Axis.kRightY.value;
@@ -48,7 +50,6 @@ public class RobotContainer extends SubsystemBase{
 
     ///m_field = new Field2d();
     //SmartDashboard.putData(m_field);
-    
 
     
 
@@ -59,10 +60,17 @@ public class RobotContainer extends SubsystemBase{
 
   private void configureBindings() {
     //TODO: all buttons
-    resetPosButton.onTrue(new InstantCommand(() -> swerveSubs.lock()));
+    //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
     
   }
 
+  private Command lockCommand() {
+    return this.runOnce(() -> swerveSubs.lock());
+  }
+  
+  public Command straightenCommand() { //FIXME look into method permisions
+    return this.runOnce(() -> swerveSubs.straightenWheels());
+  }
   /*public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     // PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
@@ -72,9 +80,9 @@ public class RobotContainer extends SubsystemBase{
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Kp", Constants.SwerveConstants.KP_TURNING);
-    SmartDashboard.putNumber("Ki", Constants.SwerveConstants.KI_TURNING);
-    SmartDashboard.putNumber("Kd", Constants.SwerveConstants.KD_TURNING);
+    // SmartDashboard.putNumber("Kp", Constants.SwerveConstants.KP_TURNING);
+    // SmartDashboard.putNumber("Ki", Constants.SwerveConstants.KI_TURNING);
+    // SmartDashboard.putNumber("Kd", Constants.SwerveConstants.KD_TURNING);
     //m_field.setRobotPose(swerveSubs.getPose());
   }
 

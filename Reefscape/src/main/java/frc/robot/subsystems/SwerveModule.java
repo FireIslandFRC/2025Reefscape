@@ -136,16 +136,16 @@ public class SwerveModule {
         rotationPID.enableContinuousInput(-180, 180); // Continuous input considers min & max to be the same point;
                                                       // calculates the shortest route to the setpoint
 
-                                      SmartDashboard.getNumber("PID", rotationPID.getSetpoint());
+                                      //SmartDashboard.getNumber("PID", rotationPID.getSetpoint());
                    
     }
 
     /* * * GET METHODS * * */
-    private double driveVelocity() {
+    private double getDriveVelocity() {
         return driveEncoder.getVelocity();
     }
 
-    private double drivePosition() {
+    private double getDrivePosition() {
         return driveEncoder.getPosition();
     }
 
@@ -156,13 +156,13 @@ public class SwerveModule {
     // returns a new SwerveModuleState representing the current drive velocity and
     // rotation motor angle
     public SwerveModuleState getState() {
-        return new SwerveModuleState(driveVelocity(), Rotation2d.fromDegrees(getAbsoluteEncoderDegrees()));
+        return new SwerveModuleState(getDriveVelocity(), Rotation2d.fromDegrees(getAbsoluteEncoderDegrees()));
     }
 
     // returns a new SwerveModulePosition representing the current drive position
     // and rotation motor angle
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(drivePosition(), Rotation2d.fromDegrees(getAbsoluteEncoderDegrees()));
+        return new SwerveModulePosition(getDrivePosition(), Rotation2d.fromDegrees(getAbsoluteEncoderDegrees()));
     }
 
     /* * * SET METHODS * * */
@@ -178,20 +178,31 @@ public class SwerveModule {
         //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
         driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
 
-        SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG",
-        desiredState.toString());
+        //SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEg 2",
+        //desiredState.toString());
+
         /*SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] OPTIMIZED STATE",
         optimizedState.toString());*/ //NOTE optimized printing.
-        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] Rotation output", rotationOutput);
+
+        //SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] Rotation output 2", rotationOutput);
     }
 
     public void setAngle(SwerveModuleState desiredState) {
-        SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
+        System.out.println("set angle run");
+        //SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle); NOTE optimizer buggy
 
-        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees());
-
+        //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees());  // NOTE replaced optimized with desired
+        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
         rotationMotor.set(rotationOutput);
         driveMotor.set(0);
+
+        //SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEG",
+        //desiredState.toString());
+
+        /*SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] OPTIMIZED STATE",
+        optimizedState.toString());*/ //NOTE optimized printing.
+        
+        //SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] Rotation output", rotationOutput);
     }
 
     public void stop() {
@@ -200,12 +211,12 @@ public class SwerveModule {
     }
 
     public void print() {
-        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
-        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE SPEED", driveVelocity());
-        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION SPEED",
-                absoluteEncoder.getVelocity().getValueAsDouble());
-        SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] CURRENT STATE", getState().toString());
-        SmartDashboard.putNumber("PID", rotationPID.getSetpoint());
+        // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
+        // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE SPEED", getDriveVelocity());
+        // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION SPEED",
+        //         absoluteEncoder.getVelocity().getValueAsDouble());
+        // SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] CURRENT STATE", getState().toString());
+        // SmartDashboard.putNumber("PID", rotationPID.getSetpoint());
 
     }
 }
