@@ -10,6 +10,7 @@ public final class Configs {
         public static final class MAXSwerveModule {
                 public static final SparkFlexConfig drivingConfig = new SparkFlexConfig();
                 public static final SparkFlexConfig turningConfig = new SparkFlexConfig();
+                public static final SparkFlexConfig climberConfig = new SparkFlexConfig();
 
                 static {
 
@@ -46,6 +47,12 @@ public final class Configs {
                                         // longer route.
                                         .positionWrappingEnabled(true)
                                         .positionWrappingInputRange(0, (2 * Math.PI));*/
+
+                        climberConfig
+                                        .idleMode(IdleMode.kBrake)
+                                        .smartCurrentLimit(20);
+                        climberConfig.encoder
+                                        .positionConversionFactor(1);
                 }
         }
 }

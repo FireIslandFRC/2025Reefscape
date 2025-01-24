@@ -138,5 +138,12 @@ public class Constants {
     public static final double MAX_SPEED = 3; //12.0 ft/s 
     public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
   
+
+
   }
+
+  public static class ClimberConstants {
+    public static final int climbMotorId = 10;
+  }
+
 }
