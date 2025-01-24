@@ -21,6 +21,7 @@ import frc.robot.Constants.SwerveConstants;
 
 //import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.StatusSignal.SignalMeasurement;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 
@@ -176,6 +177,8 @@ public class SwerveModule {
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
         rotationMotor.set(rotationOutput);
+        SmartDashboard.putNumber("Error" + absoluteEncoder.getDeviceID() , rotationPID.getError());
+       // SmartDashboard.putNumber("P" + absoluteEncoder.getDeviceID() , rotationPID.get);
         //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
         driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
 

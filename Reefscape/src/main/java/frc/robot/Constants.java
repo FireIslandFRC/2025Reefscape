@@ -130,9 +130,9 @@ public class Constants {
     /*  public static final double KP_TURNING = 0.0002;
     public static final double KI_TURNING = 0.0001;
     public static final double KD_TURNING = 0.00;*/
-    public static final double KP_TURNING = 0.02;
-    public static final double KI_TURNING = 10;
-    public static final double KD_TURNING = 0.008;
+    public static final double KP_TURNING = 2.5;
+    public static final double KI_TURNING = 0.01;
+    public static final double KD_TURNING = 0;
 
     /* * * MAX * * */
     public static final double MAX_SPEED = 3; //12.0 ft/s 
