@@ -9,6 +9,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -135,7 +137,7 @@ public class SwerveModule {
                 SwerveConstants.KD_TURNING);
         rotationPID.enableContinuousInput(-180, 180); // Continuous input considers min & max to be the same point;
                                                       // calculates the shortest route to the setpoint
-
+        rotationPID.reset(); //CHECKME shouldn't be needed but may be?
                                       //SmartDashboard.getNumber("PID", rotationPID.getSetpoint());
                    
     }
