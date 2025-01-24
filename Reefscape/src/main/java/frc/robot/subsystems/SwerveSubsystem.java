@@ -116,7 +116,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition();
   }
 
-  // FIXME i dont think this works as intended,, resetPosition should reset everything to 0 
+  // FIXME i dont think this works as intended, resetPosition should reset everything to 0 
   public void setPose(Pose2d pose) {
     m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
   }
