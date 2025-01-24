@@ -34,6 +34,10 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.set(-0.5);
   }
 
+  public void armStop(){
+    armMotor.set(0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
