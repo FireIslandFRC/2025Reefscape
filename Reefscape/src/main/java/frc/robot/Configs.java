@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -10,7 +11,8 @@ public final class Configs {
         public static final class MAXSwerveModule {
                 public static final SparkFlexConfig drivingConfig = new SparkFlexConfig();
                 public static final SparkFlexConfig turningConfig = new SparkFlexConfig();
-                public static final SparkFlexConfig climberConfig = new SparkFlexConfig();
+                public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
+                public static final SparkMaxConfig handConfig = new SparkMaxConfig();
 
                 static {
 
@@ -48,10 +50,16 @@ public final class Configs {
                                         .positionWrappingEnabled(true)
                                         .positionWrappingInputRange(0, (2 * Math.PI));*/
 
-                        climberConfig
+                        wristConfig
                                         .idleMode(IdleMode.kBrake)
                                         .smartCurrentLimit(20);
-                        climberConfig.encoder
+                        wristConfig.encoder
+                                        .positionConversionFactor(1);
+
+                        handConfig
+                                        .idleMode(IdleMode.kBrake)
+                                        .smartCurrentLimit(20);
+                        handConfig.encoder
                                         .positionConversionFactor(1);
                 }
         }

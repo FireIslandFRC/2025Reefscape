@@ -3,14 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HandSubsystem;
 
-public class ClimberUpCommand extends Command{
+public class PivotUpCommand extends Command{
     
-    private final HandSubsystem climberSubsystem;
+    private final HandSubsystem handSubsystem;
 
-    public ClimberUpCommand(HandSubsystem subsystem){
-        climberSubsystem = subsystem;
+    public PivotUpCommand(){
+        handSubsystem = new HandSubsystem();
 
-        addRequirements(subsystem);
+        addRequirements(handSubsystem);
     }
 
     @Override
@@ -18,12 +18,12 @@ public class ClimberUpCommand extends Command{
 
     @Override
     public void execute(){
-        climberSubsystem.climbUp();
+        handSubsystem.PivotUp();
     }
 
     @Override
     public void end(boolean interrupted){
-        climberSubsystem.ClimbStop();
+        handSubsystem.PivotStop();
     }
 
     @Override

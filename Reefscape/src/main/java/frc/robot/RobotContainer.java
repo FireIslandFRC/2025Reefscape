@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.PivotUpCommand;
 import frc.robot.commands.S_DriveCommand;
 
 public class RobotContainer extends SubsystemBase{
@@ -30,6 +31,7 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
   private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
   private final JoystickButton lockbutton = new JoystickButton(drive, 3);
+  private final JoystickButton runMotor = new JoystickButton(drive, 4);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
   //AXIS 
   //private final int joystickAxis = XboxController.Axis.kRightY.value;
@@ -37,7 +39,7 @@ public class RobotContainer extends SubsystemBase{
 
 
   public RobotContainer() {
-    swerveSubs.setDefaultCommand(
+    /*swerveSubs.setDefaultCommand(
       new S_DriveCommand(
         swerveSubs,
         () -> -drive.getLeftY(), 
@@ -46,7 +48,7 @@ public class RobotContainer extends SubsystemBase{
         () -> fieldOriented.getAsBoolean(), 
         () -> speedButton.getAsBoolean()
       )
-    );
+    );*/
 
     ///m_field = new Field2d();
     //SmartDashboard.putData(m_field);
@@ -59,6 +61,8 @@ public class RobotContainer extends SubsystemBase{
   }
 
   private void configureBindings() {
+
+    runMotor.whileTrue(new PivotUpCommand());
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
     

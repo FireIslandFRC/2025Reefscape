@@ -142,8 +142,9 @@ public class Constants {
 
   }
 
-  public static class ClimberConstants {
-    public static final int climbMotorId = 10;
+  public static class HandConstants {
+    public static final int wristMotorId = 11;
+    public static final int handMotorId = 12;    
   }
 
 }
