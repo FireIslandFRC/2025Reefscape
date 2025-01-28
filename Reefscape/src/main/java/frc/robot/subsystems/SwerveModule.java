@@ -1,29 +1,25 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
+//import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.config.SparkFlexConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.SwerveModuleConstants;
 import frc.robot.Configs;
-import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
-
-//import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.ctre.phoenix6.StatusSignal.SignalMeasurement;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
-import com.ctre.phoenix6.hardware.CANcoder;
+import frc.robot.SwerveModuleConstants;
 
 public class SwerveModule {
     /* * * INITIALIZATION * * */
@@ -36,6 +32,8 @@ public class SwerveModule {
     // initialize encoders
     private CANcoder absoluteEncoder;
     private RelativeEncoder driveEncoder;
+
+    private SparkClosedLoopController rotationControl;
 
     // init PID Controller for turning
     private PIDController rotationPID;
@@ -63,6 +61,7 @@ public class SwerveModule {
         rotationMotor = new SparkFlex(moduleConstants.rotationMotorID, MotorType.kBrushless);
         absoluteEncoder = new CANcoder(moduleConstants.cancoderID);
 
+        rotationControl = rotationMotor.getClosedLoopController();
 
         driveMotor.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
@@ -174,9 +173,12 @@ public class SwerveModule {
         //SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
 
         //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); //NOTE removed because optimized broken fix?
-        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
-        rotationMotor.set(rotationOutput);
+        rotationControl.setReference(1, ControlType.kPosition);
+
+        /*double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
+
+        rotationMotor.set(rotationOutput);*/
         SmartDashboard.putNumber("Error" + absoluteEncoder.getDeviceID() , rotationPID.getError());
        // SmartDashboard.putNumber("P" + absoluteEncoder.getDeviceID() , rotationPID.get);
         //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
