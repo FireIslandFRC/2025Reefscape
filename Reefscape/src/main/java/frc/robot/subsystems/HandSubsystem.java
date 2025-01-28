@@ -15,8 +15,8 @@ import frc.robot.Constants.HandConstants;
 
 public class HandSubsystem extends SubsystemBase {
     
-    private SparkMax wristMotor;
-    private SparkMax handMotor;
+    private static SparkMax wristMotor;
+    private static SparkMax handMotor;
 
     
     public HandSubsystem(){
@@ -29,15 +29,15 @@ public class HandSubsystem extends SubsystemBase {
         handMotor.configure(Configs.MAXSwerveModule.handConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public void PivotUp(){
+    public static void PivotUp(){
         wristMotor.set(0.5);
     }
 
-    public void PivotDown(){
+    public static void PivotDown(){
         wristMotor.set(-0.5);
     }
 
-    public void PivotStop(){
+    public static void PivotStop(){
         wristMotor.set(0);
     }
 
