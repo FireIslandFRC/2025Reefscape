@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.S_DriveCommand;
 
 public class RobotContainer extends SubsystemBase{
@@ -59,7 +60,7 @@ public class RobotContainer extends SubsystemBase{
   }
 
   private void configureBindings() {
-    Up.whileTrue(null);
+    Up.whileTrue(new ArmUpCommand());
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
     
