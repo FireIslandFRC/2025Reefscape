@@ -8,13 +8,16 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.S_DriveCommand;
 
 public class RobotContainer extends SubsystemBase{
   //SUBSYSTEMS 
   private final SwerveSubsystem swerveSubs = new SwerveSubsystem(); 
+  private final ArmSubsystem armSubsystem = new ArmSubsystem(); 
 
   //private final Arm ArmSubs = new Arm(); 
 
@@ -61,6 +64,7 @@ public class RobotContainer extends SubsystemBase{
 
   private void configureBindings() {
     Up.whileTrue(new ArmUpCommand());
+    Down.whileTrue(new ArmDownCommand());
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
     

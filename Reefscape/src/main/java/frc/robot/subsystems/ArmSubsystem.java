@@ -17,7 +17,7 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  private SparkFlex armMotor;
+  private static SparkFlex armMotor;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
@@ -26,15 +26,15 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.configure(Configs.MAXSwerveModule.armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public void ArmUp(){
+  public static void ArmUp(){
     armMotor.set(0.5);
   }
 
-  public void ArmDown(){
+  public static void ArmDown(){
     armMotor.set(-0.5);
   }
 
-  public void armStop(){
+  public static void armStop(){
     armMotor.set(0);
   }
 
