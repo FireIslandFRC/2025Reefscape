@@ -4,20 +4,32 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Configs;
 
 public class ExampleSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   SparkFlex motor;
 
+  private static SparkClosedLoopController rotationControl;
+
   public ExampleSubsystem() {
     motor = new SparkFlex(8, MotorType.kBrushless);
+
+      motor.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
+      PersistMode.kPersistParameters);
+
+      rotationControl = motor.getClosedLoopController();
   }
 
   /**
@@ -33,8 +45,8 @@ public class ExampleSubsystem extends SubsystemBase {
    */
 
 
-  public static void runMotor(double speed){
-
+  public void runMotor(double speed){
+    rotationControl.setReference(speed, ControlType.kPosition);
   }
 
   @Override
