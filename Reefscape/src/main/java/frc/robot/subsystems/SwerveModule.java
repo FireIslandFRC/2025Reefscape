@@ -21,6 +21,9 @@ import frc.robot.Constants.SwerveConstants;
 
 //import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+
+import java.util.Map;
+
 import com.ctre.phoenix6.StatusSignal.SignalMeasurement;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -54,6 +57,7 @@ public class SwerveModule {
         this.moduleID = moduleID; // used to differentiate between the four swerve modules in the SwerveSubsystem
                                   // class
         encOffset = moduleConstants.angleOffset;
+
 
         // instantiate drive motor and encoder
         driveMotor = new SparkFlex(moduleConstants.driveMotorID, MotorType.kBrushless);
@@ -176,8 +180,10 @@ public class SwerveModule {
         //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); //NOTE removed because optimized broken fix?
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
-        rotationMotor.set(rotationOutput);
-        SmartDashboard.putNumber("Error" + absoluteEncoder.getDeviceID() , rotationPID.getError());
+        double fixedRotationOutput = (((rotationOutput - -400) * (1 - -1)) / (400 - -400)) + -1;
+
+        rotationMotor.set(fixedRotationOutput);
+        SmartDashboard.putNumber("FixedRotationOutput" + absoluteEncoder.getDeviceID() , fixedRotationOutput);
        // SmartDashboard.putNumber("P" + absoluteEncoder.getDeviceID() , rotationPID.get);
         //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
         driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
