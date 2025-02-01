@@ -5,6 +5,10 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ExampleSubsystem;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -12,13 +16,17 @@ public class ExampleCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ExampleSubsystem m_subsystem;
 
+
+  private DoubleSupplier xSupplier;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ExampleSubsystem subsystem) {
+  public ExampleCommand(ExampleSubsystem subsystem, DoubleSupplier xSupplier) {
     m_subsystem = subsystem;
+    this.xSupplier = xSupplier; 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -29,7 +37,11 @@ public class ExampleCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    double xSpeed = xSupplier.getAsDouble(); 
+
+    m_subsystem.runMotor(xSpeed);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

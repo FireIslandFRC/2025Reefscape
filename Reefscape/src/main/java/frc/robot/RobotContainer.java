@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.S_DriveCommand;
 
 public class RobotContainer extends SubsystemBase{
   //SUBSYSTEMS 
-  private final SwerveSubsystem swerveSubs = new SwerveSubsystem(); 
+  private final ExampleSubsystem swerveSubs = new ExampleSubsystem(); 
 
   //private final Arm ArmSubs = new Arm(); 
 
@@ -34,14 +36,7 @@ public class RobotContainer extends SubsystemBase{
 
   public RobotContainer() {
     swerveSubs.setDefaultCommand(
-      new S_DriveCommand(
-        swerveSubs,
-        () -> -drive.getLeftY(), 
-        () -> -drive.getLeftX(), 
-        () -> -drive.getRightX(), 
-        () -> fieldOriented.getAsBoolean(), 
-        () -> speedButton.getAsBoolean()
-      )
+      new ExampleCommand(swerveSubs, () -> drive.getLeftX())
     );
 
     ///m_field = new Field2d();
