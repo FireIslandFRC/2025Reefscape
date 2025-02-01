@@ -174,7 +174,9 @@ public class SwerveModule {
 
         //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); //NOTE removed because optimized broken fix?
 
-        rotationControl.setReference(desiredState.angle.getDegrees(), ControlType.kPosition);
+        rotationControl.setReference(desiredState.angle.getRotations(), ControlType.kPosition);
+
+        SmartDashboard.putNumber("desiredState.angle.getRotations()", desiredState.angle.getRotations());
 
         /*double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
@@ -182,7 +184,7 @@ public class SwerveModule {
         SmartDashboard.putNumber("Error" + absoluteEncoder.getDeviceID() , rotationPID.getError());
        // SmartDashboard.putNumber("P" + absoluteEncoder.getDeviceID() , rotationPID.get);
         //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
-        driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
+        //driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
 
         //SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] DESIRED ANG DEg 2",
         //desiredState.toString());
