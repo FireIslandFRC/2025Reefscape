@@ -26,8 +26,8 @@ public class RobotContainer extends SubsystemBase{
     //private final XboxController drive = new XboxController(0);
 
   //DRIVE BUTTONS 
-  private final JoystickButton speedButton = new JoystickButton(drive, 1);
-  private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
+  private final JoystickButton Up = new JoystickButton(drive, 1);
+  private final JoystickButton Down = new JoystickButton(drive, 2);
   private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
   private final JoystickButton lockbutton = new JoystickButton(drive, 3);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
@@ -37,7 +37,7 @@ public class RobotContainer extends SubsystemBase{
 
 
   public RobotContainer() {
-    swerveSubs.setDefaultCommand(
+    /*swerveSubs.setDefaultCommand(
       new S_DriveCommand(
         swerveSubs,
         () -> -drive.getLeftY(), 
@@ -46,7 +46,7 @@ public class RobotContainer extends SubsystemBase{
         () -> fieldOriented.getAsBoolean(), 
         () -> speedButton.getAsBoolean()
       )
-    );
+    );*/
 
     ///m_field = new Field2d();
     //SmartDashboard.putData(m_field);
@@ -59,6 +59,7 @@ public class RobotContainer extends SubsystemBase{
   }
 
   private void configureBindings() {
+    Up.whileTrue(null);
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
     
