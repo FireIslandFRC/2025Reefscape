@@ -32,11 +32,11 @@ public final class Configs {
                         turningConfig.encoder
                                         // Invert the turning encoder, since the output shaft rotates in the opposite
                                         // direction of the steering motor in the MAXSwerve Module.
-                                        .positionConversionFactor(.05)
+                                        .positionConversionFactor(.085)
                                         .velocityConversionFactor(1); // radians per second
                         turningConfig.closedLoop
                                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                                        // These are example gains you may need to them for your own robot!
+                        // These are example gains you may need to them for your own robot!
                                         .pid(0.2, 0, 0)
                                         .velocityFF(.223)
                                         .outputRange(-1, 1);

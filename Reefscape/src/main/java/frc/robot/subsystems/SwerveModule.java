@@ -33,6 +33,8 @@ public class SwerveModule {
     private CANcoder absoluteEncoder;
     private RelativeEncoder driveEncoder;
 
+    private RelativeEncoder rotationRelativeEncoder;
+
     private SparkClosedLoopController rotationControl;
 
     // init PID Controller for turning
@@ -40,6 +42,9 @@ public class SwerveModule {
 
     // init info
     private double encOffset;
+
+    private double fixedRotation;
+
 
     /* * * CONSTRUCTOR * * */
     /*
@@ -56,10 +61,17 @@ public class SwerveModule {
         // instantiate drive motor and encoder
         driveMotor = new SparkFlex(moduleConstants.driveMotorID, MotorType.kBrushless);
         driveEncoder = driveMotor.getEncoder();
+        
 
         // instantiate rotation motor and absolute encoder
         rotationMotor = new SparkFlex(moduleConstants.rotationMotorID, MotorType.kBrushless);
         absoluteEncoder = new CANcoder(moduleConstants.cancoderID);
+
+        rotationRelativeEncoder = rotationMotor.getEncoder();
+
+        //fixedRotation = (((absoluteEncoder.getAbsolutePosition().getValueAsDouble() - -0.5) * (1 - -1)) / (0.5 - -0.5)) + -1;
+
+        rotationRelativeEncoder.setPosition(absoluteEncoder.getAbsolutePosition().getValueAsDouble());
 
         rotationControl = rotationMotor.getClosedLoopController();
 
@@ -67,6 +79,8 @@ public class SwerveModule {
         PersistMode.kPersistParameters);
         rotationMotor.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+
+        
 
 
         /* * * DRIVE MOTOR * * */
@@ -219,6 +233,8 @@ public class SwerveModule {
     }
 
     public void print() {
+        SmartDashboard.putNumber("getRelativePosition" + moduleID, rotationRelativeEncoder.getPosition());
+        SmartDashboard.putNumber("getAbsolueEncoder" + moduleID, absoluteEncoder.getAbsolutePosition().getValueAsDouble());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE SPEED", getDriveVelocity());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION SPEED",
