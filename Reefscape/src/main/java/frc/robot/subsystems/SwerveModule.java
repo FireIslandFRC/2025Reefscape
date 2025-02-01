@@ -174,7 +174,7 @@ public class SwerveModule {
 
         //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); //NOTE removed because optimized broken fix?
 
-        rotationControl.setReference(1, ControlType.kPosition);
+        rotationControl.setReference(desiredState.angle.getDegrees(), ControlType.kPosition);
 
         /*double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
