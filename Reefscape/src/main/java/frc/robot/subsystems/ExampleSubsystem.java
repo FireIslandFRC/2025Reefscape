@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,8 +46,10 @@ public class ExampleSubsystem extends SubsystemBase {
    */
 
 
-  public void runMotor(double speed){
-    rotationControl.setReference(speed, ControlType.kPosition);
+  public void runMotor(SwerveModuleState[] state){
+
+    SwerveModuleState.set
+    rotationControl.setReference(state.angle.getRotations(), ControlType.kPosition);
   }
 
   @Override

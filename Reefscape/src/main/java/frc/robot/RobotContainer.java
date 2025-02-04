@@ -36,7 +36,7 @@ public class RobotContainer extends SubsystemBase{
 
   public RobotContainer() {
     swerveSubs.setDefaultCommand(
-      new ExampleCommand(swerveSubs, () -> drive.getLeftX())
+      new ExampleCommand(swerveSubs, () -> drive.getLeftX(), () -> drive.getLeftY())
     );
 
     ///m_field = new Field2d();
