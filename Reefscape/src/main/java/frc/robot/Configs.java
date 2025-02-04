@@ -1,8 +1,8 @@
 package frc.robot;
 
-import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkFlexConfig;
 
 import frc.robot.Constants.SwerveConstants;
 
@@ -27,15 +27,15 @@ public final class Configs {
                                         .outputRange(-1, 1);
 
                         turningConfig
-                                        .idleMode(IdleMode.kBrake)
+                                        .idleMode(IdleMode.kCoast)
                                         .smartCurrentLimit(20);
                         turningConfig.encoder
                                         // Invert the turning encoder, since the output shaft rotates in the opposite
                                         // direction of the steering motor in the MAXSwerve Module.
-                                        .positionConversionFactor(.085)
+                                        .positionConversionFactor(.0465)//.085, 0425, 042
                                         .velocityConversionFactor(1); // radians per second
                         turningConfig.closedLoop
-                                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                                        .feedbackSensor(FeedbackSensor.kNoSensor)
                         // These are example gains you may need to them for your own robot!
                                         .pid(0.2, 0, 0)
                                         .velocityFF(.223)

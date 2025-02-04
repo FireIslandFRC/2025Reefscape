@@ -45,6 +45,8 @@ public class SwerveModule {
 
     private double fixedRotation;
 
+    
+
 
     /* * * CONSTRUCTOR * * */
     /*
@@ -69,6 +71,8 @@ public class SwerveModule {
 
         rotationRelativeEncoder = rotationMotor.getEncoder();
 
+        rotationRelativeEncoder.setPosition(absoluteEncoder.getAbsolutePosition().getValueAsDouble());
+
         //fixedRotation = (((absoluteEncoder.getAbsolutePosition().getValueAsDouble() - -0.5) * (1 - -1)) / (0.5 - -0.5)) + -1;
 
         //rotationRelativeEncoder.setPosition(absoluteEncoder.getAbsolutePosition().getValueAsDouble());
@@ -79,9 +83,6 @@ public class SwerveModule {
         PersistMode.kPersistParameters);
         rotationMotor.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-
-        
-
 
         /* * * DRIVE MOTOR * * */
         // CONFIGURATIONS
@@ -190,7 +191,8 @@ public class SwerveModule {
 
         rotationControl.setReference(desiredState.angle.getRotations(), ControlType.kPosition);
 
-        SmartDashboard.putNumber("desiredState.angle.getRotations()", desiredState.angle.getRotations());
+
+        SmartDashboard.putNumber("desiredState.angle.getRotations()" + moduleID, desiredState.angle.getRotations());
 
         /*double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
@@ -234,6 +236,7 @@ public class SwerveModule {
 
     public void print() {
         SmartDashboard.putNumber("getRelativePosition" + moduleID, rotationRelativeEncoder.getPosition());
+        SmartDashboard.putNumber("rotationmotor.getEncoder()" + moduleID, rotationMotor.getEncoder().getPosition());
         SmartDashboard.putNumber("getAbsolueEncoder" + moduleID, absoluteEncoder.getAbsolutePosition().getValueAsDouble());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE SPEED", getDriveVelocity());
