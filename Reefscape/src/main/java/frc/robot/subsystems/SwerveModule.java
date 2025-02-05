@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -71,7 +72,9 @@ public class SwerveModule {
 
         rotationRelativeEncoder = rotationMotor.getEncoder();
 
-        rotationRelativeEncoder.setPosition(absoluteEncoder.getAbsolutePosition().getValueAsDouble());
+        rotationMotor.getEncoder().setPosition(MathUtil.clamp(absoluteEncoder.getAbsolutePosition().getValueAsDouble(), -0.5, .5));
+
+        
 
         //fixedRotation = (((absoluteEncoder.getAbsolutePosition().getValueAsDouble() - -0.5) * (1 - -1)) / (0.5 - -0.5)) + -1;
 
@@ -126,7 +129,7 @@ public class SwerveModule {
         // MagnetSensorConfigs().withMagnetOffset(moduleConstants.angleOffset));
         // //implements encoder offset
         absoluteEncoder.getConfigurator()
-                .apply(new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)); // positive
+                .apply(new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.Clockwise_Positive)); // positive
                                                                                                                        // rotation
                                                                                                                        // occurs
                                                                                                                        // when
@@ -235,9 +238,9 @@ public class SwerveModule {
     }
 
     public void print() {
-        SmartDashboard.putNumber("getRelativePosition" + moduleID, rotationRelativeEncoder.getPosition());
+//SmartDashboard.putNumber("getRelativePosition" + moduleID, rotationRelativeEncoder.getPosition());
         SmartDashboard.putNumber("rotationmotor.getEncoder()" + moduleID, rotationMotor.getEncoder().getPosition());
-        SmartDashboard.putNumber("getAbsolueEncoder" + moduleID, absoluteEncoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber("getAbsolueEncoder" + moduleID, MathUtil.clamp(absoluteEncoder.getAbsolutePosition().getValueAsDouble(), -0.5, .5));
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE SPEED", getDriveVelocity());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION SPEED",

@@ -35,9 +35,9 @@ public final class Configs {
                                         .positionConversionFactor(.0465)//.085, 0425, 042
                                         .velocityConversionFactor(1); // radians per second
                         turningConfig.closedLoop
-                                        .feedbackSensor(FeedbackSensor.kNoSensor)
+                                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                         // These are example gains you may need to them for your own robot!
-                                        .pid(0.2, 0, 0)
+                                        .pid(2, 0, 0)
                                         .velocityFF(.223)
                                         .outputRange(-1, 1);
                                         // Enable PID wrap around for the turning motor. This will allow the PID
