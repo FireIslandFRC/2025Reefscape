@@ -9,6 +9,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -143,6 +145,7 @@ public class SwerveModule {
                                                       // calculates the shortest route to the setpoint
 
                                       //SmartDashboard.getNumber("PID", rotationPID.getSetpoint());
+        //rotationPID.
                    
     }
 
@@ -180,10 +183,12 @@ public class SwerveModule {
         //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); //NOTE removed because optimized broken fix?
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
 
-        double fixedRotationOutput = (((rotationOutput - -400) * (1 - -1)) / (400 - -400)) + -1;
+        //double fixedRotationOutput = (((rotationOutput - -400) * (1 - -1)) / (400 - -400)) + -1;
 
-        rotationMotor.set(fixedRotationOutput);
-        SmartDashboard.putNumber("FixedRotationOutput" + absoluteEncoder.getDeviceID() , fixedRotationOutput);
+        rotationMotor.set(MathUtil.clamp(rotationOutput, -.1, .1));
+        SmartDashboard.putNumber("FixedRotationOutput" + absoluteEncoder.getDeviceID() , MathUtil.clamp(rotationOutput, -.1, .1));
+        SmartDashboard.putNumber("getState().angle.getDegrees()" + absoluteEncoder.getDeviceID() , getState().angle.getDegrees());
+        SmartDashboard.putNumber("desiredState.angle.getDegrees()" + absoluteEncoder.getDeviceID() , desiredState.angle.getDegrees());
        // SmartDashboard.putNumber("P" + absoluteEncoder.getDeviceID() , rotationPID.get);
         //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
         driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
