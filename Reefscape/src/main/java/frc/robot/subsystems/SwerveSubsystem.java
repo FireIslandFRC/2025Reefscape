@@ -30,20 +30,14 @@ public class SwerveSubsystem extends SubsystemBase {
   //initialize SwerveModules 
   private SwerveModule[] swerveModules; 
 
-  //odometer 
-  private SwerveDriveOdometry odometer; 
-
-  //pigeon
+  //instantiate pigeon 
   public Pigeon2 pigeon = new Pigeon2(30);
 
   //field2d
   public Field2d m_field;
 
+  //initantiate poseEstimator
   private SwerveDrivePoseEstimator m_poseEstimator;
-
-  private BooleanSupplier IsRed;
-
-  // private BooleanSupplier shouldFlipPath = () -> false;
 
   public SwerveSubsystem() {
     
@@ -56,51 +50,24 @@ public class SwerveSubsystem extends SubsystemBase {
       new SwerveModule(3, SwerveConstants.BackRight.constants)
     };
 
-    //field2d on SD
+    //field2d
     m_field = new Field2d();
-    //SmartDashboard.putData(m_field);
-
-    //instantiate pigeon 
-
-    
-
-    //instantiate odometer 
-    /*odometer = new SwerveDriveOdometry(
-      SwerveConstants.DRIVE_KINEMATICS, 
-      pigeon.getRotation2d(), 
-      getModulePositions()
-    );
-
-    m_poseEstimator = new SwerveDrivePoseEstimator(
-          SwerveConstants.DRIVE_KINEMATICS,
-          pigeon.getRotation2d(),
-          getModulePositions(),
-          new Pose2d(),
-          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
-
-    m_field.setRobotPose(getPose());*/  
-
+    SmartDashboard.putData(m_field);
 
   }
 
-  /*public Command driveToPose(Pose2d pose)
-  {
-//PATH CONSTRAINTS
-  PathConstraints constraints = new PathConstraints(
-        3.0, 4.0,
-        Units.degreesToRadians(540), Units.degreesToRadians(720));
 
-// Since AutoBuilder is configured, we can use it to build pathfinding commands
-    return AutoBuilder.pathfindToPose(
-        pose,
-        constraints,
-        0.0, // Goal end velocity in meters/sec
-        0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-                                     );
-  }*/
+  /* * * RESET METHODS * * */
 
-    /* * * ODOMETRY * * */
+  public void resetPigeon() {
+    pigeon.reset();
+  }  
+  
+  public void resetOdometry() {
+    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
+  }
+
+  /* * * GET METHODS * * */
 
   //returns the Rotation2d object 
   //a 2d coordinate represented by a point on the unit circle (the rotation of the robot)
@@ -108,31 +75,18 @@ public class SwerveSubsystem extends SubsystemBase {
     return pigeon.getRotation2d();
   }
 
-  public void resetPigeon() {
-    pigeon.reset();
-  }
-
   public Pose2d getPose() {
     return m_poseEstimator.getEstimatedPosition();
-  }
-
-  // FIXME i dont think this works as intended, resetPosition should reset everything to 0 
-  public void setPose(Pose2d pose) {
-    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
-  }
-
-  public void resetOdometry() {
-    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
   }
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return new ChassisSpeeds(SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).vxMetersPerSecond, SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).vyMetersPerSecond, SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond);
   }
 
-  public void driveRobotRelative(ChassisSpeeds chassis) {
-    SwerveModuleState[] state = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(chassis);
+  /* * * SET METHODS * * */
 
-    setModuleStates(state);
+  public void setPose(Pose2d pose) {
+    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
   }
 
   /* * * STATES * * */
@@ -173,19 +127,34 @@ public class SwerveSubsystem extends SubsystemBase {
     return positions;
   }
 
+  //DRIVE FUNCTIONS
   public void drive(double xSpeed, double ySpeed, double zSpeed, boolean fieldOriented, double SpeedMultiplier){
+    
     SwerveModuleState[] states;
+
     if (fieldOriented) {
+
       states = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
         ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed * SpeedMultiplier, ySpeed * SpeedMultiplier, zSpeed, getRotation2d())
       );
+
     } else {
+
       states = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
         new ChassisSpeeds(xSpeed, ySpeed, zSpeed)
       );
+      
     }
 
     setModuleStates(states);   
+
+  }
+
+  public void driveRobotRelative(ChassisSpeeds chassis) {
+
+    SwerveModuleState[] state = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(chassis);
+
+    setModuleStates(state);
 
   }
 
@@ -247,7 +216,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }*/
 
 
-    // SmartDashboard.putNumber("Pigeon", pigeon.getYaw().getValueAsDouble());
+    SmartDashboard.putNumber("Pigeon", pigeon.getYaw().getValueAsDouble());
     //SmartDashboard.putString("POSE INFO", m_poseEstimator.toString());
     // SmartDashboard.putString("WORKING DIR", System.getProperty("user.dir"));
     //m_field.setRobotPose(getPose());

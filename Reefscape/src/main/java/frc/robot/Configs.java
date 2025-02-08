@@ -15,7 +15,8 @@ public final class Configs {
 
                         drivingConfig
                                         .idleMode(IdleMode.kBrake)
-                                        .smartCurrentLimit(25);
+                                        .smartCurrentLimit(25)
+                                        .inverted(true);
                         drivingConfig.encoder
                                         .positionConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION) // meters
                                         .velocityConversionFactor(SwerveConstants.DRIVE_ENCODER_VELOCITY_CONVERSION); // meters per second
