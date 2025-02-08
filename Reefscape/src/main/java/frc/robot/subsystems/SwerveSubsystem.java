@@ -1,28 +1,19 @@
 package frc.robot.subsystems;
 
+import frc.robot.Constants.SwerveConstants;
 
-import java.util.function.BooleanSupplier;
-
-import com.ctre.phoenix6.hardware.Pigeon2;
-
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SwerveConstants;
-import frc.robot.Robot;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.BooleanSubscriber;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* * * INITIALIZATION * * */
@@ -31,14 +22,15 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveModule[] swerveModules; 
 
   //instantiate pigeon 
-  public Pigeon2 pigeon = new Pigeon2(30);
+  public Pigeon2 pigeon = new Pigeon2(SwerveConstants.PIGEON_ID);
 
   //field2d
   public Field2d m_field;
 
-  //initantiate poseEstimator
+  //instantiate poseEstimator
   private SwerveDrivePoseEstimator m_poseEstimator;
 
+  // swervesubsystem constructor
   public SwerveSubsystem() {
     
     pigeon.reset();
@@ -56,9 +48,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   }
 
-
   /* * * RESET METHODS * * */
-
   public void resetPigeon() {
     pigeon.reset();
   }  
@@ -68,9 +58,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /* * * GET METHODS * * */
-
-  //returns the Rotation2d object 
-  //a 2d coordinate represented by a point on the unit circle (the rotation of the robot)
+  //returns the Rotation2d object, a 2d coordinate represented by a point on the unit circle (the rotation of the robot)
   public Rotation2d getRotation2d() {
     return pigeon.getRotation2d();
   }
@@ -79,29 +67,11 @@ public class SwerveSubsystem extends SubsystemBase {
     return m_poseEstimator.getEstimatedPosition();
   }
 
+  // returns a ChassisSpeeds in robot relative
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return new ChassisSpeeds(SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).vxMetersPerSecond, SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).vyMetersPerSecond, SwerveConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond);
   }
 
-  /* * * SET METHODS * * */
-
-  public void setPose(Pose2d pose) {
-    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
-  }
-
-  /* * * STATES * * */
-
-  //SET STATES 
-  //gets a SwerveModuleStates array from driver control and sets each module to the corresponding SwerveModuleState
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.MAX_SPEED);
-
-    for (SwerveModule swerveMod : swerveModules) {
-      swerveMod.setState(desiredStates[swerveMod.moduleID]);
-    }
-  }
-
-  //GET STATES 
   //returns the states of the swerve modules in an array 
   //getState uses drive velocity and module rotation 
   public SwerveModuleState[] getModuleStates() {
@@ -114,7 +84,6 @@ public class SwerveSubsystem extends SubsystemBase {
     return states; 
   }
 
-  //GET POSITIONS
   //returns the positions of the swerve modules in an array 
   //getPosition uses drive enc and module rotation 
   public SwerveModulePosition[] getModulePositions() {
@@ -127,7 +96,21 @@ public class SwerveSubsystem extends SubsystemBase {
     return positions;
   }
 
-  //DRIVE FUNCTIONS
+  /* * * SET METHODS * * */
+  public void setPose(Pose2d pose) {
+    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
+  }
+
+  //gets a SwerveModuleStates array from driver control and sets each module to the corresponding SwerveModuleState
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.MAX_SPEED);
+
+    for (SwerveModule swerveMod : swerveModules) {
+      swerveMod.setState(desiredStates[swerveMod.moduleID]);
+    }
+  }
+
+  /* * * DRIVE METHODS * * */
   public void drive(double xSpeed, double ySpeed, double zSpeed, boolean fieldOriented, double SpeedMultiplier){
     
     SwerveModuleState[] states;
@@ -158,7 +141,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   }
 
-  //LOCK 
+  /* * * WHEEL METHODS * * */
   public void lock() {
     SwerveModuleState[] states = new SwerveModuleState[4];
 
@@ -171,9 +154,9 @@ public class SwerveSubsystem extends SubsystemBase {
       System.out.println(swerveMod.moduleID);
       swerveMod.setAngle(states[swerveMod.moduleID]);
     }
+
   }
 
-  //STRAIGHTEN THE WHEELS 
   public void straightenWheels() { //set all wheels to 0 degrees 
     SwerveModuleState[] states = new SwerveModuleState[4]; 
 
@@ -185,13 +168,15 @@ public class SwerveSubsystem extends SubsystemBase {
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.setState(states[swerveMod.moduleID]);
     }
+
   }
 
-  //STOP 
   public void stopModules() {
+
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.stop();
     }
+
 }
 
   @Override
@@ -215,10 +200,8 @@ public class SwerveSubsystem extends SubsystemBase {
           limelightMeasurement.timestampSeconds - 3);
     }*/
 
-
     SmartDashboard.putNumber("Pigeon", pigeon.getYaw().getValueAsDouble());
-    //SmartDashboard.putString("POSE INFO", m_poseEstimator.toString());
-    // SmartDashboard.putString("WORKING DIR", System.getProperty("user.dir"));
+    //putString("POSE INFO", m_poseEstimator.toString());
     //m_field.setRobotPose(getPose());
   }
 }

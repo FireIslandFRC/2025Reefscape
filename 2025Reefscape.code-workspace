@@ -84,6 +84,12 @@
 		],
 		"todohighlight.defaultStyle": {
 			
-		}
+		},
+		"cSpell.words": [
+			"chassisspeed",
+			"Odometry",
+			"swervesubsystem",
+			"teleop"
+		]
 	}
 }
