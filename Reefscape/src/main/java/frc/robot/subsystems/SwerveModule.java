@@ -5,6 +5,9 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SwerveModuleConstants;
 import frc.robot.Configs;
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
 
 //import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -114,10 +118,10 @@ public class SwerveModule {
 
     public void setState(SwerveModuleState desiredState) {
         // optimize state so the rotation motor doesnt have to spin as much
-        // SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle); FIXME: Optimization not working, Uncomment 128 for drive and 119 for turn
+        SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle); //FIXME: Optimization not working, Uncomment 128 for drive and 119 for turn
 
-        //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); // NOTE: removed because optimized broken fix?
-        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees()); // WORKING no optimization
+        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); // NOTE: removed because optimized broken fix?
+        //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees()); // WORKING no optimization
 
         rotationMotor.set(rotationOutput);
 
@@ -125,8 +129,8 @@ public class SwerveModule {
         SmartDashboard.putNumber("Error" + absoluteEncoder.getDeviceID(), rotationPID.getError());
         SmartDashboard.putNumber("SetPoint" + absoluteEncoder.getDeviceID(), rotationPID.getSetpoint());
 
-        //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
-        driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
+        driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
+        //driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
 
     }
 

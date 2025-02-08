@@ -44,15 +44,25 @@ public class Constants {
     //pos x is out in front, pos y is to the left 
     public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
       
-      // front left
-      new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
+     // front left   //Working with wrong heading
+      new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
       // back left
       new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
       // front right
-      new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
+      new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
       // back right
       new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
+
       
+      // // front left   NOTE works with two front wheels off
+      // new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
+      // // back left
+      // new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
+      // // front right
+      // new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
+      // // back right
+      // new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
+
 
       /* //front left 
       new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2), 
@@ -101,7 +111,7 @@ public class Constants {
       public static final int ROTATION_PORT = 6;
       public static final int ABSOLUTE_ENCODER_PORT = 23;
       public static final double OFFSET = -127.5;
-      public static final boolean DRIVE_INVERTED = false; 
+      public static final boolean DRIVE_INVERTED = true;
       public static final boolean ROTATION_INVERTED = true; 
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
@@ -130,7 +140,7 @@ public class Constants {
     /*  public static final double KP_TURNING = 0.0002;
     public static final double KI_TURNING = 0.0001;
     public static final double KD_TURNING = 0.00;*/
-    public static final double KP_TURNING = .005;
+    public static final double KP_TURNING = .01;
     public static final double KI_TURNING = 0.0;
     public static final double KD_TURNING = .0;
 
