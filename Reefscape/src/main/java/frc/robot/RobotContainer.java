@@ -1,36 +1,26 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.S_DriveCommand;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 public class RobotContainer extends SubsystemBase{
-  //SUBSYSTEMS 
-  private final SwerveSubsystem swerveSubs = new SwerveSubsystem(); 
+  
+  private final SwerveSubsystem swerveSubs = new SwerveSubsystem();
 
-  //private final Arm ArmSubs = new Arm(); 
-
-  //SENDABLECHOOSER
-
-
-  //CONTROLLERS  
   public final static XboxController drive = new XboxController(ControllerConstants.kDriverControllerPort);
 
-    //private final XboxController drive = new XboxController(0);
-
-  //DRIVE BUTTONS 
+  //NOTE add button ids to Constants?
+  //DRIVE BUTTONS     
   private final JoystickButton speedButton = new JoystickButton(drive, 1);
   private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
-  private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
-  //private final JoystickButton resetPosButton = new JoystickButton(drive, 3);
-  //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
-  //AXIS 
-  //private final int joystickAxis = XboxController.Axis.kRightY.value;
-  //public Field2d m_field;
-
+  private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3); //FIXME add back in
+  private final JoystickButton lockbutton = new JoystickButton(drive, 3); //FIXME add back in
 
   public RobotContainer() {
     swerveSubs.setDefaultCommand(
@@ -43,22 +33,22 @@ public class RobotContainer extends SubsystemBase{
         () -> speedButton.getAsBoolean()
       )
     );
-
-    ///m_field = new Field2d();
-    //SmartDashboard.putData(m_field);
     
-
-    
-
-
     // Configure the trigger bindings
     configureBindings();
   }
 
   private void configureBindings() {
-    //TODO: all buttons
-    //resetPosButton.onTrue(new InstantCommand(() -> swerveSubs.resetOdometry()));
-    
+    //TODO: all buttons configurations
+    //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
+  }
+
+  protected Command lockCommand() {
+    return this.runOnce(() -> swerveSubs.lock());
+  }
+  
+  protected Command straightenCommand() {
+    return this.runOnce(() -> swerveSubs.straightenWheels());
   }
 
   /*public Command getAutonomousCommand() {
@@ -70,8 +60,7 @@ public class RobotContainer extends SubsystemBase{
 
   @Override
   public void periodic() {
-   //SmartDashboard.putNumber("ArmAngle", ArmSubs.GetArmPos());
-    //m_field.setRobotPose(swerveSubs.getPose());
+    
   }
 
 }

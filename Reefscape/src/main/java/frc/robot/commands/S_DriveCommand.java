@@ -46,7 +46,9 @@ public class S_DriveCommand extends Command {
     double zSpeed = zSupplier.getAsDouble(); 
     boolean FieldOriented = fieldOriented.getAsBoolean();
 
-    SmartDashboard.putNumber("z speed", zSpeed);
+    // SmartDashboard.putNumber("x speed", xSpeed);
+    // SmartDashboard.putNumber("y speed", ySpeed);
+    // SmartDashboard.putNumber("z speed", zSpeed);
 
 
     //apply deadzone to speed values 
@@ -81,7 +83,7 @@ public class S_DriveCommand extends Command {
 
 /* * * ADDED METHODS * * */
 public double deadzone(double num){
-    return Math.abs(num) > 0.14 ? num : 0;
+    return Math.abs(num) > 0.1 ? num : 0;
 }
 
 private static double modifyAxis(double num) {
@@ -92,4 +94,7 @@ private static double modifyAxis(double num) {
 }
 
 
+public void periodic() {
+
+}
 }
