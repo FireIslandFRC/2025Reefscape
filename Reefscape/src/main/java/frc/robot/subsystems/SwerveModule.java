@@ -76,6 +76,8 @@ public class SwerveModule {
         PersistMode.kPersistParameters);
 
 
+
+
         /* * * DRIVE MOTOR * * */
         // CONFIGURATIONS
         // driveMotor.setInverted(moduleConstants.driveInverted);
@@ -114,8 +116,8 @@ public class SwerveModule {
         // is
         // now
         // +-180
-        // absoluteEncoder.getConfigurator().apply(new
-        // MagnetSensorConfigs().withMagnetOffset(moduleConstants.angleOffset));
+        /* absoluteEncoder.getConfigurator().apply(new
+         MagnetSensorConfigs().withMagnetOffset(moduleConstants.angleOffset/360));*/
         // //implements encoder offset
         absoluteEncoder.getConfigurator()
                 .apply(new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)); // positive
@@ -141,11 +143,17 @@ public class SwerveModule {
                 SwerveConstants.KP_TURNING,
                 SwerveConstants.KI_TURNING,
                 SwerveConstants.KD_TURNING);
+
+                //rotationPID.setTolerance(1);
+                //rotationPID.setIZone(100);
+                
         rotationPID.enableContinuousInput(-180, 180); // Continuous input considers min & max to be the same point;
                                                       // calculates the shortest route to the setpoint
 
                                       //SmartDashboard.getNumber("PID", rotationPID.getSetpoint());
         //rotationPID.
+
+        SmartDashboard.putNumber("Offset" + absoluteEncoder.getDeviceID(), moduleConstants.angleOffset);
                    
     }
 
@@ -159,7 +167,7 @@ public class SwerveModule {
     }
 
     private double getAbsoluteEncoderDegrees() {
-        return (absoluteEncoder.getAbsolutePosition().getValueAsDouble() * 360) - encOffset;
+        return ((absoluteEncoder.getAbsolutePosition().getValueAsDouble() * 360) - encOffset);
     }
 
     // returns a new SwerveModuleState representing the current drive velocity and
@@ -182,14 +190,22 @@ public class SwerveModule {
 
         //double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); //NOTE removed because optimized broken fix?
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), desiredState.angle.getDegrees());
+        //double rotationOutput = rotationPID.calculate(absoluteEncoder.getAbsolutePosition().getValueAsDouble(), desiredState.angle.getDegrees());
 
         //double fixedRotationOutput = (((rotationOutput - -400) * (1 - -1)) / (400 - -400)) + -1;
 
-        rotationMotor.set(MathUtil.clamp(rotationOutput, -.1, .1));
-        SmartDashboard.putNumber("FixedRotationOutput" + absoluteEncoder.getDeviceID() , MathUtil.clamp(rotationOutput, -.1, .1));
-        SmartDashboard.putNumber("getState().angle.getDegrees()" + absoluteEncoder.getDeviceID() , getState().angle.getDegrees());
-        SmartDashboard.putNumber("desiredState.angle.getDegrees()" + absoluteEncoder.getDeviceID() , desiredState.angle.getDegrees());
-       // SmartDashboard.putNumber("P" + absoluteEncoder.getDeviceID() , rotationPID.get);
+        //rotationMotor.set(MathUtil.clamp(rotationOutput, -1, 1));
+        rotationMotor.set(rotationOutput);
+
+
+        //SmartDashboard.putNumber("FixedRotationOutput" + absoluteEncoder.getDeviceID() , MathUtil.clamp(rotationOutput, -.1, .1));
+        SmartDashboard.putNumber("RotationSpeed" + absoluteEncoder.getDeviceID() , rotationOutput);
+        //SmartDashboard.putNumber("getState().angle.getDegrees()" + absoluteEncoder.getDeviceID() , getState().angle.getDegrees());
+        //SmartDashboard.putNumber("desiredState.angle.getDegrees()" + absoluteEncoder.getDeviceID() , desiredState.angle.getDegrees());
+        SmartDashboard.putNumber("Error" + absoluteEncoder.getDeviceID(), rotationPID.getError());
+        SmartDashboard.putNumber("SetPoint" + absoluteEncoder.getDeviceID(), rotationPID.getSetpoint());
+
+        //SmartDashboard.putNumber("P" + absoluteEncoder.getDeviceID() , rotationPID.get);
         //driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE); //NOTE removed because optimized broken fix?
         driveMotor.set(desiredState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE);
 
@@ -226,12 +242,12 @@ public class SwerveModule {
     }
 
     public void print() {
-        // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
+        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
+        
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] DRIVE SPEED", getDriveVelocity());
         // SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ROTATION SPEED",
         //         absoluteEncoder.getVelocity().getValueAsDouble());
         // SmartDashboard.putString("S[" + absoluteEncoder.getDeviceID() + "] CURRENT STATE", getState().toString());
-        // SmartDashboard.putNumber("PID", rotationPID.getSetpoint());
 
     }
 }
