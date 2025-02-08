@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,11 +17,11 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  private static SparkFlex armMotor;
+  private static SparkMax armMotor;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
-    armMotor = new SparkFlex(ArmConstants.armMotorId, MotorType.kBrushless);
+    armMotor = new SparkMax(ArmConstants.armMotorId, MotorType.kBrushless);
 
     armMotor.configure(Configs.MAXSwerveModule.armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }

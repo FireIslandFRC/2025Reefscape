@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -10,7 +11,7 @@ public final class Configs {
         public static final class MAXSwerveModule {
                 public static final SparkFlexConfig drivingConfig = new SparkFlexConfig();
                 public static final SparkFlexConfig turningConfig = new SparkFlexConfig();
-                public static final SparkFlexConfig armConfig = new SparkFlexConfig();
+                public static final SparkMaxConfig armConfig = new SparkMaxConfig();
 
                 static {
 
