@@ -10,10 +10,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* * * INITIALIZATION * * */
@@ -46,6 +51,45 @@ public class SwerveSubsystem extends SubsystemBase {
     m_field = new Field2d();
     SmartDashboard.putData(m_field);
 
+    try {
+      RobotConfig config = RobotConfig.fromGUISettings();
+
+      // Configure AutoBuilder last
+      AutoBuilder.configure(
+          this::getPose, // Robot pose supplier
+          this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+                               // TODO change to resetOdometry that is in the Max swerve template
+          this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+          (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE
+                                                                // ChassisSpeeds. Also optionally outputs individual
+                                                                // module feedforwards
+          new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
+                                          // holonomic drive trains
+              new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+              new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+          ),
+          config, // The robot configuration
+          () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red
+            // alliance
+            // This will flip the path being followed to the red side of the field.
+            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+              return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+          },
+          this // Reference to this subsystem to set requirements
+      );
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
+
+    m_poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.DRIVE_KINEMATICS, getRotation2d(), getModulePositions(), new Pose2d(0,0,new Rotation2d()));
+
   }
 
   /* * * RESET METHODS * * */
@@ -55,6 +99,10 @@ public class SwerveSubsystem extends SubsystemBase {
   
   public void resetOdometry() {
     m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
   }
 
   /* * * GET METHODS * * */
@@ -181,11 +229,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    /*m_poseEstimator.update(
+    m_poseEstimator.update(
         pigeon.getRotation2d(),
         getModulePositions());
     // This method will be called once per scheduler run
-    odometer.update(pigeon.getRotation2d(), getModulePositions());*/
+    //odometer.update(pigeon.getRotation2d(), getModulePositions());
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();

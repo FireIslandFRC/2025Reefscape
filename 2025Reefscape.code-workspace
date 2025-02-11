@@ -87,6 +87,8 @@
 		},
 		"cSpell.words": [
 			"chassisspeed",
+			"feedforwards",
+			"Holonomic",
 			"Odometry",
 			"swervesubsystem",
 			"teleop"
