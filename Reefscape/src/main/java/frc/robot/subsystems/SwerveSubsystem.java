@@ -1,7 +1,12 @@
 package frc.robot.subsystems;
 
-import frc.robot.Constants.SwerveConstants;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -9,16 +14,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.ctre.phoenix6.hardware.Pigeon2;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.SwerveConstants;
+import frc.robot.LimelightHelpers;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* * * INITIALIZATION * * */
@@ -95,7 +96,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /* * * RESET METHODS * * */
   public void resetPigeon() {
     pigeon.reset();
-  }  
+  }
   
   public void resetOdometry() {
     m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
@@ -227,13 +228,75 @@ public class SwerveSubsystem extends SubsystemBase {
 
 }
 
-  @Override
-  public void periodic() {
+  public void updateOdometry() {
+    
+
+
+    /*boolean useMegaTag2 = true; //set to false to use MegaTag1
+    boolean doRejectUpdate = false;
+    if(useMegaTag2 == false)
+    {
+      LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+      
+      if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
+      {
+        if(mt1.rawFiducials[0].ambiguity > .7)
+        {
+          doRejectUpdate = true;
+        }
+        if(mt1.rawFiducials[0].distToCamera > 3)
+        {
+          doRejectUpdate = true;
+        }
+      }
+      if(mt1.tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
+
+      if(!doRejectUpdate)
+      {
+        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1,1,9999999));
+        m_poseEstimator.addVisionMeasurement(
+            mt1.pose,
+            mt1.timestampSeconds);
+      }
+    }
+    else if (useMegaTag2 == true)
+    {
+      
+      LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+      { // TODO pigeon angular velocity
+        doRejectUpdate = true;
+      }
+      if(mt2.tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
+      if(!doRejectUpdate)
+      {
+
+        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        m_poseEstimator.addVisionMeasurement(
+            mt2.pose,
+            mt2.timestampSeconds);
+      }
+    }*/
+
     m_poseEstimator.update(
         pigeon.getRotation2d(),
         getModulePositions());
+  }
+
+  @Override
+  public void periodic() {
+    //LimelightHelpers.setLEDMode_ForceOff("limelight");
+    
     // This method will be called once per scheduler run
     //odometer.update(pigeon.getRotation2d(), getModulePositions());
+    updateOdometry();
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();
@@ -249,7 +312,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }*/
 
     SmartDashboard.putNumber("Pigeon", pigeon.getYaw().getValueAsDouble());
-    //putString("POSE INFO", m_poseEstimator.toString());
-    //m_field.setRobotPose(getPose());
+    SmartDashboard.putString("POSE INFO", m_poseEstimator.toString());
+    m_field.setRobotPose(getPose());
   }
 }
