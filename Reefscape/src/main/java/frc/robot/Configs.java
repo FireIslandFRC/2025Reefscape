@@ -8,11 +8,9 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import frc.robot.Constants.SwerveConstants;
 
 public final class Configs {
-        public static final class MAXSwerveModule {
+        public static final class SwerveModuleConfig {
                 public static final SparkFlexConfig drivingConfig = new SparkFlexConfig();
                 public static final SparkFlexConfig turningConfig = new SparkFlexConfig();
-                public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
-                public static final SparkMaxConfig handConfig = new SparkMaxConfig();
 
                 static {
 
@@ -49,6 +47,15 @@ public final class Configs {
                                         // longer route.
                                         .positionWrappingEnabled(true)
                                         .positionWrappingInputRange(0, (2 * Math.PI));*/
+                }
+        }
+
+        public static final class EEConfig {
+                
+                public static final SparkMaxConfig wristConfig = new SparkMaxConfig();
+                public static final SparkMaxConfig handConfig = new SparkMaxConfig();
+
+                static {
 
                         wristConfig
                                         .idleMode(IdleMode.kBrake)

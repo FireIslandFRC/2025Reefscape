@@ -22,19 +22,19 @@ public class HandSubsystem extends SubsystemBase {
     public HandSubsystem(){
         wristMotor = new SparkMax(HandConstants.wristMotorId, MotorType.kBrushless);
 
-        wristMotor.configure(Configs.MAXSwerveModule.wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        wristMotor.configure(Configs.EEConfig.wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         handMotor = new SparkMax(HandConstants.handMotorId, MotorType.kBrushless);
 
-        handMotor.configure(Configs.MAXSwerveModule.handConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        handMotor.configure(Configs.EEConfig.handConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public static void PivotUp(){
-        wristMotor.set(0.5);
+        wristMotor.set(0.2);
     }
 
     public static void PivotDown(){
-        wristMotor.set(-0.5);
+        wristMotor.set(-0.2);
     }
 
     public static void PivotStop(){
@@ -49,7 +49,7 @@ public class HandSubsystem extends SubsystemBase {
         handMotor.set(-0.5);
     }
 
-    public void CoralStop(){
+    public static void CoralStop(){
         wristMotor.set(0);
     }
 

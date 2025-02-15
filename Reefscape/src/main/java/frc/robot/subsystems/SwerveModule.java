@@ -64,9 +64,9 @@ public class SwerveModule {
         absoluteEncoder = new CANcoder(moduleConstants.cancoderID);
 
 
-        driveMotor.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
+        driveMotor.configure(Configs.SwerveModuleConfig.drivingConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-        rotationMotor.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
+        rotationMotor.configure(Configs.SwerveModuleConfig.turningConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
 

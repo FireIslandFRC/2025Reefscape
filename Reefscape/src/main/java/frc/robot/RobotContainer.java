@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.CoralIn;
+import frc.robot.commands.CoralOut;
 import frc.robot.commands.PivotDownCommand;
 import frc.robot.commands.PivotUpCommand;
 import frc.robot.commands.S_DriveCommand;
@@ -32,9 +34,10 @@ public class RobotContainer extends SubsystemBase{
   //private final JoystickButton speedButton = new JoystickButton(drive, 1);
   //private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
   private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
-  private final JoystickButton runMotor = new JoystickButton(drive, 3); //FIXME correct the button names & add reverse
-  private final JoystickButton pivotUp = new JoystickButton(drive, 1);
-  private final JoystickButton pivotDown = new JoystickButton(drive, 2);
+  private final JoystickButton coralIn = new JoystickButton(drive, 3); 
+  private final JoystickButton coralOut = new JoystickButton(drive, 4);
+  private final JoystickButton wristUp = new JoystickButton(drive, 1);
+  private final JoystickButton wristDown = new JoystickButton(drive, 2);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
   //AXIS 
   //private final int joystickAxis = XboxController.Axis.kRightY.value;
@@ -65,9 +68,10 @@ public class RobotContainer extends SubsystemBase{
 
   private void configureBindings() {
 
-    pivotUp.whileTrue(new PivotUpCommand());
-    pivotDown.whileTrue(new PivotDownCommand());
-    runMotor.whileTrue(new InstantCommand(() -> HandSubsystem.CoralIn())); // FIXME make this a command
+    wristUp.whileTrue(new PivotUpCommand());
+    wristDown.whileTrue(new PivotDownCommand());
+    coralIn.whileTrue(new CoralIn());
+    coralOut.whileTrue(new CoralOut());
 
 
     //TODO: all buttons
