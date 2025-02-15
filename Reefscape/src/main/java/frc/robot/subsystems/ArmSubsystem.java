@@ -23,7 +23,7 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     armMotor = new SparkMax(ArmConstants.armMotorId, MotorType.kBrushless);
 
-    armMotor.configure(Configs.MAXSwerveModule.armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    armMotor.configure(Configs.ArmConfig.armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public static void ArmUp(){
