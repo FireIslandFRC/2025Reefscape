@@ -2,9 +2,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,13 +20,18 @@ import frc.robot.Constants.ClimberConstants;
 public class ClimberSubsystem extends SubsystemBase {
     
     private TalonFX climbMotor;
-    
+    private TalonFXConfiguration climbMotorConfig;
 
     
     public ClimberSubsystem(){
         climbMotor = new TalonFX(ClimberConstants.climbMotorId);
 
-        //climbMotor.configure(Configs.MAXSwerveModule.climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        climbMotorConfig = new TalonFXConfiguration();
+
+        climbMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        climbMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+        climbMotor.getConfigurator().apply(climbMotorConfig);
     }
 
     public void climbUp(){
