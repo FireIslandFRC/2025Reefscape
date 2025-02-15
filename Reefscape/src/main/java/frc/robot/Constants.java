@@ -144,7 +144,7 @@ public class Constants {
 
   public static class HandConstants {
     public static final int wristMotorId = 11;
-    public static final int handMotorId = 12;    
+    public static final int handMotorId = 12;
   }
 
 }

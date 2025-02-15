@@ -41,11 +41,11 @@ public class HandSubsystem extends SubsystemBase {
         wristMotor.set(0);
     }
 
-    public void CoralIn(){
+    public static void CoralIn(){
         handMotor.set(0.5);
     }
 
-    public void CoralOut(){
+    public static void CoralOut(){
         handMotor.set(-0.5);
     }
 

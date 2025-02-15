@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.PivotDownCommand;
 import frc.robot.commands.PivotUpCommand;
@@ -31,7 +32,7 @@ public class RobotContainer extends SubsystemBase{
   //private final JoystickButton speedButton = new JoystickButton(drive, 1);
   //private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
   private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
-  private final JoystickButton lockbutton = new JoystickButton(drive, 3);
+  private final JoystickButton runMotor = new JoystickButton(drive, 3); //FIXME correct the button names & add reverse
   private final JoystickButton pivotUp = new JoystickButton(drive, 1);
   private final JoystickButton pivotDown = new JoystickButton(drive, 2);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
@@ -66,6 +67,8 @@ public class RobotContainer extends SubsystemBase{
 
     pivotUp.whileTrue(new PivotUpCommand());
     pivotDown.whileTrue(new PivotDownCommand());
+    runMotor.whileTrue(new InstantCommand(() -> HandSubsystem.CoralIn())); // FIXME make this a command
+
 
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
