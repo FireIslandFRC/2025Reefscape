@@ -8,12 +8,16 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.S_DriveCommand;
+import frc.robot.commands.CloseRatchet;
+import frc.robot.commands.OpenRatchet;
 
 public class RobotContainer extends SubsystemBase{
   //SUBSYSTEMS 
   private final SwerveSubsystem swerveSubs = new SwerveSubsystem(); 
+  private final ClimberSubsystem climberSubs = new ClimberSubsystem();
 
   //private final Arm ArmSubs = new Arm(); 
 
@@ -26,8 +30,8 @@ public class RobotContainer extends SubsystemBase{
     //private final XboxController drive = new XboxController(0);
 
   //DRIVE BUTTONS 
-  private final JoystickButton speedButton = new JoystickButton(drive, 1);
-  private final JoystickButton fieldOriented = new JoystickButton(drive, 2);
+  private final JoystickButton openRatchet = new JoystickButton(drive, 1);
+  private final JoystickButton closeRatchet = new JoystickButton(drive, 2);
   private final JoystickButton resetPigeonButton = new JoystickButton(drive, 3);
   private final JoystickButton lockbutton = new JoystickButton(drive, 3);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
@@ -37,7 +41,7 @@ public class RobotContainer extends SubsystemBase{
 
 
   public RobotContainer() {
-    swerveSubs.setDefaultCommand(
+    /*swerveSubs.setDefaultCommand(
       new S_DriveCommand(
         swerveSubs,
         () -> -drive.getLeftY(), 
@@ -46,7 +50,7 @@ public class RobotContainer extends SubsystemBase{
         () -> fieldOriented.getAsBoolean(), 
         () -> speedButton.getAsBoolean()
       )
-    );
+    );*/
 
     ///m_field = new Field2d();
     //SmartDashboard.putData(m_field);
@@ -61,7 +65,8 @@ public class RobotContainer extends SubsystemBase{
   private void configureBindings() {
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
-    
+    closeRatchet.onTrue(new CloseRatchet(climberSubs));
+    openRatchet.onTrue(new OpenRatchet(climberSubs));
   }
 
   private Command lockCommand() {

@@ -1,13 +1,14 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class ClimberDownCommand extends Command{
+public class CloseRatchet extends Command{
     
     private final ClimberSubsystem climberSubsystem;
 
-    public ClimberDownCommand(ClimberSubsystem subsystem){
+    public CloseRatchet(ClimberSubsystem subsystem){
         climberSubsystem = subsystem;
 
         addRequirements(subsystem);
@@ -18,12 +19,13 @@ public class ClimberDownCommand extends Command{
 
     @Override
     public void execute(){
-        climberSubsystem.climbUp();
+
+        climberSubsystem.closedRatchet();
+        System.out.println("Closed");
     }
 
     @Override
     public void end(boolean interrupted){
-        climberSubsystem.ClimbStop();
     }
 
     @Override

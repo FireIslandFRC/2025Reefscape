@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,10 +22,12 @@ public class ClimberSubsystem extends SubsystemBase {
     
     private TalonFX climbMotor;
     private TalonFXConfiguration climbMotorConfig;
+    private Servo ratchetServo;
 
     
     public ClimberSubsystem(){
         climbMotor = new TalonFX(ClimberConstants.climbMotorId);
+        ratchetServo = new Servo(1);
 
         climbMotorConfig = new TalonFXConfiguration();
 
@@ -40,6 +43,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void climbDown(){
         climbMotor.set(-0.5);
+    }
+
+    public void openRatchet(){
+        ratchetServo.setAngle(90);
+    }
+
+    public void closedRatchet(){
+        ratchetServo.setAngle(0);
     }
 
     @Override
