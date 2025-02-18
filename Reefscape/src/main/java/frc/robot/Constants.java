@@ -61,7 +61,7 @@ public class Constants {
       public static final int DRIVE_PORT = 1;
       public static final int ROTATION_PORT = 2;
       public static final int ABSOLUTE_ENCODER_PORT = 21;
-      public static final double OFFSET = -145.5;
+      public static final double OFFSET = 0;
       public static final boolean DRIVE_INVERTED = true;
       public static final boolean ROTATION_INVERTED = true;
 
@@ -73,7 +73,7 @@ public class Constants {
       public static final int DRIVE_PORT = 3;
       public static final int ROTATION_PORT = 4;
       public static final int ABSOLUTE_ENCODER_PORT = 22;
-      public static final double OFFSET = -60.2;
+      public static final double OFFSET = 0;
       public static final boolean DRIVE_INVERTED = true; 
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -85,7 +85,7 @@ public class Constants {
       public static final int DRIVE_PORT = 5;
       public static final int ROTATION_PORT = 6;
       public static final int ABSOLUTE_ENCODER_PORT = 23;
-      public static final double OFFSET = -127.5;
+      public static final double OFFSET = 0;
       public static final boolean DRIVE_INVERTED = true;
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -97,7 +97,7 @@ public class Constants {
       public static final int DRIVE_PORT = 7;
       public static final int ROTATION_PORT = 8;
       public static final int ABSOLUTE_ENCODER_PORT = 24;
-      public static final double OFFSET = 134.5;
+      public static final double OFFSET = 0;
       public static final boolean DRIVE_INVERTED = true; 
       public static final boolean ROTATION_INVERTED = true; 
 

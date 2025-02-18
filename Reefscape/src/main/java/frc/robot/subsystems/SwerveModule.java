@@ -154,7 +154,7 @@ public class SwerveModule {
 
     public void print() {
         // NOTE prints abs encoder direction in degrees
-        //SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
+        SmartDashboard.putNumber("S[" + absoluteEncoder.getDeviceID() + "] ABS ENC DEG", getAbsoluteEncoderDegrees());
         
     }
 }
