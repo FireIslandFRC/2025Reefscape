@@ -49,4 +49,19 @@ public final class Configs {
                                         .positionConversionFactor(1);
                 }
         }
+
+        public static final class ArmConfig {
+
+                public static final SparkMaxConfig armConfig = new SparkMaxConfig();
+
+                static {
+
+                        armConfig
+                                        .idleMode(IdleMode.kBrake)
+                                        .smartCurrentLimit(20);
+                        armConfig.encoder
+                                        .positionConversionFactor(1);
+                
+                }
+        }
 }

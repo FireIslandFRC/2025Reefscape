@@ -24,6 +24,10 @@ public class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
+  public static class ArmConstants {
+    public static final int armMotorId = 9;
+  }
+
   public static class SwerveConstants {
     //SDS L2 
     public static final boolean ROTATION_ENCODER_DIRECTION = false; 

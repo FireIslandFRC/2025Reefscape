@@ -50,7 +50,7 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public static void CoralStop(){
-        wristMotor.set(0);
+        handMotor.set(0);
     }
 
     @Override
