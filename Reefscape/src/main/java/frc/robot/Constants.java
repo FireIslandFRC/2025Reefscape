@@ -61,8 +61,8 @@ public class Constants {
       public static final int DRIVE_PORT = 1;
       public static final int ROTATION_PORT = 2;
       public static final int ABSOLUTE_ENCODER_PORT = 21;
-      public static final double OFFSET = 0;
-      public static final boolean DRIVE_INVERTED = true;
+      public static final double OFFSET = 144.6;
+      public static final boolean DRIVE_INVERTED = false;
       public static final boolean ROTATION_INVERTED = true;
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
@@ -73,8 +73,8 @@ public class Constants {
       public static final int DRIVE_PORT = 3;
       public static final int ROTATION_PORT = 4;
       public static final int ABSOLUTE_ENCODER_PORT = 22;
-      public static final double OFFSET = 0;
-      public static final boolean DRIVE_INVERTED = true; 
+      public static final double OFFSET = 0 -17;
+      public static final boolean DRIVE_INVERTED = false; 
       public static final boolean ROTATION_INVERTED = true; 
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
@@ -85,8 +85,8 @@ public class Constants {
       public static final int DRIVE_PORT = 5;
       public static final int ROTATION_PORT = 6;
       public static final int ABSOLUTE_ENCODER_PORT = 23;
-      public static final double OFFSET = 0;
-      public static final boolean DRIVE_INVERTED = true;
+      public static final double OFFSET = -161;
+      public static final boolean DRIVE_INVERTED = false;
       public static final boolean ROTATION_INVERTED = true; 
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
@@ -97,8 +97,8 @@ public class Constants {
       public static final int DRIVE_PORT = 7;
       public static final int ROTATION_PORT = 8;
       public static final int ABSOLUTE_ENCODER_PORT = 24;
-      public static final double OFFSET = 0;
-      public static final boolean DRIVE_INVERTED = true; 
+      public static final double OFFSET = 52.5;
+      public static final boolean DRIVE_INVERTED = false; 
       public static final boolean ROTATION_INVERTED = true; 
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_PORT, ROTATION_PORT, ABSOLUTE_ENCODER_PORT, OFFSET, DRIVE_INVERTED, ROTATION_INVERTED);
