@@ -60,10 +60,10 @@ public class SwerveModule {
         rotationMotor = new SparkFlex(moduleConstants.rotationMotorID, MotorType.kBrushless);
         absoluteEncoder = new CANcoder(moduleConstants.cancoderID);
 
-        // configures drive and rotation motors
-        driveMotor.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
+
+        driveMotor.configure(Configs.SwerveModuleConfig.drivingConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-        rotationMotor.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
+        rotationMotor.configure(Configs.SwerveModuleConfig.turningConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
         /* * * ABSOLUTE ENCODER CONFIG * * */

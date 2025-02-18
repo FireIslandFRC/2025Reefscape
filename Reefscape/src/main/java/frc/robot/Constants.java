@@ -119,5 +119,13 @@ public class Constants {
     public static final double MAX_SPEED = 3; //12.0 ft/s CHECKME
     public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
   
+
+
   }
-} 
+
+  public static class HandConstants {
+    public static final int wristMotorId = 11;
+    public static final int handMotorId = 12;
+  }
+
+}
