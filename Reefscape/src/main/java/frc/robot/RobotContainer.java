@@ -8,6 +8,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -55,6 +58,12 @@ public class RobotContainer extends SubsystemBase{
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
+
+    Shuffleboard.getTab("Fi")
+   .add("Target", "r_s2")
+   .withWidget("Field Vie") // specify the widget here
+   .getEntry();
+
     configureBindings();
   }
 
