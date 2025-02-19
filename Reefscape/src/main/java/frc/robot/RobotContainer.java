@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.CoralIn;
 import frc.robot.commands.CoralOut;
@@ -20,10 +21,13 @@ import frc.robot.commands.PivotUpCommand;
 import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.S_DriveCommand;
+import frc.robot.commands.CloseRatchet;
+import frc.robot.commands.OpenRatchet;
 
 public class RobotContainer extends SubsystemBase{
   
   private final SwerveSubsystem swerveSubs = new SwerveSubsystem();
+  private final ClimberSubsystem climberSubs = new ClimberSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem(); 
 
   public final static XboxController drive = new XboxController(ControllerConstants.kDriverControllerPort);
@@ -37,6 +41,8 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton coralOut = new JoystickButton(drive, 4);
   private final JoystickButton wristUp = new JoystickButton(drive, 5);
   private final JoystickButton wristDown = new JoystickButton(drive, 6);
+  private final JoystickButton openRatchet = new JoystickButton(drive, 1);
+  private final JoystickButton closeRatchet = new JoystickButton(drive, 2);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
   //AXIS 
   //private final int joystickAxis = XboxController.Axis.kRightY.value;
@@ -80,6 +86,8 @@ public class RobotContainer extends SubsystemBase{
 
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
+    closeRatchet.onTrue(new CloseRatchet(climberSubs));
+    openRatchet.onTrue(new OpenRatchet(climberSubs));
   }
 
   

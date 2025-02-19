@@ -130,4 +130,8 @@ public class Constants {
     public static final int handMotorId = 12;
   }
 
+  public static class ClimberConstants {
+    public static final int climbMotorId = 10;
+  }
+
 }
