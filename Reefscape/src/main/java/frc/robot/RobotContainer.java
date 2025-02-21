@@ -7,6 +7,8 @@ import frc.robot.commands.S_DriveCommand;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -59,6 +61,23 @@ public class RobotContainer extends SubsystemBase{
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
 
+
+
+
+
+    // SmartDashboard.putData("Auto Target", new Sendable() {
+    //   @Override
+    //   public void initSendable(SendableBuilder builder) {
+    //     builder.setSmartDashboardType("FieldVisualWidget");
+
+    //     builder.addStringProperty("setTarget", () -> null, null);
+    //   }
+    // });
+
+
+
+
+
     Shuffleboard.getTab("Fi")
    .add("Target", "r_s2")
    .withWidget("Field Vie") // specify the widget here
@@ -66,6 +85,16 @@ public class RobotContainer extends SubsystemBase{
 
     configureBindings();
   }
+
+
+
+
+
+
+
+
+
+
 
   private void configureBindings() {
     resetPigeonButton.onTrue(new InstantCommand(() -> swerveSubs.resetPigeon()));
