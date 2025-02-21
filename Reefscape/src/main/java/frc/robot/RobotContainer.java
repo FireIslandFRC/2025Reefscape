@@ -4,11 +4,17 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.S_DriveCommand;
 
+import java.lang.ModuleLayer.Controller;
+
+import javax.print.attribute.standard.JobHoldUntil;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -43,20 +49,35 @@ public class RobotContainer extends SubsystemBase{
   private final ClimberSubsystem climberSubs = new ClimberSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem(); 
 
-  public final static XboxController drive = new XboxController(ControllerConstants.kDriverControllerPort);
+  public final static Joystick D_CONTROLLER = new Joystick(ControllerConstants.kDriverControllerPort);
+  public final static Joystick OP_CONTROLLER = new Joystick(ControllerConstants.kOperatorControllerPort);
 
-    //private final XboxController drive = new XboxController(0);
+  //OP BUTTONS 
+  private final JoystickButton armLevel1 = new JoystickButton(OP_CONTROLLER, 5);
+  private final JoystickButton armLevel2 = new JoystickButton(OP_CONTROLLER, 6);
+  private final JoystickButton armLevel3 = new JoystickButton(OP_CONTROLLER, 7); 
+  private final JoystickButton armLoading = new JoystickButton(OP_CONTROLLER, 8);
+  private final JoystickButton armManualUp = new JoystickButton(OP_CONTROLLER, 10);
+  private final JoystickButton armManualDown = new JoystickButton(OP_CONTROLLER, 9);
 
-  //DRIVE BUTTONS 
-  private final JoystickButton armUp = new JoystickButton(drive, 1);
-  private final JoystickButton armDown = new JoystickButton(drive, 2);
-  private final JoystickButton coralIn = new JoystickButton(drive, 3); 
-  private final JoystickButton coralOut = new JoystickButton(drive, 4);
-  private final JoystickButton wristUp = new JoystickButton(drive, 5);
-  private final JoystickButton wristDown = new JoystickButton(drive, 6);
-  private final JoystickButton climberUp = new JoystickButton(drive, 7);
-  private final JoystickButton climberDown = new JoystickButton(drive, 8);
+  private final JoystickButton intake = new JoystickButton(OP_CONTROLLER, 2);
+  private final JoystickButton outtake = new JoystickButton(OP_CONTROLLER, 1);  
+  
+  private final JoystickButton targetSlice1 = null;
+  private final JoystickButton targetSlice2 = null;
+  private final JoystickButton targetSlice3 = null;
+  private final JoystickButton targetSlice4 = null;
+  private final JoystickButton targetSlice5 = null;
+  private final JoystickButton targetSlice6 = null;
 
+  private final JoystickButton targetLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME side dependant
+  private final JoystickButton targetLoading2 = new JoystickButton(OP_CONTROLLER, 4); 
+
+  private final JoystickButton targetCage1 = new JoystickButton(OP_CONTROLLER, 13); 
+  private final JoystickButton targetCage2 = new JoystickButton(OP_CONTROLLER, 12);
+  private final JoystickButton targetCage3 = new JoystickButton(OP_CONTROLLER, 11); 
+
+  private final GenericHID m_stick = new GenericHID(ControllerConstants.kOperatorControllerPort);
   // private final JoystickButton openRatchet = new JoystickButton(drive, 1); FIXME uncoment for ratchet, needs button ids
   // private final JoystickButton closeRatchet = new JoystickButton(drive, 2);
   //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
@@ -65,23 +86,33 @@ public class RobotContainer extends SubsystemBase{
   //public Field2d m_field;
 
   //NOTE add button ids to Constants?
+
+
   //DRIVE BUTTONS     
-  private final JoystickButton speedButton = new JoystickButton(drive, 11);
-  private final JoystickButton fieldOriented = new JoystickButton(drive, 9);
-  private final JoystickButton resetPigeonButton = new JoystickButton(drive, 10); //FIXME add back in
-  private final JoystickButton lockbutton = new JoystickButton(drive, 3); //FIXME add back in
+  private final JoystickButton speedSlow = new JoystickButton(D_CONTROLLER, 1);
+  private final JoystickButton speedEmergency = new JoystickButton(D_CONTROLLER, 3);
+  private final JoystickButton fieldOriented = new JoystickButton(D_CONTROLLER, 9);
+  private final JoystickButton resetPigeonButton = new JoystickButton(D_CONTROLLER, 16);
+  private final JoystickButton lockbutton = new JoystickButton(D_CONTROLLER, 10);
+  private final JoystickButton targetSliceLeft = null;
+  private final JoystickButton targetSliceRight = null;
+  private final JoystickButton engageTargetAuto = new JoystickButton(D_CONTROLLER, 2);
+  private final JoystickButton climbUp = new JoystickButton(D_CONTROLLER, 5);
+  private final JoystickButton climbDown = new JoystickButton(D_CONTROLLER, 6);  
+  private final JoystickButton ratchetEngage = new JoystickButton(D_CONTROLLER, 7);
+  private final JoystickButton ratchetDisengage = new JoystickButton(D_CONTROLLER, 8);
 
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
     swerveSubs.setDefaultCommand(
       new S_DriveCommand(
-        swerveSubs,
-        () -> -drive.getLeftY(), 
-        () -> -drive.getLeftX(), 
-        () -> drive.getRightX(), 
+        swerveSubs, // CHECKME possible flip of negative values
+        () -> -D_CONTROLLER.getY(), 
+        () -> -D_CONTROLLER.getX(), 
+        () ->  D_CONTROLLER.getTwist(), 
         () -> fieldOriented.getAsBoolean(), 
-        () -> speedButton.getAsBoolean()
+        () -> speedSlow.getAsBoolean() // TODO add emergency speed
       )
     );
     
@@ -136,18 +167,18 @@ public class RobotContainer extends SubsystemBase{
 
   private void configureBindings() {
 
-    wristUp.whileTrue(new PivotUpCommand());
-    wristDown.whileTrue(new PivotDownCommand());
-    coralIn.whileTrue(new CoralIn());
-    coralOut.whileTrue(new CoralOut());
+    // wristUp.whileTrue(new PivotUpCommand());
+    // wristDown.whileTrue(new PivotDownCommand());
+    // coralIn.whileTrue(new CoralIn());
+    // coralOut.whileTrue(new CoralOut());
 
-    armUp.whileTrue(new ArmUpCommand());
-    armDown.whileTrue(new ArmDownCommand());
+    // armUp.whileTrue(new ArmUpCommand());
+    // armDown.whileTrue(new ArmDownCommand());
 
-    resetPigeonButton.onTrue(new InstantCommand(() -> swerveSubs.resetPigeon()));
+    // resetPigeonButton.onTrue(new InstantCommand(() -> swerveSubs.resetPigeon()));
 
-    climberUp.whileTrue(new ClimberUpCommand(climberSubs));
-    climberDown.whileTrue(new ClimberDownCommand(climberSubs));
+    // climberUp.whileTrue(new ClimberUpCommand(climberSubs));
+    // climberDown.whileTrue(new ClimberDownCommand(climberSubs));
 
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
@@ -174,7 +205,7 @@ public class RobotContainer extends SubsystemBase{
 
   @Override
   public void periodic() {
-    
+    System.out.println(m_stick.getPOV()); //FIXME move to controlled declarations, and map
   }
 
 }
