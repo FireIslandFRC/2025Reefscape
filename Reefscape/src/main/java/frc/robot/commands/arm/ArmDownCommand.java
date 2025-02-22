@@ -1,11 +1,11 @@
-package frc.robot.commands;
+package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ArmUpCommand extends Command{
+public class ArmDownCommand extends Command{
 
-    public ArmUpCommand() {
+    public ArmDownCommand() {
       }
 
   @Override
@@ -14,7 +14,7 @@ public class ArmUpCommand extends Command{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ArmSubsystem.ArmUp();
+    ArmSubsystem.armDown();
   }
 
   // Called once the command ends or is interrupted.

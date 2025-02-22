@@ -91,7 +91,9 @@
 			"Fiducials",
 			"Holonomic",
 			"Odometry",
+			"pathfinding",
 			"swervesubsystem",
+			"Tele",
 			"teleop"
 		]
 	}

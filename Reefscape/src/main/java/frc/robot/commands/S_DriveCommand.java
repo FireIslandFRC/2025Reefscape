@@ -12,7 +12,7 @@ public class S_DriveCommand extends Command {
   private DoubleSupplier xSupplier, ySupplier, zSupplier;
   private BooleanSupplier fieldOriented;
   private double SpeedMultiplier;
-  private BooleanSupplier speedIncrease;
+  private BooleanSupplier speedIncrease, speedDecrease;
   /* * * CONSTRUCTOR * * */
   /* 
    * @param swerveSubs the swerve subsystem 
@@ -21,12 +21,13 @@ public class S_DriveCommand extends Command {
    * @param zSupplier value input for rotation 
    * @param fieldOriented whether or not we want the bot to run in field oriented 
    */
-  public S_DriveCommand(SwerveSubsystem swerveSubs, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier zSupplier, BooleanSupplier fieldOriented, BooleanSupplier speedIncrease) {
+  public S_DriveCommand(SwerveSubsystem swerveSubs, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier zSupplier, BooleanSupplier fieldOriented, BooleanSupplier speedDecrease, BooleanSupplier speedIncrease) {
     this.swerveSubs = swerveSubs; 
     this.xSupplier = xSupplier; 
     this.ySupplier = ySupplier; 
     this.zSupplier = zSupplier; 
     this.fieldOriented = fieldOriented;
+    this.speedDecrease = speedDecrease;
     this.speedIncrease = speedIncrease;
     addRequirements(swerveSubs);
   }
@@ -58,14 +59,20 @@ public class S_DriveCommand extends Command {
 
     //square the speed values to make for smoother acceleration 
 
-    if (speedIncrease.getAsBoolean()) {
+    if (speedDecrease.getAsBoolean()) {
       SpeedMultiplier = 0.50;
     }else{
+      SpeedMultiplier = 0.75;
+    }
+
+    if (speedIncrease.getAsBoolean()) {
       SpeedMultiplier = 1;
+    }else{
+      SpeedMultiplier = 0.75;
     }
 
     /* * * SETTING SWERVE STATES * * */
-    swerveSubs.drive(xSpeed*0.3, ySpeed*0.3, zSpeed*0.3, !FieldOriented, SpeedMultiplier);
+    swerveSubs.drive(xSpeed, ySpeed, zSpeed, !FieldOriented, SpeedMultiplier);
     
   }
 

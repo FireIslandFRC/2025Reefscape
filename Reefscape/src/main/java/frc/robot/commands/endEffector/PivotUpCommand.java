@@ -1,11 +1,16 @@
-package frc.robot.commands;
+package frc.robot.commands.endEffector;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HandSubsystem;
 
-public class PivotDownCommand extends Command{
+public class PivotUpCommand extends Command{
     
-    public PivotDownCommand(){
+    private final HandSubsystem handSubsystem;
+
+    public PivotUpCommand(){
+        handSubsystem = new HandSubsystem();
+
+        addRequirements(handSubsystem);
     }
 
     @Override
@@ -13,17 +18,21 @@ public class PivotDownCommand extends Command{
 
     @Override
     public void execute(){
-        HandSubsystem.PivotDown();
+        handSubsystem.PivotUp();
     }
 
     @Override
     public void end(boolean interrupted){
-        HandSubsystem.PivotStop();
+        handSubsystem.PivotStop();
     }
 
     @Override
     public boolean isFinished(){
         return false;
     }
+
+
+    
+
 
 }

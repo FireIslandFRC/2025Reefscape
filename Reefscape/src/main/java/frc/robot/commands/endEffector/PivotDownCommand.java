@@ -1,11 +1,11 @@
-package frc.robot.commands;
+package frc.robot.commands.endEffector;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HandSubsystem;
 
-public class CoralOut extends Command{
+public class PivotDownCommand extends Command{
     
-    public CoralOut(){
+    public PivotDownCommand(){
     }
 
     @Override
@@ -13,12 +13,12 @@ public class CoralOut extends Command{
 
     @Override
     public void execute(){
-        HandSubsystem.CoralOut();
+        HandSubsystem.PivotDown();
     }
 
     @Override
     public void end(boolean interrupted){
-        HandSubsystem.CoralStop();
+        HandSubsystem.PivotStop();
     }
 
     @Override

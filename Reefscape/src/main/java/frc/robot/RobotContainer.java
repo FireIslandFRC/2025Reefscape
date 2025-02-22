@@ -1,8 +1,22 @@
 package frc.robot;
 
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.TargetLocationConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.climber.ClimberDownCommand;
+import frc.robot.commands.PathToPose;
 import frc.robot.commands.S_DriveCommand;
+import frc.robot.commands.updateTeleTargetCommand;
+import frc.robot.commands.arm.ArmDownCommand;
+import frc.robot.commands.arm.ArmSetPositionCommand;
+import frc.robot.commands.arm.ArmUpCommand;
+import frc.robot.commands.climber.ClimberUpCommand;
+import frc.robot.commands.climber.CloseRatchet;
+import frc.robot.commands.climber.OpenRatchet;
+import frc.robot.commands.endEffector.CoralIn;
+import frc.robot.commands.endEffector.CoralOut;
+import frc.robot.commands.endEffector.PivotDownCommand;
+import frc.robot.commands.endEffector.PivotUpCommand;
 
 import java.lang.ModuleLayer.Controller;
 
@@ -11,6 +25,7 @@ import javax.print.attribute.standard.JobHoldUntil;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -26,22 +41,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.commands.CoralIn;
-import frc.robot.commands.CoralOut;
-import frc.robot.commands.PivotDownCommand;
-import frc.robot.commands.PivotUpCommand;
-import frc.robot.commands.ArmDownCommand;
-import frc.robot.commands.ArmUpCommand;
-import frc.robot.commands.ClimberDownCommand;
-import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.S_DriveCommand;
-import frc.robot.commands.CloseRatchet;
-import frc.robot.commands.OpenRatchet;
 
 public class RobotContainer extends SubsystemBase{
   
@@ -49,8 +55,16 @@ public class RobotContainer extends SubsystemBase{
   private final ClimberSubsystem climberSubs = new ClimberSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem(); 
 
+
+  public static int opSliceTarget = 1;
+
+  static Pose2d currentTarget = TargetLocationConstants.slicePose5;
+
+  // private updateTeleTargetCommand updateTeleTargetCommand = new updateTeleTargetCommand(swerveSubs);
+
+
   public final static Joystick D_CONTROLLER = new Joystick(ControllerConstants.kDriverControllerPort);
-  public final static Joystick OP_CONTROLLER = new Joystick(ControllerConstants.kOperatorControllerPort);
+  private final static Joystick OP_CONTROLLER = new Joystick(ControllerConstants.kOperatorControllerPort);
 
   //OP BUTTONS 
   private final JoystickButton armLevel1 = new JoystickButton(OP_CONTROLLER, 5);
@@ -60,15 +74,15 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton armManualUp = new JoystickButton(OP_CONTROLLER, 10);
   private final JoystickButton armManualDown = new JoystickButton(OP_CONTROLLER, 9);
 
-  private final JoystickButton intake = new JoystickButton(OP_CONTROLLER, 2);
-  private final JoystickButton outtake = new JoystickButton(OP_CONTROLLER, 1);  
+  private final JoystickButton endEffectorIntake = new JoystickButton(OP_CONTROLLER, 2);
+  private final JoystickButton endEffectorOuttake = new JoystickButton(OP_CONTROLLER, 1);
   
-  private final JoystickButton targetSlice1 = null;
-  private final JoystickButton targetSlice2 = null;
-  private final JoystickButton targetSlice3 = null;
-  private final JoystickButton targetSlice4 = null;
-  private final JoystickButton targetSlice5 = null;
-  private final JoystickButton targetSlice6 = null;
+  private final POVButton targetSlice1 = new POVButton(OP_CONTROLLER, 0);
+  private final POVButton targetSlice2 = new POVButton(OP_CONTROLLER, 45);
+  private final POVButton targetSlice3 = new POVButton(OP_CONTROLLER, 135);
+  private final POVButton targetSlice4 = new POVButton(OP_CONTROLLER, 180);
+  private final POVButton targetSlice5 = new POVButton(OP_CONTROLLER, 225);
+  private final POVButton targetSlice6 = new POVButton(OP_CONTROLLER, 315);
 
   private final JoystickButton targetLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME side dependant
   private final JoystickButton targetLoading2 = new JoystickButton(OP_CONTROLLER, 4); 
@@ -78,22 +92,18 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton targetCage3 = new JoystickButton(OP_CONTROLLER, 11); 
 
   private final GenericHID m_stick = new GenericHID(ControllerConstants.kOperatorControllerPort);
-  // private final JoystickButton openRatchet = new JoystickButton(drive, 1); FIXME uncoment for ratchet, needs button ids
-  // private final JoystickButton closeRatchet = new JoystickButton(drive, 2);
-  //private final JoystickButton Ground = new JoystickButton(xbox, XboxController.Button.kRightBumper.value);
   //AXIS 
   //private final int joystickAxis = XboxController.Axis.kRightY.value;
   //public Field2d m_field;
 
-  //NOTE add button ids to Constants?
-
+  //NOTE add button ids to Constants? 
 
   //DRIVE BUTTONS     
   private final JoystickButton speedSlow = new JoystickButton(D_CONTROLLER, 1);
   private final JoystickButton speedEmergency = new JoystickButton(D_CONTROLLER, 3);
   private final JoystickButton fieldOriented = new JoystickButton(D_CONTROLLER, 9);
   private final JoystickButton resetPigeonButton = new JoystickButton(D_CONTROLLER, 16);
-  private final JoystickButton lockbutton = new JoystickButton(D_CONTROLLER, 10);
+  private final JoystickButton lockbutton = new JoystickButton(D_CONTROLLER, 10); //FIXME
   private final JoystickButton targetSliceLeft = null;
   private final JoystickButton targetSliceRight = null;
   private final JoystickButton engageTargetAuto = new JoystickButton(D_CONTROLLER, 2);
@@ -110,9 +120,10 @@ public class RobotContainer extends SubsystemBase{
         swerveSubs, // CHECKME possible flip of negative values
         () -> -D_CONTROLLER.getY(), 
         () -> -D_CONTROLLER.getX(), 
-        () ->  D_CONTROLLER.getTwist(), 
+        () -> -D_CONTROLLER.getTwist(), 
         () -> fieldOriented.getAsBoolean(), 
-        () -> speedSlow.getAsBoolean() // TODO add emergency speed
+        () -> speedSlow.getAsBoolean(),
+        () -> speedEmergency.getAsBoolean() 
       )
     );
     
@@ -147,47 +158,115 @@ public class RobotContainer extends SubsystemBase{
 
 
 
-    Shuffleboard.getTab("Fi")
-   .add("Target", "r_s2")
-   .withWidget("Field Vie") // specify the widget here
-   .getEntry();
+  // Shuffleboard.getTab("Fi")
+  //  .add("Target", "r_s2")
+  //  .withWidget("Field Vie") // specify the widget here
+  //  .getEntry();
 
     configureBindings();
   }
-
-
-
-
-
-
-
-
-
-
 
   private void configureBindings() {
 
     // wristUp.whileTrue(new PivotUpCommand());
     // wristDown.whileTrue(new PivotDownCommand());
-    // coralIn.whileTrue(new CoralIn());
-    // coralOut.whileTrue(new CoralOut());
+    endEffectorIntake.whileTrue(new CoralIn());
+    endEffectorOuttake.whileTrue(new CoralOut());
+    armLoading.whileTrue(new ArmSetPositionCommand(0));
+    armLevel1.whileTrue(new ArmSetPositionCommand(1));
+    armLevel2.whileTrue(new ArmSetPositionCommand(2));
+    armLevel3.whileTrue(new ArmSetPositionCommand(3));
+    armManualUp.whileTrue(new ArmUpCommand());
+    armManualDown.whileTrue(new ArmDownCommand());
 
-    // armUp.whileTrue(new ArmUpCommand());
-    // armDown.whileTrue(new ArmDownCommand());
+    resetPigeonButton.onTrue(new InstantCommand(() -> swerveSubs.resetPigeon()));
 
-    // resetPigeonButton.onTrue(new InstantCommand(() -> swerveSubs.resetPigeon()));
-
-    // climberUp.whileTrue(new ClimberUpCommand(climberSubs));
-    // climberDown.whileTrue(new ClimberDownCommand(climberSubs));
+    climbUp.whileTrue(new ClimberUpCommand(climberSubs));
+    climbDown.whileTrue(new ClimberDownCommand(climberSubs));
 
     //TODO: all buttons
     //lockbutton.whileTrue(lockCommand().andThen( new PrintCommand("X Button Working")));
 
-    // closeRatchet.onTrue(new CloseRatchet(climberSubs)); FIXME 
-    // openRatchet.onTrue(new OpenRatchet(climberSubs));
+    ratchetEngage.onTrue(new CloseRatchet(climberSubs)); //FIXME set positions
+    ratchetDisengage.onTrue(new OpenRatchet(climberSubs));
+
+    // targetSlice1.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose1));
+    // targetSlice2.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose2));
+    // targetSlice3.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose3));
+    // targetSlice4.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose4));
+    // targetSlice5.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose5));
+    // targetSlice6.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose6));
+
+    // targetSlice1.onTrue(new InstantCommand(() -> swerveSubs.telePath(TargetLocationConstants.slicePose1, engageTargetAuto)));
+    // targetSlice2.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose2, engageTargetAuto)));
+    // targetSlice3.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose3, engageTargetAuto)));
+    // targetSlice4.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose4, engageTargetAuto)));
+    // targetSlice5.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose5, engageTargetAuto)));
+    // targetSlice6.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose6, engageTargetAuto)));
+    
+    targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs));  //FIXME end after other button pressed
+    targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs));
+    targetSlice3.onTrue(new PathToPose(TargetLocationConstants.slicePose3, swerveSubs));
+    targetSlice4.onTrue(new PathToPose(TargetLocationConstants.slicePose4, swerveSubs));
+    targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs));
+    targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs));
+
+    // engageTargetAuto.whileTrue(swerveSubs.telePath(currentTarget));
+    // engageTargetAuto.onTrue(swerveSubs.telePath(() -> currentTarget.getX(), () -> currentTarget.getY(), () -> currentTarget.getRotation().getDegrees()));
+    // targetSlice1.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose1)));
+    // targetSlice2.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose2)));
+    // targetSlice3.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose3)));
+    // targetSlice4.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose4)));
+    // targetSlice5.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose5)));
+    // targetSlice6.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose6)));
+
+    // engageTargetAuto.whileTrue(swerveSubs.telePath());
+
   }
 
-  
+  // private void setTargetPose(){
+  //   int opSliceTarget = m_stick.getPOV();
+
+  //   switch (opSliceTarget) {
+  //    case -1:
+  //      break;
+  //    case 0:
+  //     //  updateTeleTargetCommand.setTargetPose(TargetLocationConstants.slicePose1);
+  //      currentTarget = TargetLocationConstants.slicePose1;
+  //      targetLabel = 1; 
+  //      break;
+  //    case 45:
+  //    currentTarget = TargetLocationConstants.slicePose2;
+  //    targetLabel = 2; 
+  //      break;
+  //    case 90:
+  //      break;
+  //    case 135:
+  //    currentTarget = TargetLocationConstants.slicePose3;
+  //    targetLabel = 3; 
+  //      break;
+  //    case 180:
+  //    currentTarget = TargetLocationConstants.slicePose4;
+  //    targetLabel = 4; 
+  //      break;
+  //    case 225:
+  //    currentTarget = TargetLocationConstants.slicePose5;
+  //    targetLabel = 5; 
+  //      break;
+  //    case 270:
+  //      break;
+  //    case 315:
+  //    currentTarget = TargetLocationConstants.slicePose6;
+  //    targetLabel = 6; 
+  //      break;
+  //    default:
+  //      break;
+  //   }
+
+  //   SmartDashboard.putString("targetSlice", "slice" + targetLabel);
+  //   SmartDashboard.putString("target", currentTarget.toString());
+
+  // }
 
   protected Command lockCommand() {
     return this.runOnce(() -> swerveSubs.lock());
@@ -205,7 +284,13 @@ public class RobotContainer extends SubsystemBase{
 
   @Override
   public void periodic() {
-    System.out.println(m_stick.getPOV()); //FIXME move to controlled declarations, and map
+     //System.out.println(m_stick.getPOV());
+     //setTargetPose();
+
+     //opSliceTarget = m_stick.getPOV();
+     SmartDashboard.putString("targetSlice", "slice" + currentTarget);
+
+
   }
 
 }

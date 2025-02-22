@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -18,20 +19,28 @@ import frc.robot.Constants.ArmConstants;
 public class ArmSubsystem extends SubsystemBase {
 
   private static SparkMax armMotor;
+  private static RelativeEncoder armEncoder;
+  private static double SETPOS1, SETPOS2, SETPOS3;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
     armMotor = new SparkMax(ArmConstants.armMotorId, MotorType.kBrushless);
+    armEncoder = armMotor.getEncoder();
+
 
     armMotor.configure(Configs.ArmConfig.armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public static void ArmUp(){
+  public static void armUp(){
     armMotor.set(0.5);
   }
 
-  public static void ArmDown(){
+  public static void armDown(){
     armMotor.set(-0.8);
+  }
+
+  public static void armToPosition(int position){
+    //FIXME implement encoder
   }
 
   public static void armStop(){

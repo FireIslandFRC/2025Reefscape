@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -14,18 +18,28 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.TargetLocationConstants;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* * * INITIALIZATION * * */
 
   //initialize SwerveModules 
   private SwerveModule[] swerveModules; 
+
 
   //instantiate pigeon 
   public Pigeon2 pigeon = new Pigeon2(SwerveConstants.PIGEON_ID);
@@ -67,7 +81,7 @@ public class SwerveSubsystem extends SubsystemBase {
           new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
                                           // holonomic drive trains
               new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-              new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+              new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants    //  FIXME tune auto
           ),
           config, // The robot configuration
           () -> {
@@ -159,6 +173,10 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   }
 
+  // public void setTargetPose(Pose2d target){
+  //   currentTarget = target;
+  // }
+
   /* * * DRIVE METHODS * * */
   public void drive(double xSpeed, double ySpeed, double zSpeed, boolean fieldOriented, double SpeedMultiplier){
     
@@ -189,6 +207,55 @@ public class SwerveSubsystem extends SubsystemBase {
     setModuleStates(state);
 
   }
+
+  /* AUTOPATH METHODS */
+
+  //public Command telePath(DoubleSupplier xPose, DoubleSupplier yPose, DoubleSupplier rPose){
+   public void telePath(Pose2d currentTarget, JoystickButton run){
+
+      // Pose2d currentTarget = new Pose2d(xPose.getAsDouble(), yPose.getAsDouble(), Rotation2d.fromDegrees(rPose.getAsDouble()));
+      PathConstraints constraints = new PathConstraints(
+        3.0, 4.0,
+        Units.degreesToRadians(540), Units.degreesToRadians(720));
+    
+       Command pathToTargetCommand = AutoBuilder.pathfindToPose(
+          currentTarget,
+            constraints,
+            0.0 // Goal end velocity in meters/sec
+        );
+
+    // System.out.println(currentTarget.toString());
+    SmartDashboard.putString("targetintelePathdsafsafa", currentTarget.toString());
+
+        // System.out.println(constraints.toString());
+
+        run.whileTrue(pathToTargetCommand);
+    // return pathToTargetCommand;
+
+  }
+
+
+  // public Command telePath(DoubleSupplier poseX, DoubleSupplier poseY, DoubleSupplier rotation){
+
+  //   Pose2d currentTarget = new Pose2d(poseX.getAsDouble(), poseY.getAsDouble(), Rotation2d.fromDegrees(rotation.getAsDouble()));
+  //     PathConstraints constraints = new PathConstraints(
+  //       3.0, 4.0,
+  //       Units.degreesToRadians(540), Units.degreesToRadians(720));
+
+  //      Command pathToTargetCommand = AutoBuilder.pathfindToPose(
+  //           currentTarget,
+  //           constraints,
+  //           0.0 // Goal end velocity in meters/sec
+  //       );
+
+  //   System.out.println(currentTarget.toString());
+  //   SmartDashboard.putString("targetintelePath", currentTarget.toString());
+
+  //       // System.out.println(constraints.toString());
+  //   return pathToTargetCommand;
+
+  // }
+
 
   /* * * WHEEL METHODS * * */
   public void lock() {
@@ -229,10 +296,8 @@ public class SwerveSubsystem extends SubsystemBase {
 }
 
   public void updateOdometry() {
-    
 
-
-    /*boolean useMegaTag2 = true; //set to false to use MegaTag1
+    boolean useMegaTag2 = true; //set to false to use MegaTag1
     boolean doRejectUpdate = false;
     if(useMegaTag2 == false)
     {
@@ -264,13 +329,13 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     else if (useMegaTag2 == true)
     {
-      
+      // FIXME 180 reverse side thing
       LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
       /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
       { // TODO pigeon angular velocity
         doRejectUpdate = true;
-      }
+      }*/
       if(mt2.tagCount == 0)
       {
         doRejectUpdate = true;
@@ -283,7 +348,7 @@ public class SwerveSubsystem extends SubsystemBase {
             mt2.pose,
             mt2.timestampSeconds);
       }
-    }*/
+    }
 
     m_poseEstimator.update(
         pigeon.getRotation2d(),
@@ -292,7 +357,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //LimelightHelpers.setLEDMode_ForceOff("limelight");
+    LimelightHelpers.setLEDMode_ForceOff("limelight");
     
     // This method will be called once per scheduler run
     //odometer.update(pigeon.getRotation2d(), getModulePositions());
