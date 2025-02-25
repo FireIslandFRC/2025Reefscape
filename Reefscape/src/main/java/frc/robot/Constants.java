@@ -35,6 +35,13 @@ public class Constants {
     public static Pose2d slicePose5 = new Pose2d(3.5, 5.5, Rotation2d.fromDegrees(-60));
     public static Pose2d slicePose6 = new Pose2d(5.5, 5.5, Rotation2d.fromDegrees(-120));
 
+    public static Pose2d coralLoad1 = new Pose2d(1.5, 5.5, Rotation2d.fromDegrees(120));
+    public static Pose2d coralLoad2 = new Pose2d(1.5, 1.5, Rotation2d.fromDegrees(-120));
+
+    public static Pose2d cage1 = new Pose2d(7.5, 7.3, Rotation2d.fromDegrees(90));
+    public static Pose2d cage2 = new Pose2d(7.5, 6.1, Rotation2d.fromDegrees(90));
+    public static Pose2d cage3 = new Pose2d(7.5, 5, Rotation2d.fromDegrees(90));
+
     public static Pose2d currentTarget = TargetLocationConstants.slicePose1;
 
   }
@@ -80,8 +87,8 @@ public class Constants {
       public static final int DRIVE_PORT = 1;
       public static final int ROTATION_PORT = 2;
       public static final int ABSOLUTE_ENCODER_PORT = 21;
-      //public static final double OFFSET = 144.6; // NOTE CompFrame
-      public static final double OFFSET = -145.5; 
+      public static final double OFFSET = 144.6; // NOTE CompFrame
+      //public static final double OFFSET = -145.5; 
       public static final boolean DRIVE_INVERTED = false;
       public static final boolean ROTATION_INVERTED = true;
 
@@ -93,8 +100,8 @@ public class Constants {
       public static final int DRIVE_PORT = 3;
       public static final int ROTATION_PORT = 4;
       public static final int ABSOLUTE_ENCODER_PORT = 22;
-      //public static final double OFFSET = 0 -17; // NOTE CompFrame
-      public static final double OFFSET = -60.2;
+      public static final double OFFSET = 0 -17; // NOTE CompFrame
+      //public static final double OFFSET = -60.2;
       public static final boolean DRIVE_INVERTED = false; 
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -106,8 +113,8 @@ public class Constants {
       public static final int DRIVE_PORT = 5;
       public static final int ROTATION_PORT = 6;
       public static final int ABSOLUTE_ENCODER_PORT = 23;
-      //public static final double OFFSET = -161; // NOTE CompFrame
-      public static final double OFFSET = -127.5;
+      public static final double OFFSET = -161; // NOTE CompFrame
+      //public static final double OFFSET = -127.5;
       public static final boolean DRIVE_INVERTED = false;
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -119,8 +126,8 @@ public class Constants {
       public static final int DRIVE_PORT = 7;
       public static final int ROTATION_PORT = 8;
       public static final int ABSOLUTE_ENCODER_PORT = 24;
-      //public static final double OFFSET = 52.5; // NOTE CompFrame
-      public static final double OFFSET = 134.5;
+      public static final double OFFSET = 52.5; // NOTE CompFrame
+      //public static final double OFFSET = 134.5;
       public static final boolean DRIVE_INVERTED = false; 
       public static final boolean ROTATION_INVERTED = true; 
 

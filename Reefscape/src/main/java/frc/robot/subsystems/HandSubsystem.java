@@ -30,11 +30,11 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public static void PivotUp(){
-        wristMotor.set(0.2);
+        wristMotor.set(0.05);
     }
 
     public static void PivotDown(){
-        wristMotor.set(-0.2);
+        wristMotor.set(-0.05);
     }
 
     public static void PivotStop(){
@@ -42,11 +42,11 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public static void CoralIn(){
-        handMotor.set(0.5);
+        handMotor.set(0.75);
     }
 
     public static void CoralOut(){
-        handMotor.set(-0.5);
+        handMotor.set(-0.75);
     }
 
     public static void CoralStop(){

@@ -57,8 +57,8 @@ public final class Configs {
                 static {
 
                         armConfig
-                                        .idleMode(IdleMode.kBrake)
-                                        .smartCurrentLimit(20);
+                                        .idleMode(IdleMode.kCoast)
+                                        .smartCurrentLimit(80);
                         armConfig.encoder
                                         .positionConversionFactor(1);
                 

@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import com.pathplanner.lib.commands.PathfindingCommand;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -15,11 +19,14 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  public static String color = "r";
+
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     PathfindingCommand.warmupCommand().schedule();
     m_robotContainer.straightenCommand();
+    
   }
 
   @Override
@@ -53,6 +60,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    System.out.println(0);
+    if (ally.isPresent()) {
+      System.out.println(1);
+        if (ally.get() == Alliance.Red) {
+            color = "r";
+        }
+        if (ally.get() == Alliance.Blue) {
+            color = "b";
+        }
+    }
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

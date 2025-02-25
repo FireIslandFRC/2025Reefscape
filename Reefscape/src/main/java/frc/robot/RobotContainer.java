@@ -58,7 +58,7 @@ public class RobotContainer extends SubsystemBase{
 
   public static int opSliceTarget = 1;
 
-  static Pose2d currentTarget = TargetLocationConstants.slicePose5;
+  static String currentTarget = "default";
 
   // private updateTeleTargetCommand updateTeleTargetCommand = new updateTeleTargetCommand(swerveSubs);
 
@@ -84,12 +84,15 @@ public class RobotContainer extends SubsystemBase{
   private final POVButton targetSlice5 = new POVButton(OP_CONTROLLER, 225);
   private final POVButton targetSlice6 = new POVButton(OP_CONTROLLER, 315);
 
-  private final JoystickButton targetLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME side dependant
-  private final JoystickButton targetLoading2 = new JoystickButton(OP_CONTROLLER, 4); 
+  private final JoystickButton targetCoralLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME side dependant
+  private final JoystickButton targetCoralLoading2 = new JoystickButton(OP_CONTROLLER, 4); 
 
   private final JoystickButton targetCage1 = new JoystickButton(OP_CONTROLLER, 13); 
   private final JoystickButton targetCage2 = new JoystickButton(OP_CONTROLLER, 12);
   private final JoystickButton targetCage3 = new JoystickButton(OP_CONTROLLER, 11); 
+
+  private final JoystickButton wristUp = new JoystickButton(OP_CONTROLLER, 14); 
+  private final JoystickButton wristDown = new JoystickButton(OP_CONTROLLER, 15); 
 
   private final GenericHID m_stick = new GenericHID(ControllerConstants.kOperatorControllerPort);
   //AXIS 
@@ -120,7 +123,7 @@ public class RobotContainer extends SubsystemBase{
         swerveSubs, // CHECKME possible flip of negative values
         () -> -D_CONTROLLER.getY(), 
         () -> -D_CONTROLLER.getX(), 
-        () -> -D_CONTROLLER.getTwist(), 
+        () -> D_CONTROLLER.getTwist(), 
         () -> fieldOriented.getAsBoolean(), 
         () -> speedSlow.getAsBoolean(),
         () -> speedEmergency.getAsBoolean() 
@@ -156,12 +159,10 @@ public class RobotContainer extends SubsystemBase{
 
 
 
-
-
-  // Shuffleboard.getTab("Fi")
-  //  .add("Target", "r_s2")
-  //  .withWidget("Field Vie") // specify the widget here
-  //  .getEntry();
+    Shuffleboard.getTab("Comp")
+    .add("TargetSelect", currentTarget)
+    .withWidget("FieldVisualWidget") // specify the widget here
+    .getEntry();
 
     configureBindings();
   }
@@ -204,13 +205,22 @@ public class RobotContainer extends SubsystemBase{
     // targetSlice5.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose5, engageTargetAuto)));
     // targetSlice6.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose6, engageTargetAuto)));
     
-    targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs));  //FIXME end after other button pressed
-    targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs));
-    targetSlice3.onTrue(new PathToPose(TargetLocationConstants.slicePose3, swerveSubs));
-    targetSlice4.onTrue(new PathToPose(TargetLocationConstants.slicePose4, swerveSubs));
-    targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs));
-    targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs));
+    targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
+    targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));
+    targetSlice3.onTrue(new PathToPose(TargetLocationConstants.slicePose3, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s3"));
+    targetSlice4.onTrue(new PathToPose(TargetLocationConstants.slicePose4, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s4"));
+    targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s5"));
+    targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s6"));
 
+    targetCoralLoading1.onTrue(new PathToPose(TargetLocationConstants.coralLoad1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl1"));
+    targetCoralLoading2.onTrue(new PathToPose(TargetLocationConstants.coralLoad2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl2"));
+    
+    targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg1"));
+    targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg2"));
+    targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg3"));
+    
+    wristUp.whileTrue(new PivotUpCommand());
+    wristDown.whileTrue(new PivotDownCommand());
     // engageTargetAuto.whileTrue(swerveSubs.telePath(currentTarget));
     // engageTargetAuto.onTrue(swerveSubs.telePath(() -> currentTarget.getX(), () -> currentTarget.getY(), () -> currentTarget.getRotation().getDegrees()));
     // targetSlice1.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose1)));
@@ -288,9 +298,9 @@ public class RobotContainer extends SubsystemBase{
      //setTargetPose();
 
      //opSliceTarget = m_stick.getPOV();
-     SmartDashboard.putString("targetSlice", "slice" + currentTarget);
-
-
+     SmartDashboard.putString("targetSlice", "slice " + currentTarget);
+     SmartDashboard.putString("TargetSelect", currentTarget);
+     SmartDashboard.putString("color", Robot.color);
   }
 
 }

@@ -50,6 +50,7 @@ public class SwerveSubsystem extends SubsystemBase {
   //instantiate poseEstimator
   private SwerveDrivePoseEstimator m_poseEstimator;
 
+
   // swervesubsystem constructor
   public SwerveSubsystem() {
     
@@ -336,6 +337,10 @@ public class SwerveSubsystem extends SubsystemBase {
       { // TODO pigeon angular velocity
         doRejectUpdate = true;
       }*/
+
+      if(mt2 == null){ //KILLME
+        return;
+      }
       if(mt2.tagCount == 0)
       {
         doRejectUpdate = true;

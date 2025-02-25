@@ -32,11 +32,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public static void armUp(){
-    armMotor.set(0.5);
+    armMotor.set(1);
   }
 
   public static void armDown(){
-    armMotor.set(-0.8);
+    armMotor.set(-1);
   }
 
   public static void armToPosition(int position){
