@@ -22,7 +22,6 @@ import frc.robot.commands.endEffector.PivotUpCommand;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.events.EventTrigger;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,14 +33,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import frc.robot.subsystems.HandSubsystem;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class RobotContainer extends SubsystemBase{
   
   private final SwerveSubsystem swerveSubs = new SwerveSubsystem();
   private final ClimberSubsystem climberSubs = new ClimberSubsystem();
-  private final ArmSubsystem armSubsystem = new ArmSubsystem(); 
   private final HandSubsystem handSubsystem = new HandSubsystem(); 
 
 
@@ -89,10 +86,9 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton speedEmergency = new JoystickButton(D_CONTROLLER, 3);
   private final JoystickButton fieldOriented = new JoystickButton(D_CONTROLLER, 9);
   private final JoystickButton resetPigeonButton = new JoystickButton(D_CONTROLLER, 16);
-  private final JoystickButton lockbutton = new JoystickButton(D_CONTROLLER, 10); //FIXME
-  private final JoystickButton targetSliceLeft = null;
-  private final JoystickButton targetSliceRight = null;
-  private final JoystickButton engageTargetAuto = new JoystickButton(D_CONTROLLER, 2);
+  private final JoystickButton lockbutton = new JoystickButton(D_CONTROLLER, 10);
+  // private final JoystickButton targetSliceLeft = null; //FIXME reimplement and set id
+  // private final JoystickButton targetSliceRight = null;
   private final JoystickButton climbUp = new JoystickButton(D_CONTROLLER, 5);
   private final JoystickButton climbDown = new JoystickButton(D_CONTROLLER, 6);  
   private final JoystickButton ratchetEngage = new JoystickButton(D_CONTROLLER, 7); //CloseRatchet

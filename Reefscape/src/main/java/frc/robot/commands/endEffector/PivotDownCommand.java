@@ -14,11 +14,13 @@ public class PivotDownCommand extends Command{
     @Override
     public void initialize(){}
 
+    @SuppressWarnings("static-access")
     @Override
     public void execute(){
         handSubsystem.PivotDown();
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public void end(boolean interrupted){
         handSubsystem.PivotStop();

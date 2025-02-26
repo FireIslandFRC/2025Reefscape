@@ -23,7 +23,7 @@ public class ClimberDownCommand extends Command{
 
     @Override
     public void end(boolean interrupted){
-        climberSubsystem.ClimbStop();
+        climberSubsystem.climbStop();
     }
 
     @Override

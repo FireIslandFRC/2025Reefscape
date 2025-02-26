@@ -1,10 +1,8 @@
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -80,14 +78,6 @@ public class RotateToSource extends Command {
 public double deadzone(double num){
     return Math.abs(num) > 0.1 ? num : 0;
 }
-
-private static double modifyAxis(double num) {
-  // Square the axis
-  num = Math.copySign(num * num, num);
-
-  return num;
-}
-
 
 public void periodic() {
 

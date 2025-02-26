@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -88,20 +87,20 @@ public class S_DriveCommand extends Command {
     return false;
   }
 
-/* * * ADDED METHODS * * */
-public double deadzone(double num){
-    return Math.abs(num) > 0.1 ? num : 0;
-}
+  /* * * ADDED METHODS * * */
+  public double deadzone(double num){
+      return Math.abs(num) > 0.1 ? num : 0;
+  }
 
-private static double modifyAxis(double num) {
-  // Square the axis
-  num = Math.copySign(num * num, num);
+  @SuppressWarnings("unused")
+  private static double modifyAxis(double num) {
+    // Square the axis
+    num = Math.copySign(num * num, num);
 
-  return num;
-}
+    return num;
+  }
 
+  public void periodic() {
 
-public void periodic() {
-
-}
+  }
 }

@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-import java.util.function.IntSupplier;
-
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -18,21 +14,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ControllerConstants;
+
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.TargetLocationConstants;
 import frc.robot.LimelightHelpers;
-import frc.robot.RobotContainer;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* * * INITIALIZATION * * */
@@ -174,10 +162,6 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   }
 
-  // public void setTargetPose(Pose2d target){
-  //   currentTarget = target;
-  // }
-
   /* * * DRIVE METHODS * * */
   public void drive(double xSpeed, double ySpeed, double zSpeed, boolean fieldOriented, double SpeedMultiplier){
     
@@ -208,55 +192,6 @@ public class SwerveSubsystem extends SubsystemBase {
     setModuleStates(state);
 
   }
-
-  /* AUTOPATH METHODS */
-
-  //public Command telePath(DoubleSupplier xPose, DoubleSupplier yPose, DoubleSupplier rPose){
-   public void telePath(Pose2d currentTarget, JoystickButton run){
-
-      // Pose2d currentTarget = new Pose2d(xPose.getAsDouble(), yPose.getAsDouble(), Rotation2d.fromDegrees(rPose.getAsDouble()));
-      PathConstraints constraints = new PathConstraints(
-        3.0, 4.0,
-        Units.degreesToRadians(540), Units.degreesToRadians(720));
-    
-       Command pathToTargetCommand = AutoBuilder.pathfindToPose(
-          currentTarget,
-            constraints,
-            0.0 // Goal end velocity in meters/sec
-        );
-
-    // System.out.println(currentTarget.toString());
-    SmartDashboard.putString("targetintelePathdsafsafa", currentTarget.toString());
-
-        // System.out.println(constraints.toString());
-
-        run.whileTrue(pathToTargetCommand);
-    // return pathToTargetCommand;
-
-  }
-
-
-  // public Command telePath(DoubleSupplier poseX, DoubleSupplier poseY, DoubleSupplier rotation){
-
-  //   Pose2d currentTarget = new Pose2d(poseX.getAsDouble(), poseY.getAsDouble(), Rotation2d.fromDegrees(rotation.getAsDouble()));
-  //     PathConstraints constraints = new PathConstraints(
-  //       3.0, 4.0,
-  //       Units.degreesToRadians(540), Units.degreesToRadians(720));
-
-  //      Command pathToTargetCommand = AutoBuilder.pathfindToPose(
-  //           currentTarget,
-  //           constraints,
-  //           0.0 // Goal end velocity in meters/sec
-  //       );
-
-  //   System.out.println(currentTarget.toString());
-  //   SmartDashboard.putString("targetintelePath", currentTarget.toString());
-
-  //       // System.out.println(constraints.toString());
-  //   return pathToTargetCommand;
-
-  // }
-
 
   /* * * WHEEL METHODS * * */
   public void lock() {

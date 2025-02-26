@@ -18,11 +18,13 @@ public class PivotToAngle extends Command{
     @Override
     public void initialize(){}
 
+    @SuppressWarnings("static-access")
     @Override
     public void execute(){
         handSubsystem.WristToAngle(angle);
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public void end(boolean interrupted){
         handSubsystem.PivotStop();

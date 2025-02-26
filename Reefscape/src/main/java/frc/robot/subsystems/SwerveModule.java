@@ -114,6 +114,7 @@ public class SwerveModule {
     /* * * SET METHODS * * */
     public void setState(SwerveModuleState desiredState) {
         // optimize state so the rotation motor doesnt have to spin as much
+        @SuppressWarnings("deprecation")
         SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
 
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); 
@@ -131,6 +132,7 @@ public class SwerveModule {
 
     public void setAngle(SwerveModuleState desiredState) {
         // optimize state so the rotation motor doesnt have to spin as much
+        @SuppressWarnings("deprecation")
         SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
 
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); 

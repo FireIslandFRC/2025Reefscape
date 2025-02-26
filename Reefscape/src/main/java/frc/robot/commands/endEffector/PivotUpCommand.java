@@ -17,11 +17,13 @@ public class PivotUpCommand extends Command{
     @Override
     public void initialize(){}
 
+    @SuppressWarnings("static-access")
     @Override
     public void execute(){
         handSubsystem.PivotUp();
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public void end(boolean interrupted){
         handSubsystem.PivotStop();

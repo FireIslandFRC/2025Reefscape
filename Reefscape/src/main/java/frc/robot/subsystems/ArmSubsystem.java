@@ -10,11 +10,9 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Configs;
@@ -24,8 +22,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   private static SparkFlex armMotor;   
   private static RelativeEncoder armEncoder;
-  private static double SETPOS1, SETPOS2, SETPOS3;
-      private static SparkClosedLoopController wristClosedLoopController;
+  private static SparkClosedLoopController wristClosedLoopController;
 
 
   /** Creates a new ExampleSubsystem. */
