@@ -21,7 +21,6 @@ public class CloseRatchet extends Command{
     public void execute(){
 
         climberSubsystem.closedRatchet();
-        System.out.println("Closed");
     }
 
     @Override

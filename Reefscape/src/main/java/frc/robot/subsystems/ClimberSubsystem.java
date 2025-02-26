@@ -27,7 +27,7 @@ public class ClimberSubsystem extends SubsystemBase {
     
     public ClimberSubsystem(){
         climbMotor = new TalonFX(ClimberConstants.climbMotorId);
-        ratchetServo = new Servo(1);
+        ratchetServo = new Servo(9);
 
         climbMotorConfig = new TalonFXConfiguration();
 
@@ -46,11 +46,11 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void openRatchet(){
-        ratchetServo.setAngle(90);
+        ratchetServo.setAngle(30);
     }
 
     public void closedRatchet(){
-        ratchetServo.setAngle(0);
+        ratchetServo.setAngle(70);
     }
 
     @Override

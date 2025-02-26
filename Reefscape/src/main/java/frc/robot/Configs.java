@@ -39,8 +39,12 @@ public final class Configs {
                         wristConfig
                                         .idleMode(IdleMode.kBrake)
                                         .smartCurrentLimit(20);
-                        wristConfig.encoder
-                                        .positionConversionFactor(1);
+                        wristConfig.absoluteEncoder
+                                        .positionConversionFactor(360)
+                                        .zeroOffset(0.1287);
+                        wristConfig.closedLoop
+                                        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                                        .pid(.008,0,0);
 
                         handConfig
                                         .idleMode(IdleMode.kBrake)
@@ -57,8 +61,11 @@ public final class Configs {
                 static {
 
                         armConfig
-                                        .idleMode(IdleMode.kCoast)
+                                        .idleMode(IdleMode.kBrake)
                                         .smartCurrentLimit(80);
+                        armConfig.closedLoop
+                                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                                        .pid(.008,0,0);
                         armConfig.encoder
                                         .positionConversionFactor(1);
                 

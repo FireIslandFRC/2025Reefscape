@@ -16,6 +16,7 @@ import frc.robot.commands.climber.OpenRatchet;
 import frc.robot.commands.endEffector.CoralIn;
 import frc.robot.commands.endEffector.CoralOut;
 import frc.robot.commands.endEffector.PivotDownCommand;
+import frc.robot.commands.endEffector.PivotToAngle;
 import frc.robot.commands.endEffector.PivotUpCommand;
 
 import java.lang.ModuleLayer.Controller;
@@ -54,6 +55,7 @@ public class RobotContainer extends SubsystemBase{
   private final SwerveSubsystem swerveSubs = new SwerveSubsystem();
   private final ClimberSubsystem climberSubs = new ClimberSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem(); 
+  private final HandSubsystem handSubsystem = new HandSubsystem(); 
 
 
   public static int opSliceTarget = 1;
@@ -94,6 +96,8 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton wristUp = new JoystickButton(OP_CONTROLLER, 14); 
   private final JoystickButton wristDown = new JoystickButton(OP_CONTROLLER, 15); 
 
+  private final JoystickButton wristPickUp = new JoystickButton(OP_CONTROLLER, 16);
+
   private final GenericHID m_stick = new GenericHID(ControllerConstants.kOperatorControllerPort);
   //AXIS 
   //private final int joystickAxis = XboxController.Axis.kRightY.value;
@@ -112,7 +116,7 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton engageTargetAuto = new JoystickButton(D_CONTROLLER, 2);
   private final JoystickButton climbUp = new JoystickButton(D_CONTROLLER, 5);
   private final JoystickButton climbDown = new JoystickButton(D_CONTROLLER, 6);  
-  private final JoystickButton ratchetEngage = new JoystickButton(D_CONTROLLER, 7);
+  private final JoystickButton ratchetEngage = new JoystickButton(D_CONTROLLER, 7); //CloseRatchet
   private final JoystickButton ratchetDisengage = new JoystickButton(D_CONTROLLER, 8);
 
   private final SendableChooser<Command> autoChooser;
@@ -144,21 +148,6 @@ public class RobotContainer extends SubsystemBase{
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
 
-
-
-
-
-    // SmartDashboard.putData("Auto Target", new Sendable() {
-    //   @Override
-    //   public void initSendable(SendableBuilder builder) {
-    //     builder.setSmartDashboardType("FieldVisualWidget");
-
-    //     builder.addStringProperty("setTarget", () -> null, null);
-    //   }
-    // });
-
-
-
     Shuffleboard.getTab("Comp")
     .add("TargetSelect", currentTarget)
     .withWidget("FieldVisualWidget") // specify the widget here
@@ -174,9 +163,9 @@ public class RobotContainer extends SubsystemBase{
     endEffectorIntake.whileTrue(new CoralIn());
     endEffectorOuttake.whileTrue(new CoralOut());
     armLoading.whileTrue(new ArmSetPositionCommand(0));
-    armLevel1.whileTrue(new ArmSetPositionCommand(1));
-    armLevel2.whileTrue(new ArmSetPositionCommand(2));
-    armLevel3.whileTrue(new ArmSetPositionCommand(3));
+    armLevel1.whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 180));
+    armLevel2.whileTrue(new ArmSetPositionCommand(265)).whileTrue(new PivotToAngle(handSubsystem, 180));
+    armLevel3.whileTrue(new ArmSetPositionCommand(500)).whileTrue(new PivotToAngle(handSubsystem, 90));
     armManualUp.whileTrue(new ArmUpCommand());
     armManualDown.whileTrue(new ArmDownCommand());
 
@@ -190,21 +179,7 @@ public class RobotContainer extends SubsystemBase{
 
     ratchetEngage.onTrue(new CloseRatchet(climberSubs)); //FIXME set positions
     ratchetDisengage.onTrue(new OpenRatchet(climberSubs));
-
-    // targetSlice1.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose1));
-    // targetSlice2.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose2));
-    // targetSlice3.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose3));
-    // targetSlice4.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose4));
-    // targetSlice5.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose5));
-    // targetSlice6.onTrue(new InstantCommand(() -> currentTarget = TargetLocationConstants.slicePose6));
-
-    // targetSlice1.onTrue(new InstantCommand(() -> swerveSubs.telePath(TargetLocationConstants.slicePose1, engageTargetAuto)));
-    // targetSlice2.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose2, engageTargetAuto)));
-    // targetSlice3.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose3, engageTargetAuto)));
-    // targetSlice4.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose4, engageTargetAuto)));
-    // targetSlice5.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose5, engageTargetAuto)));
-    // targetSlice6.onTrue(new InstantCommand(() ->  swerveSubs.telePath(TargetLocationConstants.slicePose6, engageTargetAuto)));
-    
+  
     targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
     targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));
     targetSlice3.onTrue(new PathToPose(TargetLocationConstants.slicePose3, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s3"));
@@ -216,67 +191,15 @@ public class RobotContainer extends SubsystemBase{
     targetCoralLoading2.onTrue(new PathToPose(TargetLocationConstants.coralLoad2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl2"));
     
     targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg1"));
-    targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg2"));
-    targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg3"));
+    targetCage2.onTrue(new PathToPose(TargetLocationConstants.cage2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg2"));
+    targetCage3.onTrue(new PathToPose(TargetLocationConstants.cage3, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg3"));
     
-    wristUp.whileTrue(new PivotUpCommand());
+    wristUp.whileTrue(new PivotUpCommand(handSubsystem));
     wristDown.whileTrue(new PivotDownCommand());
-    // engageTargetAuto.whileTrue(swerveSubs.telePath(currentTarget));
-    // engageTargetAuto.onTrue(swerveSubs.telePath(() -> currentTarget.getX(), () -> currentTarget.getY(), () -> currentTarget.getRotation().getDegrees()));
-    // targetSlice1.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose1)));
-    // targetSlice2.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose2)));
-    // targetSlice3.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose3)));
-    // targetSlice4.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose4)));
-    // targetSlice5.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose5)));
-    // targetSlice6.and(engageTargetAuto.whileTrue(swerveSubs.telePath(TargetLocationConstants.slicePose6)));
 
-    // engageTargetAuto.whileTrue(swerveSubs.telePath());
-
+    wristPickUp.whileTrue(new PivotToAngle(handSubsystem, 160));
   }
 
-  // private void setTargetPose(){
-  //   int opSliceTarget = m_stick.getPOV();
-
-  //   switch (opSliceTarget) {
-  //    case -1:
-  //      break;
-  //    case 0:
-  //     //  updateTeleTargetCommand.setTargetPose(TargetLocationConstants.slicePose1);
-  //      currentTarget = TargetLocationConstants.slicePose1;
-  //      targetLabel = 1; 
-  //      break;
-  //    case 45:
-  //    currentTarget = TargetLocationConstants.slicePose2;
-  //    targetLabel = 2; 
-  //      break;
-  //    case 90:
-  //      break;
-  //    case 135:
-  //    currentTarget = TargetLocationConstants.slicePose3;
-  //    targetLabel = 3; 
-  //      break;
-  //    case 180:
-  //    currentTarget = TargetLocationConstants.slicePose4;
-  //    targetLabel = 4; 
-  //      break;
-  //    case 225:
-  //    currentTarget = TargetLocationConstants.slicePose5;
-  //    targetLabel = 5; 
-  //      break;
-  //    case 270:
-  //      break;
-  //    case 315:
-  //    currentTarget = TargetLocationConstants.slicePose6;
-  //    targetLabel = 6; 
-  //      break;
-  //    default:
-  //      break;
-  //   }
-
-  //   SmartDashboard.putString("targetSlice", "slice" + targetLabel);
-  //   SmartDashboard.putString("target", currentTarget.toString());
-
-  // }
 
   protected Command lockCommand() {
     return this.runOnce(() -> swerveSubs.lock());
@@ -298,9 +221,8 @@ public class RobotContainer extends SubsystemBase{
      //setTargetPose();
 
      //opSliceTarget = m_stick.getPOV();
-     SmartDashboard.putString("targetSlice", "slice " + currentTarget);
      SmartDashboard.putString("TargetSelect", currentTarget);
-     SmartDashboard.putString("color", Robot.color);
+     SmartDashboard.putString("color", Robot.color);//KILLME
   }
 
 }

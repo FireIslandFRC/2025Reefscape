@@ -63,9 +63,9 @@ public class PathToPose extends Command {
             
         }*/
         engageTargetAuto.whileTrue(pathFindCommand);
-        if (CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean()){
-            end(true);
-        }
+        // if (CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean() || CancelAuto1.getAsBoolean()){
+        //     end(true);
+        // }
 
     }
 
