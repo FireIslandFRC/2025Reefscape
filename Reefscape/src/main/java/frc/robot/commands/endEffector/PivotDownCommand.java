@@ -4,8 +4,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HandSubsystem;
 
 public class PivotDownCommand extends Command{
+
+    private final HandSubsystem handSubsystem;
     
-    public PivotDownCommand(){
+    public PivotDownCommand(HandSubsystem handSubsystem){
+        this.handSubsystem = handSubsystem;
     }
 
     @Override
@@ -13,12 +16,12 @@ public class PivotDownCommand extends Command{
 
     @Override
     public void execute(){
-        HandSubsystem.PivotDown();
+        handSubsystem.PivotDown();
     }
 
     @Override
     public void end(boolean interrupted){
-        HandSubsystem.PivotStop();
+        handSubsystem.PivotStop();
     }
 
     @Override

@@ -61,9 +61,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Optional<Alliance> ally = DriverStation.getAlliance();
-    System.out.println(0);
     if (ally.isPresent()) {
-      System.out.println(1);
         if (ally.get() == Alliance.Red) {
             color = "r";
         }

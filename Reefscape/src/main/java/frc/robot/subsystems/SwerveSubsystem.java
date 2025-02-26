@@ -67,6 +67,8 @@ public class SwerveSubsystem extends SubsystemBase {
     m_field = new Field2d();
     SmartDashboard.putData(m_field);
 
+    m_poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.DRIVE_KINEMATICS, getRotation2d(), getModulePositions(), new Pose2d(0,0,new Rotation2d()));
+
     try {
       RobotConfig config = RobotConfig.fromGUISettings();
 
@@ -81,8 +83,8 @@ public class SwerveSubsystem extends SubsystemBase {
                                                                 // module feedforwards
           new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
                                           // holonomic drive trains
-              new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-              new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants    //  FIXME tune auto
+              new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants
+              new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants    //  FIXME tune auto
           ),
           config, // The robot configuration
           () -> {
@@ -103,8 +105,6 @@ public class SwerveSubsystem extends SubsystemBase {
       // Handle exception as needed
       e.printStackTrace();
     }
-
-    m_poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.DRIVE_KINEMATICS, getRotation2d(), getModulePositions(), new Pose2d(0,0,new Rotation2d()));
 
   }
 
@@ -365,24 +365,13 @@ public class SwerveSubsystem extends SubsystemBase {
     LimelightHelpers.setLEDMode_ForceOff("limelight");
     
     // This method will be called once per scheduler run
-    //odometer.update(pigeon.getRotation2d(), getModulePositions());
     updateOdometry();
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();
     }
 
-    /*LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-    if(limelightMeasurement.tagCount >= 1)
-    {
-      m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      m_poseEstimator.addVisionMeasurement(
-          limelightMeasurement.pose,
-          limelightMeasurement.timestampSeconds - 3);
-    }*/
-
     SmartDashboard.putNumber("Pigeon", pigeon.getYaw().getValueAsDouble());
-    SmartDashboard.putString("POSE INFO", m_poseEstimator.toString());
     m_field.setRobotPose(getPose());
   }
 }

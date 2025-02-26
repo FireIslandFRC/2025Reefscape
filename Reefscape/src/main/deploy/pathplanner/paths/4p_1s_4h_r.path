@@ -36,7 +36,20 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ArmToThree",
+      "waypointRelativePos": 0.17766749379652758,
+      "endWaypointRelativePos": 0.9339950372208423,
+      "command": null
+    },
+    {
+      "name": "Score",
+      "waypointRelativePos": 0.9717121588089339,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 2.0,
