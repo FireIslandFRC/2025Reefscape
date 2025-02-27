@@ -26,8 +26,4 @@ public class CoralIn extends Command{
         return false;
     }
 
-
-    
-
-
 }

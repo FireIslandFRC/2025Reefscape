@@ -130,11 +130,11 @@ public class RobotContainer extends SubsystemBase{
     //Auto Chooser
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    //SetPoint Visualizer
-    Shuffleboard.getTab("Comp")
-    .add("TargetSelect", currentTarget)
-    .withWidget("FieldVisualWidget") // specify the widget here
-    .getEntry();
+    // //SetPoint Visualizer
+    // Shuffleboard.getTab("Comp")
+    // .add("TargetSelect", currentTarget)
+    // .withWidget("FieldVisualWidget") // specify the widget here
+    // .getEntry();
 
     configureBindings();
   }

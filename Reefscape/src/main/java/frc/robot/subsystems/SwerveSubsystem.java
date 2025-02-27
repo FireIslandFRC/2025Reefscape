@@ -28,7 +28,6 @@ public class SwerveSubsystem extends SubsystemBase {
   //initialize SwerveModules 
   private SwerveModule[] swerveModules; 
 
-
   //instantiate pigeon 
   public Pigeon2 pigeon = new Pigeon2(SwerveConstants.PIGEON_ID);
 
@@ -37,7 +36,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   //instantiate poseEstimator
   private SwerveDrivePoseEstimator m_poseEstimator;
-
 
   // swervesubsystem constructor
   public SwerveSubsystem() {
@@ -107,6 +105,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) {
     m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
+    
   }
 
   /* * * GET METHODS * * */

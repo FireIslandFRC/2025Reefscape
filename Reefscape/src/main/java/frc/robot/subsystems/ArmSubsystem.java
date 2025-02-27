@@ -22,17 +22,16 @@ public class ArmSubsystem extends SubsystemBase {
 
   private static SparkFlex armMotor;   
   private static RelativeEncoder armEncoder;
-  private static SparkClosedLoopController wristClosedLoopController;
-
+  private static SparkClosedLoopController armClosedLoopController;
 
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
     armMotor = new SparkFlex(ArmConstants.armMotorId, MotorType.kBrushless);
     armEncoder = armMotor.getEncoder();
 
-    wristClosedLoopController = armMotor.getClosedLoopController();
 
     armMotor.configure(Configs.ArmConfig.armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    armClosedLoopController = armMotor.getClosedLoopController();
   }
 
   public static void armUp(){
@@ -48,7 +47,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public static void armToPosition(double position){
-    wristClosedLoopController.setReference(position, ControlType.kPosition);
+    armClosedLoopController.setReference(position, ControlType.kPosition);
   }
 
   public static void armStop(){

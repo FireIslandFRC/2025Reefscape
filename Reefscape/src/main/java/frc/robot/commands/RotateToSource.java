@@ -33,7 +33,7 @@ public class RotateToSource extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    rotationController.setPID(0.2,0,0);
+    rotationController.setPID(0.2,0,0); //FIXME: tune
 
   }
 
@@ -43,11 +43,6 @@ public class RotateToSource extends Command {
 
     double xSpeed = xSupplier.getAsDouble(); 
     double ySpeed = ySupplier.getAsDouble();
-
-    // SmartDashboard.putNumber("x speed", xSpeed);
-    // SmartDashboard.putNumber("y speed", ySpeed);
-    // SmartDashboard.putNumber("z speed", zSpeed);
-
 
     //apply deadzone to speed values 
     xSpeed = deadzone(xSpeed); 
