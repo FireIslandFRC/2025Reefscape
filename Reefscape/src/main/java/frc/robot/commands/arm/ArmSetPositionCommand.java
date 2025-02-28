@@ -9,7 +9,7 @@ public class ArmSetPositionCommand extends Command{
 
     public ArmSetPositionCommand(int position) {
       this.position = position;
-    }
+    }  
 
   @Override
   public void initialize() {}

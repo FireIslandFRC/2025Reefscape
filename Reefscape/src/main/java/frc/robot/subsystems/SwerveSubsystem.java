@@ -96,7 +96,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* * * RESET METHODS * * */
   public void resetPigeon() {
-    pigeon.reset();
+    pigeon.setYaw(-90);
   }
   
   public void resetOdometry() {
@@ -232,12 +232,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void updateOdometry() {
 
-    boolean useMegaTag2 = true; //set to false to use MegaTag1
+    boolean useMegaTag2 = false; //set to false to use MegaTag1
     boolean doRejectUpdate = false;
     if(useMegaTag2 == false)
     {
       LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-      
+      if(mt1 == null){ //KILLME
+         return;
+      }
       if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
       {
         if(mt1.rawFiducials[0].ambiguity > .7)
@@ -272,9 +274,9 @@ public class SwerveSubsystem extends SubsystemBase {
         doRejectUpdate = true;
       }*/
 
-      if(mt2 == null){ //KILLME
-        return;
-      }
+      // if(mt2 == null){ //KILLME
+      //   return;
+      // }
       if(mt2.tagCount == 0)
       {
         doRejectUpdate = true;

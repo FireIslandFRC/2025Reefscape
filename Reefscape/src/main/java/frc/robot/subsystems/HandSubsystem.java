@@ -35,19 +35,19 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public static void PivotUp(){
-        if (wristAbsEncoder.getPosition() < 190){
-            wristMotor.set(0.05);
-        } else {
-            wristMotor.set(0);
-        }
+        //if (wristAbsEncoder.getPosition() < 190){
+            wristMotor.set(0.1);
+        //} else {
+        //    wristMotor.set(0);
+        //}
     }
 
     public static void PivotDown(){
-        if (wristAbsEncoder.getPosition() > 70){
+        //if (wristAbsEncoder.getPosition() > 70){
             wristMotor.set(-0.2);
-        }else{
-            wristMotor.set(0);
-        }
+        //}else{
+        //    wristMotor.set(0);
+        //}
     }
 
     public static void WristToAngle(double angle){

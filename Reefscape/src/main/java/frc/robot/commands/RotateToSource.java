@@ -27,13 +27,15 @@ public class RotateToSource extends Command {
 
     this.xSupplier = xSupplier; 
     this.ySupplier = ySupplier;
+    rotationController = new PIDController(0.2,0,0);
+
+
     addRequirements(swerveSubs);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    rotationController.setPID(0.2,0,0); //FIXME: tune
 
   }
 

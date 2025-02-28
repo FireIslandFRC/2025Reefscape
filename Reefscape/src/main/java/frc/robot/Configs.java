@@ -65,7 +65,7 @@ public final class Configs {
                                         .smartCurrentLimit(80);
                         armConfig.closedLoop
                                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                                        .pid(.008,0,0);
+                                        .pid(.015,0,0);
                         armConfig.encoder
                                         .positionConversionFactor(1);
                 

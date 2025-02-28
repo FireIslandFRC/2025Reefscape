@@ -43,7 +43,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public static void armDown(){
+    if (armEncoder.getPosition() > 0){
       armMotor.set(-1);
+    }else{
+      armMotor.set(0);
+    }
   }
 
   public static void armToPosition(double position){

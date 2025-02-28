@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import frc.robot.subsystems.HandSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class RobotContainer extends SubsystemBase{
@@ -40,6 +41,7 @@ public class RobotContainer extends SubsystemBase{
   private final SwerveSubsystem swerveSubs = new SwerveSubsystem();
   private final ClimberSubsystem climberSubs = new ClimberSubsystem();
   private final HandSubsystem handSubsystem = new HandSubsystem(); 
+  private final ArmSubsystem armSubsystem = new ArmSubsystem(); 
 
 
   public static int opSliceTarget = 1;
@@ -170,8 +172,8 @@ public class RobotContainer extends SubsystemBase{
     //FIXME: figure out better buttons 
     //targetCoralLoading1.onTrue(new PathToPose(TargetLocationConstants.coralLoad1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl1"));
     //targetCoralLoading2.onTrue(new PathToPose(TargetLocationConstants.coralLoad2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl2"));
-    targetCoralLoading1.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), 126));
-    targetCoralLoading2.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), -126));
+    // targetCoralLoading1.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), 126));
+    // targetCoralLoading2.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), -126));
 
     targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg1"));
     targetCage2.onTrue(new PathToPose(TargetLocationConstants.cage2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg2"));
