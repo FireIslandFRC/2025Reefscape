@@ -73,7 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
               new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants
               new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants    //  FIXME tune auto
           ),
-          config, // The robot configuration
+          config, // The robot configuration //CHECKME untested alliance color flip
           () -> {
             // Boolean supplier that controls when the path will be mirrored for the red
             // alliance
@@ -97,7 +97,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* * * RESET METHODS * * */
   public void resetPigeon() {
-    pigeon.setYaw(-90);
+    pigeon.setYaw(0);
   }
   
   public void resetOdometry() {
@@ -105,7 +105,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees() - 90), getModulePositions(), pose);
+    m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees()), getModulePositions(), pose);
     
   }
 
@@ -185,7 +185,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Double[] swerveArr = {states[0].angle.getDegrees(),states[1].angle.getDegrees(),states[2].angle.getDegrees(),states[3].angle.getDegrees()};
 
-    // SmartDashboard.putNumberArray("swerveTest", swerveArr);
+    // SmartDashboard.putNumberArray("swerveTest", swerveArr); //NOTE the thing
 
     setModuleStates(states);   
 
@@ -244,7 +244,7 @@ public class SwerveSubsystem extends SubsystemBase {
     if(useMegaTag2 == false)
     {
       LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-      if(mt1 == null){ //KILLME
+      if(mt1 == null){ //Incase of limelight disconnect
          return;
       }
       if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
@@ -281,9 +281,9 @@ public class SwerveSubsystem extends SubsystemBase {
         doRejectUpdate = true;
       }*/
 
-      // if(mt2 == null){ //KILLME
-      //   return;
-      // }
+      if(mt2 == null){ //Incase of limelight disconnect
+         return;
+      }
       if(mt2.tagCount == 0)
       {
         doRejectUpdate = true;

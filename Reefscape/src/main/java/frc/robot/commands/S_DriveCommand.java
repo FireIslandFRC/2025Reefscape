@@ -60,15 +60,14 @@ public class S_DriveCommand extends Command {
 
     //square the speed values to make for smoother acceleration 
 
-    if (speedDecrease) {
+    if (speedDecrease) { //CHECKME working
       System.out.println("speedDecrease");
       SpeedMultiplier = 0.50;
     }else{
       SpeedMultiplier = 1;
     }
 
-    if (speedIncrease &&  
-     !speedDecrease){
+    if (speedIncrease && !speedDecrease){
       System.out.println("speedIncrease");
       SpeedMultiplier = 1;
     }else if(!speedDecrease){
@@ -94,10 +93,9 @@ public class S_DriveCommand extends Command {
 
   /* * * ADDED METHODS * * */
   public double deadzone(double num){
-      return Math.abs(num) > 0.1 ? num : 0;
+      return Math.abs(num) > 0.1 ? num : 0; //CHECKME test optimal offset
   }
 
-  @SuppressWarnings("unused")
   private static double modifyAxis(double num) {
     // Square the axis
     num = Math.copySign(num * num, num);

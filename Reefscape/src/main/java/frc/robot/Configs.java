@@ -25,7 +25,7 @@ public final class Configs {
                         turningConfig
                                         .idleMode(IdleMode.kBrake)
                                         .smartCurrentLimit(20)
-                                        .inverted(true);
+                                        .inverted(true); //NOTE: DONT FORGET
                 }
         }
 
@@ -56,7 +56,7 @@ public final class Configs {
 
         public static final class ArmConfig {
 
-                public static final SparkMaxConfig armConfig = new SparkMaxConfig();
+                public static final SparkFlexConfig armConfig = new SparkFlexConfig(); //CHECKME untested SparkMax to Vortex
 
                 static {
 
@@ -67,7 +67,7 @@ public final class Configs {
                                         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                                         .pid(.015,0,0);
                         armConfig.encoder
-                                        .positionConversionFactor(1);
+                                        .positionConversionFactor(1); //WATCHME possible change to inches
                 
                 }
         }

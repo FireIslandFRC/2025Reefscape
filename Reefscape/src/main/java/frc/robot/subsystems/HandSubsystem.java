@@ -35,7 +35,7 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public static void PivotUp(){
-        //if (wristAbsEncoder.getPosition() < 190){
+        //if (wristAbsEncoder.getPosition() < 190){ //WATCHME soft stop, possible override
             wristMotor.set(0.1);
         //} else {
         //    wristMotor.set(0);
@@ -72,7 +72,8 @@ public class HandSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-    SmartDashboard.putNumber("Wrist", wristAbsEncoder.getPosition());
+
+        SmartDashboard.putNumber("Wrist", wristAbsEncoder.getPosition());
 
     }
 

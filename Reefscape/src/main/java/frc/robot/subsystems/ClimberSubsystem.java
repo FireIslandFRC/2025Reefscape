@@ -15,11 +15,10 @@ public class ClimberSubsystem extends SubsystemBase {
     private TalonFX climbMotor;
     private TalonFXConfiguration climbMotorConfig;
     private Servo ratchetServo;
-
     
     public ClimberSubsystem(){
         climbMotor = new TalonFX(ClimberConstants.climbMotorId);
-        ratchetServo = new Servo(9);
+        ratchetServo = new Servo(ClimberConstants.servoId);
 
         climbMotorConfig = new TalonFXConfiguration();
 

@@ -11,8 +11,6 @@ public class PivotToAngle extends Command{
     public PivotToAngle(HandSubsystem handSubsystem, double angle){
          this.handSubsystem = handSubsystem;
          this.angle = angle;
-
-        // addRequirements(handSubsystem);
     }
 
     @Override

@@ -11,7 +11,6 @@ public class PivotUpCommand extends Command{
 
         this.handSubsystem = handSubsystem;
         
-        // addRequirements(handSubsystem);
     }
 
     @Override
@@ -31,9 +30,5 @@ public class PivotUpCommand extends Command{
     public boolean isFinished(){
         return false;
     }
-
-
-    
-
 
 }

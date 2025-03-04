@@ -46,20 +46,16 @@ public class Constants {
 
   }
 
-  public static class ArmConstants {
-    public static final int armMotorId = 9;
-  }
-
   public static class SwerveConstants {
     //SDS L2 
-    public static final boolean ROTATION_ENCODER_DIRECTION = false; 
+    public static final boolean ROTATION_ENCODER_DIRECTION = false; //CHECKME not sure how works?
 
     public static final int PIGEON_ID = 30;
 
     /* * * MEASUREMENTS * * */
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
     public static final double TRACK_WIDTH = Units.inchesToMeters(25);
-    public static final double WHEEL_BASE = Units.inchesToMeters(25);
+    public static final double WHEEL_BASE = Units.inchesToMeters(25); //FIXME update
     
     public static final double DRIVE_GEAR_RATIO = 6.75 / 1;
     public static final double ROTATION_GEAR_RATIO = 150 / 7;
@@ -151,13 +147,21 @@ public class Constants {
 
   }
 
+  /* * * Hand * * */
   public static class HandConstants {
     public static final int wristMotorId = 11;
     public static final int handMotorId = 12;
   }
 
+  /* * * Climber * * */
   public static class ClimberConstants {
     public static final int climbMotorId = 10;
+    public static final int servoId = 9;
+  }
+  
+  /* * * Arm * * */
+  public static class ArmConstants {
+    public static final int armMotorId = 9;
   }
 
 }

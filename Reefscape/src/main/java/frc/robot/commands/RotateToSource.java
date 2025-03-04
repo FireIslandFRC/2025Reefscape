@@ -29,7 +29,6 @@ public class RotateToSource extends Command {
     this.ySupplier = ySupplier;
     rotationController = new PIDController(0.2,0,0);
 
-
     addRequirements(swerveSubs);
   }
 

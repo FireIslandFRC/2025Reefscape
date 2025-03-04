@@ -71,8 +71,8 @@ public class RobotContainer extends SubsystemBase{
   private final POVButton targetSlice5 = new POVButton(OP_CONTROLLER, 225);
   private final POVButton targetSlice6 = new POVButton(OP_CONTROLLER, 315);
 
-  private final JoystickButton targetCoralLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME side dependant
-  private final JoystickButton targetCoralLoading2 = new JoystickButton(OP_CONTROLLER, 4); 
+  private final JoystickButton targetCoralLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME decide how it works
+  private final JoystickButton targetCoralLoading2 = new JoystickButton(OP_CONTROLLER, 4);
 
   private final JoystickButton targetCage1 = new JoystickButton(OP_CONTROLLER, 13); 
   private final JoystickButton targetCage2 = new JoystickButton(OP_CONTROLLER, 12);
@@ -81,18 +81,19 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton wristUp = new JoystickButton(OP_CONTROLLER, 14); 
   private final JoystickButton wristDown = new JoystickButton(OP_CONTROLLER, 15); 
 
-  // private final JoystickButton wristPickUp = new JoystickButton(OP_CONTROLLER, 16);
-
   //DRIVE BUTTONS     
   private final JoystickButton speedSlow = new JoystickButton(D_CONTROLLER, 1);
   private final JoystickButton speedEmergency = new JoystickButton(D_CONTROLLER, 3);
   private final JoystickButton fieldOriented = new JoystickButton(D_CONTROLLER, 9);
   private final JoystickButton resetPigeonButton = new JoystickButton(D_CONTROLLER, 16);
-  private final JoystickButton lockbutton = new JoystickButton(D_CONTROLLER, 10);
+  private final JoystickButton lockbutton = new JoystickButton(D_CONTROLLER, 10); //Implement
+
   // private final JoystickButton targetSliceLeft = null; //FIXME reimplement and set id
   // private final JoystickButton targetSliceRight = null;
+
   private final JoystickButton climbUp = new JoystickButton(D_CONTROLLER, 5);
-  private final JoystickButton climbDown = new JoystickButton(D_CONTROLLER, 6);  
+  private final JoystickButton climbDown = new JoystickButton(D_CONTROLLER, 6);
+
   private final JoystickButton ratchetEngage = new JoystickButton(D_CONTROLLER, 7); //CloseRatchet
   private final JoystickButton ratchetDisengage = new JoystickButton(D_CONTROLLER, 8);
 
@@ -101,7 +102,7 @@ public class RobotContainer extends SubsystemBase{
   public RobotContainer() {
     swerveSubs.setDefaultCommand(
       new S_DriveCommand(
-        swerveSubs, // CHECKME possible flip of negative values
+        swerveSubs,
         () -> -D_CONTROLLER.getY(), 
         () -> -D_CONTROLLER.getX(), 
         () -> D_CONTROLLER.getTwist(), 
@@ -127,16 +128,10 @@ public class RobotContainer extends SubsystemBase{
     new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));
     new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
     new EventTrigger("Score").onTrue(new CoralOut().withTimeout(2));
-    new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(0.2));
+    new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(1));//WATCHME remove? in favor of switch
 
     //Auto Chooser
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
-    // //SetPoint Visualizer
-    // Shuffleboard.getTab("Comp")
-    // .add("TargetSelect", currentTarget)
-    // .withWidget("FieldVisualWidget") // specify the widget here
-    // .getEntry();
 
     configureBindings();
   }
@@ -144,11 +139,9 @@ public class RobotContainer extends SubsystemBase{
   private void configureBindings() {
 
     endEffectorIntake.whileTrue(new CoralIn());
-    //armLoading.whileTrue(new CoralIn());
     endEffectorOuttake.whileTrue(new CoralOut());
 
-    //endEffectorIntake.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 160 + 35));
-    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 160 + 35));
+    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 160 + 35)); //CHECKME possible change of setpoints
     armLevel2.whileTrue(new ArmSetPositionCommand(20)).whileTrue(new PivotToAngle(handSubsystem, 180 + 35));
     armLevel3.whileTrue(new ArmSetPositionCommand(265)).whileTrue(new PivotToAngle(handSubsystem, 180 + 35));
     armLevel4.whileTrue(new ArmSetPositionCommand(500)).whileTrue(new PivotToAngle(handSubsystem, 130));
@@ -171,7 +164,7 @@ public class RobotContainer extends SubsystemBase{
     targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s5"));
     targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s6"));
 
-    //FIXME: figure out better buttons
+    //FIXME: figure out better buttons, and how to implament
     //targetCoralLoading1.onTrue(new PathToPose(TargetLocationConstants.coralLoad1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl1"));
     //targetCoralLoading2.onTrue(new PathToPose(TargetLocationConstants.coralLoad2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl2"));
     // targetCoralLoading1.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), 126));
@@ -184,17 +177,7 @@ public class RobotContainer extends SubsystemBase{
     wristUp.whileTrue(new PivotUpCommand(handSubsystem));
     wristDown.whileTrue(new PivotDownCommand(handSubsystem));
 
-    //wristPickUp.whileTrue(new PivotToAngle(handSubsystem, 155)).whileTrue(new ArmSetPositionCommand(5));
-
-    lockbutton.onTrue(new InstantCommand(() -> swerveSubs.lock())); //NOTE not tested yet
-  }
-
-  protected Command lockCommand() {
-    return this.runOnce(() -> swerveSubs.lock());
-  }
-  
-  protected Command straightenCommand() {
-    return this.runOnce(() -> swerveSubs.straightenWheels());
+    lockbutton.onTrue(new InstantCommand(() -> swerveSubs.lock())); //CHECKME not sure how it behaves
   }
 
   public Command getAutonomousCommand() {
@@ -204,11 +187,9 @@ public class RobotContainer extends SubsystemBase{
 
   @Override
   public void periodic() {
-     //System.out.println(m_stick.getPOV());
-     //setTargetPose();
 
-     //opSliceTarget = m_stick.getPOV();
      SmartDashboard.putString("TargetSelect", currentTarget);
+     
   }
 
 }
