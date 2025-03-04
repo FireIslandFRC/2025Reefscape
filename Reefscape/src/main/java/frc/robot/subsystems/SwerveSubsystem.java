@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -104,7 +105,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), pose);
+    m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees() - 90), getModulePositions(), pose);
     
   }
 
@@ -179,6 +180,12 @@ public class SwerveSubsystem extends SubsystemBase {
       );
       
     }
+
+
+
+    // Double[] swerveArr = {states[0].angle.getDegrees(),states[1].angle.getDegrees(),states[2].angle.getDegrees(),states[3].angle.getDegrees()};
+
+    // SmartDashboard.putNumberArray("swerveTest", swerveArr);
 
     setModuleStates(states);   
 

@@ -16,7 +16,7 @@ public final class Configs {
 
                         drivingConfig
                                         .idleMode(IdleMode.kBrake)
-                                        .smartCurrentLimit(25)
+                                        .smartCurrentLimit(40)
                                         .inverted(true);
                         drivingConfig.encoder
                                         .positionConversionFactor(SwerveConstants.DRIVE_ENCODER_POSITION_CONVERSION) // meters   CHECKME make sure right conversion
@@ -38,10 +38,10 @@ public final class Configs {
 
                         wristConfig
                                         .idleMode(IdleMode.kBrake)
-                                        .smartCurrentLimit(20);
+                                        .smartCurrentLimit(40);
                         wristConfig.absoluteEncoder
                                         .positionConversionFactor(360)
-                                        .zeroOffset(0.1287);
+                                        .zeroOffset(0.0340288);
                         wristConfig.closedLoop
                                         .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                                         .pid(.008,0,0);

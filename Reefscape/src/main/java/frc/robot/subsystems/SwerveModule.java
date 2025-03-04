@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -138,6 +139,9 @@ public class SwerveModule {
         double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); 
 
         rotationMotor.set(rotationOutput);
+
+        //SmartDashboard.putNumberArray("SwerveModuleState" + absoluteEncoder.getDeviceID(), optimizedState);
+
 
         // NOTE: Uncomment for PID tuning
         // SmartDashboard.putNumber("RotationSpeed" + absoluteEncoder.getDeviceID() , rotationOutput);

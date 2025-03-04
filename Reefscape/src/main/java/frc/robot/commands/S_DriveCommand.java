@@ -45,6 +45,8 @@ public class S_DriveCommand extends Command {
     double ySpeed = ySupplier.getAsDouble(); 
     double zSpeed = zSupplier.getAsDouble(); 
     boolean FieldOriented = fieldOriented.getAsBoolean();
+    boolean speedDecrease = this.speedDecrease.getAsBoolean();
+    boolean speedIncrease = this.speedIncrease.getAsBoolean();
 
     // SmartDashboard.putNumber("x speed", xSpeed);
     // SmartDashboard.putNumber("y speed", ySpeed);
@@ -58,16 +60,19 @@ public class S_DriveCommand extends Command {
 
     //square the speed values to make for smoother acceleration 
 
-    if (speedDecrease.getAsBoolean()) {
+    if (speedDecrease) {
+      System.out.println("speedDecrease");
       SpeedMultiplier = 0.50;
     }else{
-      SpeedMultiplier = 0.75;
+      SpeedMultiplier = 1;
     }
 
-    if (speedIncrease.getAsBoolean()) {
+    if (speedIncrease &&  
+     !speedDecrease){
+      System.out.println("speedIncrease");
       SpeedMultiplier = 1;
-    }else{
-      SpeedMultiplier = 0.75;
+    }else if(!speedDecrease){
+      SpeedMultiplier = 1;
     }
 
     /* * * SETTING SWERVE STATES * * */

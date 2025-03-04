@@ -81,7 +81,7 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton wristUp = new JoystickButton(OP_CONTROLLER, 14); 
   private final JoystickButton wristDown = new JoystickButton(OP_CONTROLLER, 15); 
 
-  private final JoystickButton wristPickUp = new JoystickButton(OP_CONTROLLER, 16);
+  // private final JoystickButton wristPickUp = new JoystickButton(OP_CONTROLLER, 16);
 
   //DRIVE BUTTONS     
   private final JoystickButton speedSlow = new JoystickButton(D_CONTROLLER, 1);
@@ -144,12 +144,14 @@ public class RobotContainer extends SubsystemBase{
   private void configureBindings() {
 
     endEffectorIntake.whileTrue(new CoralIn());
+    //armLoading.whileTrue(new CoralIn());
     endEffectorOuttake.whileTrue(new CoralOut());
 
-    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 160));
-    armLevel2.whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 180));
-    armLevel3.whileTrue(new ArmSetPositionCommand(265)).whileTrue(new PivotToAngle(handSubsystem, 180));
-    armLevel4.whileTrue(new ArmSetPositionCommand(500)).whileTrue(new PivotToAngle(handSubsystem, 90));
+    //endEffectorIntake.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 160 + 35));
+    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 160 + 35));
+    armLevel2.whileTrue(new ArmSetPositionCommand(20)).whileTrue(new PivotToAngle(handSubsystem, 180 + 35));
+    armLevel3.whileTrue(new ArmSetPositionCommand(265)).whileTrue(new PivotToAngle(handSubsystem, 180 + 35));
+    armLevel4.whileTrue(new ArmSetPositionCommand(500)).whileTrue(new PivotToAngle(handSubsystem, 130));
 
     armManualUp.whileTrue(new ArmUpCommand());
     armManualDown.whileTrue(new ArmDownCommand());
@@ -169,7 +171,7 @@ public class RobotContainer extends SubsystemBase{
     targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s5"));
     targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s6"));
 
-    //FIXME: figure out better buttons 
+    //FIXME: figure out better buttons
     //targetCoralLoading1.onTrue(new PathToPose(TargetLocationConstants.coralLoad1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl1"));
     //targetCoralLoading2.onTrue(new PathToPose(TargetLocationConstants.coralLoad2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl2"));
     // targetCoralLoading1.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), 126));
@@ -182,7 +184,7 @@ public class RobotContainer extends SubsystemBase{
     wristUp.whileTrue(new PivotUpCommand(handSubsystem));
     wristDown.whileTrue(new PivotDownCommand(handSubsystem));
 
-    wristPickUp.whileTrue(new PivotToAngle(handSubsystem, 160)).whileTrue(new ArmSetPositionCommand(5));
+    //wristPickUp.whileTrue(new PivotToAngle(handSubsystem, 155)).whileTrue(new ArmSetPositionCommand(5));
 
     lockbutton.onTrue(new InstantCommand(() -> swerveSubs.lock())); //NOTE not tested yet
   }
