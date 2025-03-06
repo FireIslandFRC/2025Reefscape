@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.PoseEstimate;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* * * INITIALIZATION * * */
@@ -37,6 +39,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
   //instantiate poseEstimator
   private SwerveDrivePoseEstimator m_poseEstimator;
+
+  //private Limelight limelight;
+
 
   // swervesubsystem constructor
   public SwerveSubsystem() {
@@ -237,78 +242,106 @@ public class SwerveSubsystem extends SubsystemBase {
 
 }
 
-  public void updateOdometry() {
+  // public void updateOdometry() {
 
-    boolean useMegaTag2 = false; //set to false to use MegaTag1
-    boolean doRejectUpdate = false;
-    if(useMegaTag2 == false)
-    {
-      LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-      if(mt1 == null){ //Incase of limelight disconnect
-         return;
-      }
-      if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
-      {
-        if(mt1.rawFiducials[0].ambiguity > .7)
-        {
-          doRejectUpdate = true;
-        }
-        if(mt1.rawFiducials[0].distToCamera > 3)
-        {
-          doRejectUpdate = true;
-        }
-      }
-      if(mt1.tagCount == 0)
-      {
-        doRejectUpdate = true;
-      }
+  //   boolean useMegaTag2 = false; //set to false to use MegaTag1
+  //   boolean doRejectUpdate = false;
+  //   if(useMegaTag2 == false)
+  //   {
+  //     LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+  //     if(mt1 == null){ //Incase of limelight disconnect
+  //        return;
+  //     }
+  //     if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
+  //     {
+  //       if(mt1.rawFiducials[0].ambiguity > .7)
+  //       {
+  //         doRejectUpdate = true;
+  //       }
+  //       if(mt1.rawFiducials[0].distToCamera > 3)
+  //       {
+  //         doRejectUpdate = true;
+  //       }
+  //     }
+  //     if(mt1.tagCount == 0)
+  //     {
+  //       doRejectUpdate = true;
+  //     }
 
-      if(!doRejectUpdate)
-      {
-        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1,1,9999999));
-        m_poseEstimator.addVisionMeasurement(
-            mt1.pose,
-            mt1.timestampSeconds);
-      }
-    }
-    else if (useMegaTag2 == true)
-    {
-      // FIXME 180 reverse side thing
-      LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-      /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-      { // TODO pigeon angular velocity
-        doRejectUpdate = true;
-      }*/
+  //     if(!doRejectUpdate)
+  //     {
+  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1,1,9999999));
+  //       m_poseEstimator.addVisionMeasurement(
+  //           mt1.pose,
+  //           mt1.timestampSeconds);
+  //     }
+  //   }
+  //   else if (useMegaTag2 == true)
+  //   {
+  //     // FIXME 180 reverse side thing
+  //     LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+  //     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+  //     /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+  //     { // TODO pigeon angular velocity
+  //       doRejectUpdate = true;
+  //     }*/
 
-      if(mt2 == null){ //Incase of limelight disconnect
-         return;
-      }
-      if(mt2.tagCount == 0)
-      {
-        doRejectUpdate = true;
-      }
-      if(!doRejectUpdate)
-      {
+  //     if(mt2 == null){ //Incase of limelight disconnect
+  //        return;
+  //     }
+  //     if(mt2.tagCount == 0)
+  //     {
+  //       doRejectUpdate = true;
+  //     }
+  //     if(!doRejectUpdate)
+  //     {
 
-        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-        m_poseEstimator.addVisionMeasurement(
-            mt2.pose,
-            mt2.timestampSeconds);
-      }
-    }
+  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+  //       m_poseEstimator.addVisionMeasurement(
+  //           mt2.pose,
+  //           mt2.timestampSeconds);
+  //     }
+  //   }
 
-    m_poseEstimator.update(
-        pigeon.getRotation2d(),
-        getModulePositions());
-  }
+  //   m_poseEstimator.update(
+  //       pigeon.getRotation2d(),
+  //       getModulePositions());
+  // }
+
+//   public void updateOdometry() {
+//     LimelightHelpers.SetRobotOrientation(
+//         "limelight",
+//         m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
+//         0,
+//         0,
+//         0,
+//         0,
+//         0);
+
+//     PoseEstimate estimate = limelight.getTrustedPose();
+//     if (estimate != null) {
+//       boolean doRejectUpdate = false;
+//       if (Math.abs(pigeon.getAngularVelocityZWorld().getValueAsDouble()) > 720) {
+//         doRejectUpdate = true;
+//       }
+//       if (estimate.tagCount == 0) {
+//         doRejectUpdate = true;
+//       }
+//       if (!doRejectUpdate) {
+//         odometer.addVisionMeasurement(estimate.pose, estimate.timestampSeconds);
+//         RobotState.getInstance().LimelightsUpdated = true;
+//       } else {
+//         RobotState.getInstance().LimelightsUpdated = false;
+//       }
+//   }
+// }
 
   @Override
   public void periodic() {
     LimelightHelpers.setLEDMode_ForceOff("limelight");
     
     // This method will be called once per scheduler run
-    updateOdometry();
+    //updateOdometry();
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();

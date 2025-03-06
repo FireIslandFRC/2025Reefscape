@@ -93,7 +93,7 @@ public class S_DriveCommand extends Command {
 
   /* * * ADDED METHODS * * */
   public double deadzone(double num){
-      return Math.abs(num) > 0.1 ? num : 0; //CHECKME test optimal offset
+      return Math.abs(num) > 0.03 ? num : 0; //CHECKME test optimal offset
   }
 
   private static double modifyAxis(double num) {

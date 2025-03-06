@@ -27,7 +27,7 @@ public class RotateToSource extends Command {
 
     this.xSupplier = xSupplier; 
     this.ySupplier = ySupplier;
-    rotationController = new PIDController(0.2,0,0);
+    rotationController = new PIDController(0.002,0,0);
 
     addRequirements(swerveSubs);
   }
@@ -46,15 +46,17 @@ public class RotateToSource extends Command {
     double ySpeed = ySupplier.getAsDouble();
 
     //apply deadzone to speed values 
-    xSpeed = deadzone(xSpeed); 
+    xSpeed = deadzone(xSpeed);
     ySpeed = deadzone(ySpeed); 
 
     rotationSpeed = rotationController.calculate(swerveSubs.getRotation2d().getDegrees(), angle);
     //square the speed values to make for smoother acceleration 
 
     /* * * SETTING SWERVE STATES * * */
-
     swerveSubs.drive(xSpeed, ySpeed, rotationSpeed, true, 0.75);
+
+    System.out.println("rotationSpeed" + rotationSpeed);
+    System.out.println("angle" + swerveSubs.getRotation2d().getDegrees());
     
   }
 

@@ -67,15 +67,23 @@ public class Constants {
     //pos x is out in front, pos y is to the left CHECKME
     public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
       
-     // front left
-      new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
-      // back left
-      new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
+    //  // front left
+    //   new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
+    //   // back left
+    //   new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
+    //   // front right
+    //   new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
+    //   // back right
+    //   new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
+
       // front right
       new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
+      // back left
+      new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
+      // front left
+      new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
       // back right
       new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
-
     );
 
     /* * * FRONT LEFT * * */
@@ -83,8 +91,8 @@ public class Constants {
       public static final int DRIVE_PORT = 1;
       public static final int ROTATION_PORT = 2;
       public static final int ABSOLUTE_ENCODER_PORT = 21;
-      public static final double OFFSET = 144.6; // NOTE CompFrame
-      //public static final double OFFSET = -145.5; 
+      //public static final double OFFSET = 144.6; // NOTE CompFrame
+      public static final double OFFSET = -125; 
       public static final boolean DRIVE_INVERTED = false;
       public static final boolean ROTATION_INVERTED = true;
 
@@ -96,8 +104,8 @@ public class Constants {
       public static final int DRIVE_PORT = 3;
       public static final int ROTATION_PORT = 4;
       public static final int ABSOLUTE_ENCODER_PORT = 22;
-      public static final double OFFSET = 0 -17; // NOTE CompFrame
-      //public static final double OFFSET = -60.2;
+      //public static final double OFFSET = 0 -17; // NOTE CompFrame
+      public static final double OFFSET = 144;
       public static final boolean DRIVE_INVERTED = false; 
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -109,8 +117,8 @@ public class Constants {
       public static final int DRIVE_PORT = 5;
       public static final int ROTATION_PORT = 6;
       public static final int ABSOLUTE_ENCODER_PORT = 23;
-      public static final double OFFSET = -161; // NOTE CompFrame
-      //public static final double OFFSET = -127.5;
+      //public static final double OFFSET = -161; // NOTE CompFrame
+      public static final double OFFSET = 51;
       public static final boolean DRIVE_INVERTED = false;
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -122,8 +130,8 @@ public class Constants {
       public static final int DRIVE_PORT = 7;
       public static final int ROTATION_PORT = 8;
       public static final int ABSOLUTE_ENCODER_PORT = 24;
-      public static final double OFFSET = 52.5; // NOTE CompFrame
-      //public static final double OFFSET = 134.5;
+      //public static final double OFFSET = 52.5; // NOTE CompFrame
+      public static final double OFFSET = -85;
       public static final boolean DRIVE_INVERTED = false; 
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -162,6 +170,29 @@ public class Constants {
   /* * * Arm * * */
   public static class ArmConstants {
     public static final int armMotorId = 9;
+  }
+
+
+
+
+  public final class Vision {
+    public static final String OBJ_DETECTION_LIMELIGHT_NAME = "limelight-neural";
+
+    public static final String LIMELIGHT_SHUFFLEBOARD_TAB = "Vision";
+
+    public static final double ALLOWABLE_POSE_DIFFERENCE = 0.5;
+    public static final double MAX_TAG_DISTANCE = 3.5;
+
+    public static final Translation2d FIELD_CORNER = new Translation2d(17.54, 8.02);
+    public static final Translation2d FIELD_CORNER_FOR_INTAKE = new Translation2d(16.65, 7.5);
+
+
+    // how many degrees back is your limelight rotated from perfectly vertical?
+    public static final double limelightMountAngleDegrees = 22.0;
+    // distance from the center of the Limelight lens to the floor
+    public static final double limelightLensHeightInches = 0.233;
+    // height of april tags from the floor in meters
+    public static final double AprilTagHeight = 1.335;
   }
 
 }

@@ -63,7 +63,7 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public static void CoralOut(){
-        handMotor.set(-0.75);
+        handMotor.set(-1);
     }
 
     public static void CoralStop(){

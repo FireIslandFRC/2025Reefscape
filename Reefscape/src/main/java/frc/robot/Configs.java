@@ -48,7 +48,7 @@ public final class Configs {
 
                         handConfig
                                         .idleMode(IdleMode.kBrake)
-                                        .smartCurrentLimit(20);
+                                        .smartCurrentLimit(40);
                         handConfig.encoder
                                         .positionConversionFactor(1);
                 }
