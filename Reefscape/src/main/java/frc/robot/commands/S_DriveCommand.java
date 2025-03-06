@@ -2,6 +2,9 @@ package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -12,6 +15,8 @@ public class S_DriveCommand extends Command {
   private BooleanSupplier fieldOriented;
   private double SpeedMultiplier;
   private BooleanSupplier speedIncrease, speedDecrease;
+  private int invert;
+
   /* * * CONSTRUCTOR * * */
   /* 
    * @param swerveSubs the swerve subsystem 
@@ -58,6 +63,12 @@ public class S_DriveCommand extends Command {
     ySpeed = deadzone(ySpeed); 
     zSpeed = deadzone(zSpeed); 
 
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
+      invert = -1;
+    } else {
+      invert = 1;
+    }
+
     //square the speed values to make for smoother acceleration 
 
     if (speedDecrease) { //CHECKME working
@@ -75,7 +86,7 @@ public class S_DriveCommand extends Command {
     }
 
     /* * * SETTING SWERVE STATES * * */
-    swerveSubs.drive(xSpeed, ySpeed, zSpeed, !FieldOriented, SpeedMultiplier);
+    swerveSubs.drive(xSpeed * invert, ySpeed * invert, zSpeed, !FieldOriented, SpeedMultiplier);
     
   }
 

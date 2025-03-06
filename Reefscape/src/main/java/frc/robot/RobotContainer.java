@@ -126,12 +126,12 @@ public class RobotContainer extends SubsystemBase{
     );
 
     //Event Triggers
-    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(265)).whileTrue(new PivotToAngle(handSubsystem, 90));
-    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 90));
-    new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));
-    new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
-    new EventTrigger("Score").onTrue(new CoralOut().withTimeout(2));
-    new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(1));//WATCHME remove? in favor of switch
+    // new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(265)).whileTrue(new PivotToAngle(handSubsystem, 90));
+    // new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 90));
+    // new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));
+    // new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
+    // new EventTrigger("Score").onTrue(new CoralOut().withTimeout(2));
+    // new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(1));//WATCHME remove? in favor of switch
 
     //Auto Chooser
     SmartDashboard.putData("Auto Chooser", autoChooser);

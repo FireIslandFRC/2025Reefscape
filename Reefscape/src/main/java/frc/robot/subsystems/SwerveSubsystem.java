@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -75,8 +76,8 @@ public class SwerveSubsystem extends SubsystemBase {
                                                                 // module feedforwards
           new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
                                           // holonomic drive trains
-              new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants
-              new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants    //  FIXME tune auto
+              new PIDConstants(2, 0.0, 0.15), // Translation PID constants
+              new PIDConstants(2, 0.0, 0.5) // Rotation PID constants    //  FIXME tune auto
           ),
           config, // The robot configuration //CHECKME untested alliance color flip
           () -> {
@@ -102,16 +103,28 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* * * RESET METHODS * * */
   public void resetPigeon() {
-    pigeon.setYaw(0);
+    if (DriverStation.getAlliance().isPresent()
+      && DriverStation.getAlliance().get() == Alliance.Red) {
+      pigeon.setYaw(180);
+    } else {
+      pigeon.setYaw(0);
+    } 
+    // pigeon.setYaw(0);
   }
   
-  public void resetOdometry() {
-    m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
-  }
+  // public void resetOdometry() {
+  //   m_poseEstimator.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
+  // }
 
   public void resetOdometry(Pose2d pose) {
-    m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees()), getModulePositions(), pose);
-    
+    int flipped;
+    if (DriverStation.getAlliance().isPresent()
+      && DriverStation.getAlliance().get() == Alliance.Red) {
+      flipped = 180;
+    } else {
+      flipped = 0;
+    }
+    m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees() + flipped), getModulePositions(), pose);
   }
 
   /* * * GET METHODS * * */
@@ -175,7 +188,7 @@ public class SwerveSubsystem extends SubsystemBase {
     if (fieldOriented) {
 
       states = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
-        ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed * SpeedMultiplier, ySpeed * SpeedMultiplier, zSpeed, getRotation2d())
+        ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed * SpeedMultiplier, ySpeed * SpeedMultiplier, zSpeed * SpeedMultiplier, getRotation2d())
       );
 
     } else {
@@ -242,71 +255,72 @@ public class SwerveSubsystem extends SubsystemBase {
 
 }
 
-  // public void updateOdometry() {
+  public void updateOdometry() {
 
-  //   boolean useMegaTag2 = false; //set to false to use MegaTag1
-  //   boolean doRejectUpdate = false;
-  //   if(useMegaTag2 == false)
-  //   {
-  //     LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-  //     if(mt1 == null){ //Incase of limelight disconnect
-  //        return;
-  //     }
-  //     if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
-  //     {
-  //       if(mt1.rawFiducials[0].ambiguity > .7)
-  //       {
-  //         doRejectUpdate = true;
-  //       }
-  //       if(mt1.rawFiducials[0].distToCamera > 3)
-  //       {
-  //         doRejectUpdate = true;
-  //       }
-  //     }
-  //     if(mt1.tagCount == 0)
-  //     {
-  //       doRejectUpdate = true;
-  //     }
+    boolean useMegaTag2 = true; //set to false to use MegaTag1
+    boolean doRejectUpdate = false;
+    if(useMegaTag2 == false)
+    {
+      LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+      if(mt1 == null){ //Incase of limelight disconnect
+         return;
+      }
+      if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
+      {
+        if(mt1.rawFiducials[0].ambiguity > .7)
+        {
+          doRejectUpdate = true;
+        }
+        if(mt1.rawFiducials[0].distToCamera > 3)
+        {
+          doRejectUpdate = true;
+        }
+      }
+      if(mt1.tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
 
-  //     if(!doRejectUpdate)
-  //     {
-  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1,1,9999999));
-  //       m_poseEstimator.addVisionMeasurement(
-  //           mt1.pose,
-  //           mt1.timestampSeconds);
-  //     }
-  //   }
-  //   else if (useMegaTag2 == true)
-  //   {
-  //     // FIXME 180 reverse side thing
-  //     LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-  //     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-  //     /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-  //     { // TODO pigeon angular velocity
-  //       doRejectUpdate = true;
-  //     }*/
+      if(!doRejectUpdate)
+      {
+        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1,1,9999999));
+        m_poseEstimator.addVisionMeasurement(
+            mt1.pose,
+            mt1.timestampSeconds);
+      }
+    }
+    else if (useMegaTag2 == true)
+    {
+      // FIXME 180 reverse side thing
+      //LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.SetRobotOrientation("limelight", getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+      { // TODO pigeon angular velocity
+        doRejectUpdate = true;
+      }*/
 
-  //     if(mt2 == null){ //Incase of limelight disconnect
-  //        return;
-  //     }
-  //     if(mt2.tagCount == 0)
-  //     {
-  //       doRejectUpdate = true;
-  //     }
-  //     if(!doRejectUpdate)
-  //     {
+      if(mt2 == null){ //Incase of limelight disconnect
+         return;
+      }
+      if(mt2.tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
+      if(!doRejectUpdate)
+      {
 
-  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-  //       m_poseEstimator.addVisionMeasurement(
-  //           mt2.pose,
-  //           mt2.timestampSeconds);
-  //     }
-  //   }
+        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        m_poseEstimator.addVisionMeasurement(
+            mt2.pose,
+            mt2.timestampSeconds);
+      }
+    }
 
-  //   m_poseEstimator.update(
-  //       pigeon.getRotation2d(),
-  //       getModulePositions());
-  // }
+    m_poseEstimator.update(
+        pigeon.getRotation2d(),
+        getModulePositions());
+  }
 
 //   public void updateOdometry() {
 //     LimelightHelpers.SetRobotOrientation(
@@ -341,7 +355,7 @@ public class SwerveSubsystem extends SubsystemBase {
     LimelightHelpers.setLEDMode_ForceOff("limelight");
     
     // This method will be called once per scheduler run
-    //updateOdometry();
+    updateOdometry();
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();
