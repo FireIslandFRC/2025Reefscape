@@ -126,12 +126,12 @@ public class RobotContainer extends SubsystemBase{
     );
 
     //Event Triggers
-    // new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(265)).whileTrue(new PivotToAngle(handSubsystem, 90));
-    // new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 90));
-    // new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));
-    // new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
-    // new EventTrigger("Score").onTrue(new CoralOut().withTimeout(2));
-    // new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(1));//WATCHME remove? in favor of switch
+    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 207));
+    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 90));
+    new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));
+    new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
+    new EventTrigger("Score").onTrue(new CoralOut().withTimeout(1));
+    new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(1));//WATCHME remove? in favor of switch
 
     //Auto Chooser
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -144,9 +144,9 @@ public class RobotContainer extends SubsystemBase{
     endEffectorIntake.whileTrue(new CoralIn());
     endEffectorOuttake.whileTrue(new CoralOut());
 
-    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 160 + 35)); //CHECKME possible change of setpoints
+    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 195)); //CHECKME possible change of setpoints
     armLevel2.whileTrue(new ArmSetPositionCommand(30)).whileTrue(new PivotToAngle(handSubsystem, 225));
-    armLevel3.whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 180 + 35));
+    armLevel3.whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 215));
     armLevel4.whileTrue(new ArmSetPositionCommand(150)).whileTrue(new PivotToAngle(handSubsystem, 130));
 
     armManualUp.whileTrue(new ArmUpCommand());

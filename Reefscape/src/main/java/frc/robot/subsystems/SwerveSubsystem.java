@@ -76,8 +76,10 @@ public class SwerveSubsystem extends SubsystemBase {
                                                                 // module feedforwards
           new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
                                           // holonomic drive trains
-              new PIDConstants(2, 0.0, 0.15), // Translation PID constants
-              new PIDConstants(2, 0.0, 0.5) // Rotation PID constants    //  FIXME tune auto
+              new PIDConstants(1, 0.0, 0), // Translation PID constants
+              new PIDConstants(1.5, 0.0, 0.5) // Rotation PID constants    //FIXME tune auto
+              //new PIDConstants(1, 0.0, 0.5), // Translation PID constants
+              //new PIDConstants(1, 0.0, 0.1) // Rotation PID constants    //FIXME tune auto
           ),
           config, // The robot configuration //CHECKME untested alliance color flip
           () -> {
@@ -103,13 +105,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /* * * RESET METHODS * * */
   public void resetPigeon() {
-    if (DriverStation.getAlliance().isPresent()
+   if (DriverStation.getAlliance().isPresent()
       && DriverStation.getAlliance().get() == Alliance.Red) {
       pigeon.setYaw(180);
     } else {
       pigeon.setYaw(0);
-    } 
-    // pigeon.setYaw(0);
+    }
+    //pigeon.setYaw(0);
   }
   
   // public void resetOdometry() {
@@ -123,8 +125,9 @@ public class SwerveSubsystem extends SubsystemBase {
       flipped = 180;
     } else {
       flipped = 0;
-    }
+    } 
     m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees() + flipped), getModulePositions(), pose);
+    //m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees()), getModulePositions(), pose);
   }
 
   /* * * GET METHODS * * */
@@ -180,6 +183,16 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   }
 
+  //Overloaded for auto 
+  public void setModuleStates(SwerveModuleState[] desiredStates, double speed) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.MAX_SPEED);
+
+    for (SwerveModule swerveMod : swerveModules) {
+      swerveMod.setState(desiredStates[swerveMod.moduleID], speed);
+    }
+  }
+
+
   /* * * DRIVE METHODS * * */
   public void drive(double xSpeed, double ySpeed, double zSpeed, boolean fieldOriented, double SpeedMultiplier){
     
@@ -213,7 +226,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
     SwerveModuleState[] state = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(chassis);
 
-    setModuleStates(state);
+    //Limited for auto
+    setModuleStates(state, 0.1);
 
   }
 
@@ -255,7 +269,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 }
 
-  public void updateOdometry() {
+  public void updateVisionOdometry() {
 
     boolean useMegaTag2 = true; //set to false to use MegaTag1
     boolean doRejectUpdate = false;
@@ -292,8 +306,8 @@ public class SwerveSubsystem extends SubsystemBase {
     else if (useMegaTag2 == true)
     {
       // FIXME 180 reverse side thing
-      //LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-      LimelightHelpers.SetRobotOrientation("limelight", getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      //LimelightHelpers.SetRobotOrientation("limelight", getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
       /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
       { // TODO pigeon angular velocity
@@ -317,9 +331,7 @@ public class SwerveSubsystem extends SubsystemBase {
       }
     }
 
-    m_poseEstimator.update(
-        pigeon.getRotation2d(),
-        getModulePositions());
+    
   }
 
 //   public void updateOdometry() {
@@ -355,7 +367,11 @@ public class SwerveSubsystem extends SubsystemBase {
     LimelightHelpers.setLEDMode_ForceOff("limelight");
     
     // This method will be called once per scheduler run
-    updateOdometry();
+    updateVisionOdometry();
+
+    m_poseEstimator.update(
+        pigeon.getRotation2d(),
+        getModulePositions());
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();

@@ -130,6 +130,25 @@ public class SwerveModule {
 
     }
 
+    //Overloaded for auto
+    public void setState(SwerveModuleState desiredState, double speed) {
+        // optimize state so the rotation motor doesnt have to spin as much
+        SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);
+
+        double rotationOutput = rotationPID.calculate(getState().angle.getDegrees(), optimizedState.angle.getDegrees()); 
+
+        rotationMotor.set(rotationOutput);
+
+        // NOTE: Uncomment for PID tuning
+        // SmartDashboard.putNumber("RotationSpeed" + absoluteEncoder.getDeviceID() , rotationOutput);
+        // SmartDashboard.putNumber("Error" + absoluteEncoder.getDeviceID(), rotationPID.getError());
+        // SmartDashboard.putNumber("SetPoint" + absoluteEncoder.getDeviceID(), rotationPID.getSetpoint());
+
+        driveMotor.set(optimizedState.speedMetersPerSecond / SwerveConstants.MAX_SPEED * SwerveConstants.VOLTAGE * speed);
+
+    }
+
+
     public void setAngle(SwerveModuleState desiredState) {
         // optimize state so the rotation motor doesnt have to spin as much
         SwerveModuleState optimizedState = SwerveModuleState.optimize(desiredState, getState().angle);

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class S_DriveCommand extends Command {
+public class LimelightLineup extends Command {
   private SwerveSubsystem swerveSubs; 
 
   private DoubleSupplier xSupplier, ySupplier, zSupplier;
@@ -25,11 +25,11 @@ public class S_DriveCommand extends Command {
    * @param zSupplier value input for rotation 
    * @param fieldOriented whether or not we want the bot to run in field oriented 
    */
-  public S_DriveCommand(SwerveSubsystem swerveSubs, DoubleSupplier xSupplier, DoubleSupplier ySupplier, DoubleSupplier zSupplier, BooleanSupplier fieldOriented, BooleanSupplier speedDecrease, BooleanSupplier speedIncrease) {
-    this.swerveSubs = swerveSubs; 
-    this.xSupplier = xSupplier; 
-    this.ySupplier = ySupplier; 
-    this.zSupplier = zSupplier; 
+  public LimelightLineup(DoubleSupplier ySupplier, DoubleSupplier zSupplier, BooleanSupplier fieldOriented, BooleanSupplier speedDecrease, BooleanSupplier speedIncrease) {
+    this.swerveSubs = swerveSubs;
+    this.xSupplier = xSupplier;
+    this.ySupplier = ySupplier;
+    this.zSupplier = zSupplier;
     this.fieldOriented = fieldOriented;
     this.speedDecrease = speedDecrease;
     this.speedIncrease = speedIncrease;
