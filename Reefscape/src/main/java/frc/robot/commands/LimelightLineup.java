@@ -3,92 +3,118 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class LimelightLineup extends Command {
-  private SwerveSubsystem swerveSubs; 
+  private SwerveSubsystem swerveSubs;
 
   private DoubleSupplier xSupplier, ySupplier, zSupplier;
   private BooleanSupplier fieldOriented;
-  private double SpeedMultiplier;
-  private BooleanSupplier speedIncrease, speedDecrease;
-  private int invert;
+  private double speedX, speedTurn;
+  private PIDController PIDControllerX;
+  private PIDController PIDControllerTurn;
 
   /* * * CONSTRUCTOR * * */
-  /* 
-   * @param swerveSubs the swerve subsystem 
-   * @param xSupplier value input for strafe on x-axis 
-   * @param ySupplier value input for strafe on y-axis 
-   * @param zSupplier value input for rotation 
-   * @param fieldOriented whether or not we want the bot to run in field oriented 
+  /*
+   * @param swerveSubs the swerve subsystem
+   * 
+   * @param xSupplier value input for strafe on x-axis
+   * 
+   * @param ySupplier value input for strafe on y-axis
+   * 
+   * @param zSupplier value input for rotation
+   * 
+   * @param fieldOriented whether or not we want the bot to run in field oriented
    */
-  public LimelightLineup(DoubleSupplier ySupplier, DoubleSupplier zSupplier, BooleanSupplier fieldOriented, BooleanSupplier speedDecrease, BooleanSupplier speedIncrease) {
+  public LimelightLineup(SwerveSubsystem swerveSubs, DoubleSupplier xSupplier, DoubleSupplier zSupplier) {
     this.swerveSubs = swerveSubs;
     this.xSupplier = xSupplier;
     this.ySupplier = ySupplier;
     this.zSupplier = zSupplier;
     this.fieldOriented = fieldOriented;
-    this.speedDecrease = speedDecrease;
-    this.speedIncrease = speedIncrease;
-    invert = 1;
+    PIDControllerTurn = new PIDController(0.01, 0, 0);
+    PIDControllerX = new PIDController(0.01, 0, 0);
+    PIDControllerTurn.enableContinuousInput(-180, 180);
     addRequirements(swerveSubs);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    /* * * ALTERING VALUES * *   */
-    //Joystick values -> double 
-    double xSpeed = xSupplier.getAsDouble(); 
-    double ySpeed = ySupplier.getAsDouble(); 
-    double zSpeed = zSupplier.getAsDouble(); 
-    boolean FieldOriented = fieldOriented.getAsBoolean();
-    boolean speedDecrease = this.speedDecrease.getAsBoolean();
-    boolean speedIncrease = this.speedIncrease.getAsBoolean();
+    /* * * ALTERING VALUES * * */
+    // Joystick values -> double
+    double forwardSpeed = xSupplier.getAsDouble();
+    double zSpeed = zSupplier.getAsDouble();
 
-    // SmartDashboard.putNumber("x speed", xSpeed);
-    // SmartDashboard.putNumber("y speed", ySpeed);
-    // SmartDashboard.putNumber("z speed", zSpeed);
+    int tagID = (int) LimelightHelpers.getFiducialID("limelight");
+    double rotationSetpoint;
 
+    switch (tagID) {
+      case 17:
+        rotationSetpoint = 60;
+        break;
+      case 18:
+        rotationSetpoint = 0;
+        break;
+      case 19:
+        rotationSetpoint = -60;
+        break;
+      case 20:
+        rotationSetpoint = -120;
+        break;
+      case 21:
+        rotationSetpoint = 180;
+        break;
+      case 22:
+        rotationSetpoint = 120;
+        break;
+      case 6:
+        rotationSetpoint = 120;
+        break;
+      case 7:
+        rotationSetpoint = 180;
+        break;
+      case 8:
+        rotationSetpoint = -120;
+        break;
+      case 9:
+        rotationSetpoint = -60;
+        break;
+      case 10:
+        rotationSetpoint = 0;
+        break;
+      case 11:
+        rotationSetpoint = 60;
+        break;
+      default:
+        rotationSetpoint = 1;
+        break;
+    }
 
-    //apply deadzone to speed values 
-    xSpeed = deadzone(xSpeed); 
-    ySpeed = deadzone(ySpeed); 
-    zSpeed = deadzone(zSpeed); 
-
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
-      invert = -1;
+    if (rotationSetpoint != 1){
+      speedTurn = PIDControllerTurn.calculate(swerveSubs.getRotation2d().getDegrees(), rotationSetpoint);
+      speedX = PIDControllerX.calculate(LimelightHelpers.getTX("limelight"), 0);
     } else {
-      invert = 1;
+      speedTurn = zSpeed;
     }
+    
 
-    //square the speed values to make for smoother acceleration 
-
-    if (speedDecrease) { //CHECKME working
-      System.out.println("speedDecrease");
-      SpeedMultiplier = 0.50;
-    }else{
-      SpeedMultiplier = 1;
-    }
-
-    if (speedIncrease && !speedDecrease){
-      System.out.println("speedIncrease");
-      SpeedMultiplier = 1;
-    }else if(!speedDecrease){
-      SpeedMultiplier = 1;
-    }
+    // square the speed values to make for smoother acceleration
 
     /* * * SETTING SWERVE STATES * * */
-    swerveSubs.drive(xSpeed * invert, ySpeed * invert, zSpeed, !FieldOriented, SpeedMultiplier);
-    
+    swerveSubs.drive(forwardSpeed, speedX, speedTurn, false, 0.4);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -104,8 +130,8 @@ public class LimelightLineup extends Command {
   }
 
   /* * * ADDED METHODS * * */
-  public double deadzone(double num){
-      return Math.abs(num) > 0.03 ? num : 0; //CHECKME test optimal offset
+  public double deadzone(double num) {
+    return Math.abs(num) > 0.03 ? num : 0; // CHECKME test optimal offset
   }
 
   private static double modifyAxis(double num) {

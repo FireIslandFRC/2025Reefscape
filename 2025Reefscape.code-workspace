@@ -93,6 +93,7 @@
 			"Holonomic",
 			"Odometry",
 			"pathfinding",
+			"Setpoint",
 			"swervesubsystem",
 			"Tele",
 			"teleop"

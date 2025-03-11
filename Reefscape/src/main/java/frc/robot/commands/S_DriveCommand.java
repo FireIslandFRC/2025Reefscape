@@ -74,7 +74,7 @@ public class S_DriveCommand extends Command {
 
     if (speedDecrease) { //CHECKME working
       System.out.println("speedDecrease");
-      SpeedMultiplier = 0.50;
+      SpeedMultiplier = 0.10;
     }else{
       SpeedMultiplier = 1;
     }

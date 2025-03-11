@@ -4,6 +4,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.TargetLocationConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.climber.ClimberDownCommand;
+import frc.robot.commands.LimelightLineup;
 import frc.robot.commands.PathToPose;
 import frc.robot.commands.RotateToSource;
 import frc.robot.commands.S_DriveCommand;
@@ -127,8 +128,8 @@ public class RobotContainer extends SubsystemBase{
 
     //Event Triggers
     new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 207));
-    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 90));
-    new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));
+    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 205));// CHECKME 5og
+    new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));//  FIXME
     new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
     new EventTrigger("Score").onTrue(new CoralOut().withTimeout(1));
     new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(1));//WATCHME remove? in favor of switch
@@ -144,7 +145,7 @@ public class RobotContainer extends SubsystemBase{
     endEffectorIntake.whileTrue(new CoralIn());
     endEffectorOuttake.whileTrue(new CoralOut());
 
-    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 195)); //CHECKME possible change of setpoints
+    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 185)); //CHECKME possible change of setpoints
     armLevel2.whileTrue(new ArmSetPositionCommand(30)).whileTrue(new PivotToAngle(handSubsystem, 225));
     armLevel3.whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 215));
     armLevel4.whileTrue(new ArmSetPositionCommand(150)).whileTrue(new PivotToAngle(handSubsystem, 130));
@@ -159,6 +160,8 @@ public class RobotContainer extends SubsystemBase{
 
     ratchetEngage.onTrue(new CloseRatchet(climberSubs));
     ratchetDisengage.onTrue(new OpenRatchet(climberSubs));
+
+    speedEmergency.whileTrue(new LimelightLineup(swerveSubs ,() -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getTwist()));
   
     targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
     targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));

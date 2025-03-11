@@ -119,15 +119,15 @@ public class SwerveSubsystem extends SubsystemBase {
   // }
 
   public void resetOdometry(Pose2d pose) {
-    int flipped;
-    if (DriverStation.getAlliance().isPresent()
-      && DriverStation.getAlliance().get() == Alliance.Red) {
-      flipped = 180;
-    } else {
-      flipped = 0;
-    } 
-    m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees() + flipped), getModulePositions(), pose);
-    //m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees()), getModulePositions(), pose);
+    // int flipped;
+    // if (DriverStation.getAlliance().isPresent()
+    //   && DriverStation.getAlliance().get() == Alliance.Red) {
+    //   flipped = 180;
+    // } else {
+    //   flipped = 0;
+    // } 
+    //m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees() + flipped), getModulePositions(), pose);
+    m_poseEstimator.resetPosition(new Rotation2d(getRotation2d().getDegrees()), getModulePositions(), pose);
   }
 
   /* * * GET METHODS * * */
