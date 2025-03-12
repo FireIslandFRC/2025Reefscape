@@ -75,8 +75,8 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton targetCoralLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME decide how it works
   private final JoystickButton targetCoralLoading2 = new JoystickButton(OP_CONTROLLER, 4);
 
-  private final JoystickButton lineWithSourceL = new JoystickButton(D_CONTROLLER, 3); // FIXME decide how it works
-  private final JoystickButton lineWithSourceR = new JoystickButton(D_CONTROLLER, 4);
+//  private final JoystickButton lineWithSourceL = new JoystickButton(D_CONTROLLER, 3); // FIXME decide how it works
+//  private final JoystickButton lineWithSourceR = new JoystickButton(D_CONTROLLER, 4);
 
   private final JoystickButton targetCage1 = new JoystickButton(OP_CONTROLLER, 13); 
   private final JoystickButton targetCage2 = new JoystickButton(OP_CONTROLLER, 12);
@@ -127,8 +127,8 @@ public class RobotContainer extends SubsystemBase{
     );
 
     //Event Triggers
-    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 207));
-    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 205));// CHECKME 5og
+    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 209));
+    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 207));// CHECKME 5og
     new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));//  FIXME
     new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
     new EventTrigger("Score").onTrue(new CoralOut().withTimeout(1));
@@ -173,8 +173,8 @@ public class RobotContainer extends SubsystemBase{
     //FIXME: figure out better buttons, and how to implament
     //targetCoralLoading1.onTrue(new PathToPose(TargetLocationConstants.coralLoad1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl1"));
     //targetCoralLoading2.onTrue(new PathToPose(TargetLocationConstants.coralLoad2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl2"));
-    lineWithSourceL.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), 126));
-    lineWithSourceR.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), -126));
+//    lineWithSourceL.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), 126));
+//    lineWithSourceR.whileTrue(new RotateToSource(swerveSubs, () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getX(), -126));
 
     targetCage1.onTrue(new PathToPose(TargetLocationConstants.cage1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg1"));
     targetCage2.onTrue(new PathToPose(TargetLocationConstants.cage2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cg2"));

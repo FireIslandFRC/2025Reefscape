@@ -227,7 +227,7 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveModuleState[] state = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(chassis);
 
     //Limited for auto
-    setModuleStates(state, 0.1);
+    setModuleStates(state, 0.10);
 
   }
 

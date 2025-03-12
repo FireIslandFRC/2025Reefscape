@@ -6,6 +6,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -38,7 +39,7 @@ public class LimelightLineup extends Command {
     this.zSupplier = zSupplier;
     this.fieldOriented = fieldOriented;
     PIDControllerTurn = new PIDController(0.01, 0, 0);
-    PIDControllerX = new PIDController(0.01, 0, 0);
+    PIDControllerX = new PIDController(1, 0, 0);
     PIDControllerTurn.enableContinuousInput(-180, 180);
     addRequirements(swerveSubs);
   }
@@ -114,7 +115,7 @@ public class LimelightLineup extends Command {
 
     /* * * SETTING SWERVE STATES * * */
     swerveSubs.drive(forwardSpeed, speedX, speedTurn, false, 0.4);
-
+    System.out.println(tagID);
   }
 
   // Called once the command ends or is interrupted.
