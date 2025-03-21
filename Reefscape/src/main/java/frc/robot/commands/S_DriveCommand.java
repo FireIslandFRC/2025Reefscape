@@ -87,7 +87,7 @@ public class S_DriveCommand extends Command {
     }
 
     /* * * SETTING SWERVE STATES * * */
-    swerveSubs.drive(xSpeed * invert, ySpeed * invert, zSpeed * 0.8, !FieldOriented, SpeedMultiplier);
+    swerveSubs.drive(xSpeed * invert, ySpeed * invert, zSpeed/* 0.8*/, !FieldOriented, SpeedMultiplier);
     
   }
 
