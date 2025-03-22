@@ -84,6 +84,9 @@ public final class Configs {
                                         .smartCurrentLimit(80);
                         processorPivotConfig.encoder
                                         .positionConversionFactor(1); //WATCHME possible change to inches
+                        processorPivotConfig.closedLoop
+                                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                                        .pid(.08,0,0); //P:0.008
 
                         processorWheelConfig
                                         .idleMode(IdleMode.kBrake)

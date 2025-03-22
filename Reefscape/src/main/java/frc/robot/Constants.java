@@ -171,9 +171,12 @@ public class Constants {
   public static class ArmConstants {
     public static final int armMotorId = 9;
   }
-
-
-
+  
+  /* * * Processor * * */
+  public static class ProcessorConstants {
+    public static final int processorPivot = 13;
+    public static final int processorWheel = 14;
+  }
 
   public final class Vision {
     public static final String OBJ_DETECTION_LIMELIGHT_NAME = "limelight-neural";
