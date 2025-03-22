@@ -74,7 +74,7 @@ public class S_DriveCommand extends Command {
 
     if (speedDecrease) { //CHECKME working
       System.out.println("speedDecrease");
-      SpeedMultiplier = 0.10;
+      SpeedMultiplier = 0.05;
     }else{
       SpeedMultiplier = 1;
     }
@@ -87,7 +87,7 @@ public class S_DriveCommand extends Command {
     }
 
     /* * * SETTING SWERVE STATES * * */
-    swerveSubs.drive(xSpeed * invert, ySpeed * invert, zSpeed/* 0.8*/, !FieldOriented, SpeedMultiplier);
+    swerveSubs.drive(xSpeed * invert, ySpeed * invert, zSpeed * 0.72, !FieldOriented, SpeedMultiplier);
     
   }
 

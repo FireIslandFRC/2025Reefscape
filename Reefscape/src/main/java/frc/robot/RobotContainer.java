@@ -72,8 +72,8 @@ public class RobotContainer extends SubsystemBase{
   private final POVButton targetSlice5 = new POVButton(OP_CONTROLLER, 225);
   private final POVButton targetSlice6 = new POVButton(OP_CONTROLLER, 315);
 
-  private final JoystickButton targetCoralLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME decide how it works
-  private final JoystickButton targetCoralLoading2 = new JoystickButton(OP_CONTROLLER, 4);
+  //private final JoystickButton targetCoralLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME decide how it works
+  //private final JoystickButton targetCoralLoading2 = new JoystickButton(OP_CONTROLLER, 4);
 
 //  private final JoystickButton lineWithSourceL = new JoystickButton(D_CONTROLLER, 3); // FIXME decide how it works
 //  private final JoystickButton lineWithSourceR = new JoystickButton(D_CONTROLLER, 4);
@@ -145,10 +145,10 @@ public class RobotContainer extends SubsystemBase{
     endEffectorIntake.whileTrue(new CoralIn());
     endEffectorOuttake.whileTrue(new CoralOut());
 
-    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 185)); //CHECKME possible change of setpoints
-    armLevel2.whileTrue(new ArmSetPositionCommand(30)).whileTrue(new PivotToAngle(handSubsystem, 225));
-    armLevel3.whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 215));
-    armLevel4.whileTrue(new ArmSetPositionCommand(150)).whileTrue(new PivotToAngle(handSubsystem, 130));
+    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 205)); //CHECKME possible change of setpoints
+    armLevel2.whileTrue(new ArmSetPositionCommand(20)).whileTrue(new PivotToAngle(handSubsystem, 230));
+    armLevel3.whileTrue(new ArmSetPositionCommand(90)).whileTrue(new PivotToAngle(handSubsystem, 225));
+    armLevel4.whileTrue(new ArmSetPositionCommand(160)).whileTrue(new PivotToAngle(handSubsystem, 130));
 
     armManualUp.whileTrue(new ArmUpCommand());
     armManualDown.whileTrue(new ArmDownCommand());

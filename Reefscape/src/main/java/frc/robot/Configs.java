@@ -41,7 +41,7 @@ public final class Configs {
                                         .smartCurrentLimit(40);
                         wristConfig.absoluteEncoder
                                         .positionConversionFactor(360)
-                                        .zeroOffset(0.0340288);
+                                        .zeroOffset(0.0340288 + 0.04166);
                         wristConfig.closedLoop
                                         .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                                         .pid(.009,0,0); //P:0.008
