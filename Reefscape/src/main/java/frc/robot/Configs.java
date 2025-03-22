@@ -71,4 +71,27 @@ public final class Configs {
                 
                 }
         }
+
+        public static final class ProcessorConfig {
+
+                public static final SparkMaxConfig processorPivotConfig = new SparkMaxConfig(); //CHECKME untested SparkMax to Vortex
+                public static final SparkMaxConfig processorWheelConfig = new SparkMaxConfig(); //CHECKME untested SparkMax to Vortex
+
+                static {
+
+                        processorPivotConfig
+                                        .idleMode(IdleMode.kBrake)
+                                        .smartCurrentLimit(80);
+                        processorPivotConfig.encoder
+                                        .positionConversionFactor(1); //WATCHME possible change to inches
+                        processorPivotConfig.closedLoop
+                                        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                                        .pid(.08,0,0); //P:0.008
+
+                        processorWheelConfig
+                                        .idleMode(IdleMode.kBrake)
+                                        .smartCurrentLimit(80);
+                
+                }
+        }
 }
