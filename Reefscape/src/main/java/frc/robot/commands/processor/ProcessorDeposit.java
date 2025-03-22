@@ -25,7 +25,7 @@ public class ProcessorDeposit extends Command{
     @Override
     public void execute(){
         processorSubsystem.processorWheelOut();
-        if (timer.get() > 0.2){
+        if (timer.get() > 0.4){
             processorSubsystem.processorToAngle(angle);
         }
         System.out.println(timer.get());
