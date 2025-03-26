@@ -367,7 +367,7 @@ public class SwerveSubsystem extends SubsystemBase {
     LimelightHelpers.setLEDMode_ForceOff("limelight");
     
     // This method will be called once per scheduler run
-    //updateVisionOdometry();
+    updateVisionOdometry();
 
     m_poseEstimator.update(
         pigeon.getRotation2d(),

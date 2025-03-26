@@ -27,6 +27,7 @@ import frc.robot.commands.processor.ProcessorPivotDownCommand;
 import frc.robot.commands.processor.ProcessorPivotUpCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -146,11 +147,12 @@ public class RobotContainer extends SubsystemBase{
     );
 
     //Event Triggers
-    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(100)).whileTrue(new PivotToAngle(handSubsystem, 209));
-    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 207));// CHECKME 5og
+    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(110)).whileTrue(new PivotToAngle(handSubsystem, 315));
+    new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(45)).whileTrue(new PivotToAngle(handSubsystem, 330));// CHECKME 5og
     new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));//  FIXME
     new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
     new EventTrigger("Score").onTrue(new CoralOut().withTimeout(1));
+    NamedCommands.registerCommand("Score", new CoralOut().withTimeout(1));
     new EventTrigger("Receive").onTrue(new CoralIn().withTimeout(1));//WATCHME remove? in favor of switch
 
     //Auto Chooser
@@ -172,10 +174,10 @@ public class RobotContainer extends SubsystemBase{
     processorPickUp.whileTrue(new ProcessorPickUp(processorSubsystem, 6)); //FIXME: angle
     processorDeposit.whileTrue(new ProcessorDeposit(processorSubsystem, 1)); //FIXME: angle
 
-    armLoading.whileTrue(new ArmSetPositionCommand(0)).whileTrue(new PivotToAngle(handSubsystem, 185)); //CHECKME possible change of setpoints
-    armLevel2.whileTrue(new ArmSetPositionCommand(30)).whileTrue(new PivotToAngle(handSubsystem, 225));
-    armLevel3.whileTrue(new ArmSetPositionCommand(105)).whileTrue(new PivotToAngle(handSubsystem, 215));
-    armLevel4.whileTrue(new ArmSetPositionCommand(150)).whileTrue(new PivotToAngle(handSubsystem, 130));
+    armLoading.whileTrue(new ArmSetPositionCommand(6)).whileTrue(new PivotToAngle(handSubsystem, 285)); //CHECKME possible change of setpoints
+    armLevel2.whileTrue(new ArmSetPositionCommand(45)).whileTrue(new PivotToAngle(handSubsystem, 330  ));
+    armLevel3.whileTrue(new ArmSetPositionCommand(110)).whileTrue(new PivotToAngle(handSubsystem, 315));
+    armLevel4.whileTrue(new ArmSetPositionCommand(165)).whileTrue(new PivotToAngle(handSubsystem, 223));
 
     armManualUp.whileTrue(new ArmUpCommand());
     armManualDown.whileTrue(new ArmDownCommand());

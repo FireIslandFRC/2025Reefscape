@@ -9,6 +9,18 @@
           "data": {
             "pathName": "1p_3s_2h_r"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DriveBackRight"
+          }
         }
       ]
     }
