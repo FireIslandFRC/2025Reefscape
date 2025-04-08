@@ -107,6 +107,7 @@ public class RobotContainer extends SubsystemBase{
 
   //DRIVE BUTTONS     
   private final JoystickButton speedSlow = new JoystickButton(D_CONTROLLER, 1);
+  private final JoystickButton lineUp = new JoystickButton(D_CONTROLLER, 2);
   private final JoystickButton speedEmergency = new JoystickButton(D_CONTROLLER, 3);
   private final JoystickButton fieldOriented = new JoystickButton(D_CONTROLLER, 9);
   private final JoystickButton resetPigeonButton = new JoystickButton(D_CONTROLLER, 16);
@@ -213,6 +214,8 @@ public class RobotContainer extends SubsystemBase{
     wristDown.whileTrue(new PivotDownCommand(handSubsystem));
 
     lockbutton.onTrue(new InstantCommand(() -> swerveSubs.lock())); //CHECKME not sure how it behaves
+
+    lineUp.whileTrue(new LimelightLineup(swerveSubs,  () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getTwist()));
   }
 
   public Command getAutonomousCommand() {
