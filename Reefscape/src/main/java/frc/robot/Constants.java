@@ -118,7 +118,7 @@ public class Constants {
       public static final int ROTATION_PORT = 6;
       public static final int ABSOLUTE_ENCODER_PORT = 23;
       //public static final double OFFSET = -161; // NOTE CompFrame
-      public static final double OFFSET = 51;
+      public static final double OFFSET = 36.5;
       public static final boolean DRIVE_INVERTED = false;
       public static final boolean ROTATION_INVERTED = true; 
 
@@ -150,7 +150,7 @@ public class Constants {
     public static final double KD_TURNING = 0.00;
 
     /* * * MAX * * */
-    public static final double MAX_SPEED = 3; //12.0 ft/s CHECKME
+    public static final double MAX_SPEED = 5.5; //12.0 ft/s CHECKME
     public static final double MAX_ROTATION = MAX_SPEED / Math.hypot(TRACK_WIDTH / 2.0, WHEEL_BASE / 2.0);
 
   }

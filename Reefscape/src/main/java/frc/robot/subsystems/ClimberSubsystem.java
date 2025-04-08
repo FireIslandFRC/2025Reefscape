@@ -33,7 +33,7 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void climbDown(){
-        climbMotor.set(-0.5);
+        climbMotor.set(-0.75);
     }
 
     public void openRatchet(){

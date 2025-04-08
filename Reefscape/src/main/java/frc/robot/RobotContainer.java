@@ -177,7 +177,7 @@ public class RobotContainer extends SubsystemBase{
     armLoading.whileTrue(new ArmSetPositionCommand(6)).whileTrue(new PivotToAngle(handSubsystem, 285)); //CHECKME possible change of setpoints
     armLevel2.whileTrue(new ArmSetPositionCommand(45)).whileTrue(new PivotToAngle(handSubsystem, 330  ));
     armLevel3.whileTrue(new ArmSetPositionCommand(110)).whileTrue(new PivotToAngle(handSubsystem, 315));
-    armLevel4.whileTrue(new ArmSetPositionCommand(165)).whileTrue(new PivotToAngle(handSubsystem, 223));
+    armLevel4.whileTrue(new ArmSetPositionCommand(152)).whileTrue(new PivotToAngle(handSubsystem, 212));
 
     armManualUp.whileTrue(new ArmUpCommand());
     armManualDown.whileTrue(new ArmDownCommand());

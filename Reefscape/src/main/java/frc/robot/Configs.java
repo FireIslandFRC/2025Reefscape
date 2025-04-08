@@ -44,7 +44,7 @@ public final class Configs {
                                         .zeroOffset(0.19444);
                         wristConfig.closedLoop
                                         .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                        .pid(.003,0.00,0); //P:0.008
+                                        .pid(.003,0.000,0); //P:0.008
 
                         handConfig
                                         .idleMode(IdleMode.kBrake)
