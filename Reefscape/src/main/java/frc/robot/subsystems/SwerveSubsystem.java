@@ -227,7 +227,7 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveModuleState[] state = SwerveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(chassis);
 
     //Limited for auto
-    setModuleStates(state, 0.10);
+    setModuleStates(state, 0.20);
 
   }
 
@@ -364,7 +364,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    LimelightHelpers.setLEDMode_ForceOff("limelight");
+    //LimelightHelpers.setLEDMode_ForceOff("limelight");
     
     // This method will be called once per scheduler run
     updateVisionOdometry();

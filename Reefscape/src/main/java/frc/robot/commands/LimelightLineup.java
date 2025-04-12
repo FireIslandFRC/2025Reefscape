@@ -186,15 +186,15 @@ public class LimelightLineup extends Command {
    * 
    * @param fieldOriented whether or not we want the bot to run in field oriented
    */
-  public LimelightLineup(SwerveSubsystem swerveSubs, DoubleSupplier xSupplier, DoubleSupplier zSupplier) {
+  public LimelightLineup(SwerveSubsystem swerveSubs, DoubleSupplier xSupplier) {
     this.swerveSubs = swerveSubs;
     this.xSupplier = xSupplier;
     this.ySupplier = ySupplier;
-    this.zSupplier = zSupplier;
     this.fieldOriented = fieldOriented;
     PIDControllerTurn = new PIDController(0.03, 0, 0);
-    PIDControllerX = new PIDController(0.01, 0, 0);
+    PIDControllerX = new PIDController(0.01, 0.000, 0.0000);
     PIDControllerTurn.enableContinuousInput(-180, 180);
+    PIDControllerX.setTolerance(0.25);
     addRequirements(swerveSubs);
   }
 
@@ -257,15 +257,16 @@ public class LimelightLineup extends Command {
     }
 
     if (LimelightHelpers.getTargetCount("limelight") != 0){
-      speedTurn = PIDControllerTurn.calculate(swerveSubs.getRotation2d().getDegrees(), rotationSetpoint);
-      speedX = PIDControllerX.calculate(LimelightHelpers.getTX("limelight"), 0);
+      speedX = PIDControllerX.calculate(LimelightHelpers.getTX("limelight"), 3.5);
+    }else{
+      speedX = 0;
     }
-    
+    speedTurn = PIDControllerTurn.calculate(swerveSubs.getRotation2d().getDegrees(), rotationSetpoint);
 
     // square the speed values to make for smoother acceleration
 
     /* * * SETTING SWERVE STATES * * */
-    swerveSubs.drive(forwardSpeed, speedX, speedTurn, false, 0.4);
+    swerveSubs.drive(forwardSpeed * 0.5, speedX, speedTurn, false, 0.4);
     System.out.println(rotationSetpoint);
   }
 

@@ -190,8 +190,6 @@ public class RobotContainer extends SubsystemBase{
 
     ratchetEngage.onTrue(new CloseRatchet(climberSubs));
     ratchetDisengage.onTrue(new OpenRatchet(climberSubs));
-
-    speedEmergency.whileTrue(new LimelightLineup(swerveSubs ,() -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getTwist()));
   
     targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
     targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));
@@ -215,7 +213,7 @@ public class RobotContainer extends SubsystemBase{
 
     lockbutton.onTrue(new InstantCommand(() -> swerveSubs.lock())); //CHECKME not sure how it behaves
 
-    lineUp.whileTrue(new LimelightLineup(swerveSubs,  () -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getTwist()));
+    lineUp.whileTrue(new LimelightLineup(swerveSubs,  () -> -D_CONTROLLER.getY()));
   }
 
   public Command getAutonomousCommand() {
