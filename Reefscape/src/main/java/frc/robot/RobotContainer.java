@@ -148,7 +148,7 @@ public class RobotContainer extends SubsystemBase{
     );
 
     //Event Triggers
-    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(110)).whileTrue(new PivotToAngle(handSubsystem, 315));
+    new EventTrigger("ArmToThree").whileTrue(new ArmSetPositionCommand(115)).whileTrue(new PivotToAngle(handSubsystem, 315));//110 before changes
     new EventTrigger("ArmToTwo").whileTrue(new ArmSetPositionCommand(45)).whileTrue(new PivotToAngle(handSubsystem, 330));// CHECKME 5og
     new EventTrigger("ArmToOne").whileTrue(new ArmSetPositionCommand(10)).whileTrue(new PivotToAngle(handSubsystem, 75));//  FIXME
     new EventTrigger("PickUp").onTrue(new CoralOut().withTimeout(2));
