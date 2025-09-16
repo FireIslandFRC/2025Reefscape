@@ -31,8 +31,4 @@ public class ClimberUpCommand extends Command{
         return false;
     }
 
-
-    
-
-
 }
