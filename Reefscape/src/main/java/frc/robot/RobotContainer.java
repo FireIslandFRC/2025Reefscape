@@ -4,6 +4,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.TargetLocationConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.climber.ClimberDownCommand;
+import frc.robot.commands.DriveToPoseCustom;
 import frc.robot.commands.LimelightLineup;
 import frc.robot.commands.PathToPose;
 import frc.robot.commands.RotateToSource;
@@ -86,12 +87,12 @@ public class RobotContainer extends SubsystemBase{
   private final JoystickButton wristUp = new JoystickButton(OP_CONTROLLER, 14); 
   private final JoystickButton wristDown = new JoystickButton(OP_CONTROLLER, 15); 
   
-  private final POVButton targetSlice1 = new POVButton(OP_CONTROLLER, 0);
-  private final POVButton targetSlice2 = new POVButton(OP_CONTROLLER, 45);
-  private final POVButton targetSlice3 = new POVButton(OP_CONTROLLER, 135);
-  private final POVButton targetSlice4 = new POVButton(OP_CONTROLLER, 180);
-  private final POVButton targetSlice5 = new POVButton(OP_CONTROLLER, 225);
-  private final POVButton targetSlice6 = new POVButton(OP_CONTROLLER, 315);
+  private final POVButton targetSlice1 = new POVButton(D_CONTROLLER, 0);
+  private final POVButton targetSlice2 = new POVButton(D_CONTROLLER, 45);
+  private final POVButton targetSlice3 = new POVButton(D_CONTROLLER, 135);
+  private final POVButton targetSlice4 = new POVButton(D_CONTROLLER, 180);
+  private final POVButton targetSlice5 = new POVButton(D_CONTROLLER, 225);
+  private final POVButton targetSlice6 = new POVButton(D_CONTROLLER, 315);
 
   ////private final JoystickButton targetCoralLoading1 = new JoystickButton(OP_CONTROLLER, 3); // FIXME decide how it works
   ////private final JoystickButton targetCoralLoading2 = new JoystickButton(OP_CONTROLLER, 4);
@@ -191,12 +192,19 @@ public class RobotContainer extends SubsystemBase{
     ratchetEngage.onTrue(new CloseRatchet(climberSubs));
     ratchetDisengage.onTrue(new OpenRatchet(climberSubs));
   
-    targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
-    targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));
-    targetSlice3.onTrue(new PathToPose(TargetLocationConstants.slicePose3, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s3"));
-    targetSlice4.onTrue(new PathToPose(TargetLocationConstants.slicePose4, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s4"));
-    targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s5"));
-    targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s6"));
+    // targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
+    // targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));
+    // targetSlice3.onTrue(new PathToPose(TargetLocationConstants.slicePose3, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s3"));
+    // targetSlice4.onTrue(new PathToPose(TargetLocationConstants.slicePose4, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s4"));
+    // targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s5"));
+    // targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s6"));
+
+    targetSlice1.onTrue(new DriveToPoseCustom(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
+    targetSlice2.onTrue(new DriveToPoseCustom(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));
+    targetSlice3.onTrue(new DriveToPoseCustom(TargetLocationConstants.slicePose3, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s3"));
+    targetSlice4.onTrue(new DriveToPoseCustom(TargetLocationConstants.slicePose4, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s4"));
+    targetSlice5.onTrue(new DriveToPoseCustom(TargetLocationConstants.slicePose5, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s5"));
+    targetSlice6.onTrue(new DriveToPoseCustom(TargetLocationConstants.slicePose6, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s6"));
 
     //FIXME: figure out better buttons, and how to implament
     //targetCoralLoading1.onTrue(new PathToPose(TargetLocationConstants.coralLoad1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl1"));

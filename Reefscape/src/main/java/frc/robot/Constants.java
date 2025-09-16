@@ -28,12 +28,12 @@ public class Constants {
   }
 
   public static class TargetLocationConstants{
-    public static Pose2d slicePose1 = new Pose2d(6.5, 4, Rotation2d.fromDegrees(180));
-    public static Pose2d slicePose2 = new Pose2d(5.5, 2.5, Rotation2d.fromDegrees(120));
-    public static Pose2d slicePose3 = new Pose2d(3.5, 2.5, Rotation2d.fromDegrees(60));
-    public static Pose2d slicePose4 = new Pose2d(2.6, 4, Rotation2d.fromDegrees(0));
-    public static Pose2d slicePose5 = new Pose2d(3.5, 5.5, Rotation2d.fromDegrees(-60));
-    public static Pose2d slicePose6 = new Pose2d(5.5, 5.5, Rotation2d.fromDegrees(-120));
+    public static Pose2d slicePose1 = new Pose2d(6.123, 3.879, Rotation2d.fromDegrees(180));
+    public static Pose2d slicePose2 = new Pose2d(5.197, 2.553, Rotation2d.fromDegrees(120));
+    public static Pose2d slicePose3 = new Pose2d(3.871, 2.563, Rotation2d.fromDegrees(60));
+    public static Pose2d slicePose4 = new Pose2d(2.876, 3.8, Rotation2d.fromDegrees(0));
+    public static Pose2d slicePose5 = new Pose2d(3.48, 5.28, Rotation2d.fromDegrees(-60));
+    public static Pose2d slicePose6 = new Pose2d(5.294, 5.419, Rotation2d.fromDegrees(-120));
 
     public static Pose2d coralLoad1 = new Pose2d(1.5, 5.5, Rotation2d.fromDegrees(120));
     public static Pose2d coralLoad2 = new Pose2d(1.5, 1.5, Rotation2d.fromDegrees(-120));
