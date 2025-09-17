@@ -1,30 +1,37 @@
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.RobotState;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.LimelightHelpers;
-import frc.robot.LimelightHelpers.PoseEstimate;
 
 public class SwerveSubsystem extends SubsystemBase {
   /* * * INITIALIZATION * * */
@@ -41,8 +48,15 @@ public class SwerveSubsystem extends SubsystemBase {
   //instantiate poseEstimator
   private SwerveDrivePoseEstimator m_poseEstimator;
 
-  //private Limelight limelight;
+  private PhotonPoseEstimator photonEstimator =
+                new PhotonPoseEstimator(kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, kRobotToCam);
 
+  private PhotonCamera camera = new PhotonCamera(Constants.Vision.kCameraName);
+
+
+  public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+
+   public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
 
   // swervesubsystem constructor
   public SwerveSubsystem() {
@@ -269,109 +283,24 @@ public class SwerveSubsystem extends SubsystemBase {
 
 }
 
-  public void updateVisionOdometry() {
-
-    boolean useMegaTag2 = true; //set to false to use MegaTag1
-    boolean doRejectUpdate = false;
-    if(useMegaTag2 == false)
-    {
-      LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-      if(mt1 == null){ //Incase of limelight disconnect
-         return;
-      }
-      if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
-      {
-        if(mt1.rawFiducials[0].ambiguity > .7)
-        {
-          doRejectUpdate = true;
-        }
-        if(mt1.rawFiducials[0].distToCamera > 3)
-        {
-          doRejectUpdate = true;
-        }
-      }
-      if(mt1.tagCount == 0)
-      {
-        doRejectUpdate = true;
-      }
-
-      if(!doRejectUpdate)
-      {
-        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1,1,9999999));
-        m_poseEstimator.addVisionMeasurement(
-            mt1.pose,
-            mt1.timestampSeconds);
-      }
-    }
-    else if (useMegaTag2 == true)
-    {
-      // FIXME 180 reverse side thing
-      LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-      //LimelightHelpers.SetRobotOrientation("limelight", getRotation2d().getDegrees(), 0, 0, 0, 0, 0);
-      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-      /*if(Math.abs(pigeon.getan) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-      { // TODO pigeon angular velocity
-        doRejectUpdate = true;
-      }*/
-
-      if(mt2 == null){ //Incase of limelight disconnect
-         return;
-      }
-      if(mt2.tagCount == 0)
-      {
-        doRejectUpdate = true;
-      }
-      if(!doRejectUpdate)
-      {
-
-        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-        m_poseEstimator.addVisionMeasurement(
-            mt2.pose,
-            mt2.timestampSeconds);
-      }
-    }
-
-    
+  /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double)}. */
+  public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+    m_poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
   }
 
-//   public void updateOdometry() {
-//     LimelightHelpers.SetRobotOrientation(
-//         "limelight",
-//         m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-//         0,
-//         0,
-//         0,
-//         0,
-//         0);
+  /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double, Matrix)}. */
+  public void addVisionMeasurement(
+      Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
 
-//     PoseEstimate estimate = limelight.getTrustedPose();
-//     if (estimate != null) {
-//       boolean doRejectUpdate = false;
-//       if (Math.abs(pigeon.getAngularVelocityZWorld().getValueAsDouble()) > 720) {
-//         doRejectUpdate = true;
-//       }
-//       if (estimate.tagCount == 0) {
-//         doRejectUpdate = true;
-//       }
-//       if (!doRejectUpdate) {
-//         odometer.addVisionMeasurement(estimate.pose, estimate.timestampSeconds);
-//         RobotState.getInstance().LimelightsUpdated = true;
-//       } else {
-//         RobotState.getInstance().LimelightsUpdated = false;
-//       }
-//   }
-// }
+    m_poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
+  }
 
   @Override
   public void periodic() {
-    LimelightHelpers.setLEDMode_ForceOff("limelight");
     
-    // This method will be called once per scheduler run
-    updateVisionOdometry();
-
     m_poseEstimator.update(
-        pigeon.getRotation2d(),
-        getModulePositions());
+      pigeon.getRotation2d(),
+      getModulePositions());
     
     for (SwerveModule swerveMod : swerveModules) {
       swerveMod.print();
