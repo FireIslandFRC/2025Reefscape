@@ -1,16 +1,26 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.TargetLocationConstants;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.commands.climber.ClimberDownCommand;
 import frc.robot.commands.LimelightLineup;
 import frc.robot.commands.PathToPose;
-import frc.robot.commands.RotateToSource;
 import frc.robot.commands.S_DriveCommand;
 import frc.robot.commands.arm.ArmDownCommand;
 import frc.robot.commands.arm.ArmSetPositionCommand;
 import frc.robot.commands.arm.ArmUpCommand;
+import frc.robot.commands.climber.ClimberDownCommand;
 import frc.robot.commands.climber.ClimberUpCommand;
 import frc.robot.commands.climber.CloseRatchet;
 import frc.robot.commands.climber.OpenRatchet;
@@ -25,27 +35,15 @@ import frc.robot.commands.processor.ProcessorDeposit;
 import frc.robot.commands.processor.ProcessorPickUp;
 import frc.robot.commands.processor.ProcessorPivotDownCommand;
 import frc.robot.commands.processor.ProcessorPivotUpCommand;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.events.EventTrigger;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
-
-import frc.robot.subsystems.HandSubsystem;
-import frc.robot.subsystems.ProcessorSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.HandSubsystem;
+import frc.robot.subsystems.ProcessorSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer extends SubsystemBase{
+
+  private Vision vision;
   
   private final SwerveSubsystem swerveSubs = new SwerveSubsystem();
   private final ClimberSubsystem climberSubs = new ClimberSubsystem();
@@ -136,6 +134,8 @@ public class RobotContainer extends SubsystemBase{
       )
     );
     
+    vision = new Vision(swerveSubs::addVisionMeasurement);
+    
     boolean isCompetition = false;
     // Build an auto chooser. This will use Commands.none() as the default option.
     // As an example, this will only show autos that start with "comp" while at
@@ -222,9 +222,7 @@ public class RobotContainer extends SubsystemBase{
 
   @Override
   public void periodic() {
-
-     SmartDashboard.putString("TargetSelect", currentTarget);
-     
+    vision.periodic();
+    SmartDashboard.putString("TargetSelect", currentTarget);
   }
-
 }

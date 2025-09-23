@@ -24,20 +24,26 @@
 
  package frc.robot;
 
- import static frc.robot.Constants.Vision.*;
- 
- import edu.wpi.first.math.Matrix;
- import edu.wpi.first.math.VecBuilder;
- import edu.wpi.first.math.geometry.Pose2d;
- import edu.wpi.first.math.numbers.N1;
- import edu.wpi.first.math.numbers.N3;
- import java.util.List;
- import java.util.Optional;
- import org.photonvision.EstimatedRobotPose;
- import org.photonvision.PhotonCamera;
- import org.photonvision.PhotonPoseEstimator;
- import org.photonvision.PhotonPoseEstimator.PoseStrategy;
- import org.photonvision.targeting.PhotonTrackedTarget;
+ import static frc.robot.Constants.Vision.kCameraName;
+import static frc.robot.Constants.Vision.kMultiTagStdDevs;
+import static frc.robot.Constants.Vision.kRobotToCam;
+import static frc.robot.Constants.Vision.kSingleTagStdDevs;
+import static frc.robot.Constants.Vision.kTagLayout;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
  
  public class Vision {
     private final PhotonCamera camera;
@@ -61,14 +67,16 @@
  
      public void periodic() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
+        System.out.println("hit");
         for (var change : camera.getAllUnreadResults()) {
             visionEst = photonEstimator.update(change);
+            System.out.println(visionEst);
             updateEstimationStdDevs(visionEst, change.getTargets());
- 
             visionEst.ifPresent(
                      est -> {
                          // Change our trust in the measurement based on the tags we can see
                          var estStdDevs = getEstimationStdDevs();
+
  
                          estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
                      });
