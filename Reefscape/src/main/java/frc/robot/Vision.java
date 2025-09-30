@@ -67,7 +67,6 @@ import edu.wpi.first.math.numbers.N3;
  
      public void periodic() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        System.out.println("hit");
         for (var change : camera.getAllUnreadResults()) {
             visionEst = photonEstimator.update(change);
             System.out.println(visionEst);
