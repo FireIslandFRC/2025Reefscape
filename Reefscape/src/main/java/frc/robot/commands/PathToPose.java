@@ -41,7 +41,7 @@ public class PathToPose extends Command {
     public void initialize() {
         pathFindCommand = AutoBuilder.pathfindToPose(
                 pathfindingPose, new PathConstraints(
-        3.0, 4.0,
+        3.0, 2.0,
         Units.degreesToRadians(540), Units.degreesToRadians(720)));
     }
 

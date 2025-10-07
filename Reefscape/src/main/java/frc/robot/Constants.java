@@ -209,7 +209,7 @@ public class Constants {
     public static final String kCameraName = "photonvision";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
     public static final Transform3d kRobotToCam =
-            new Transform3d(new Translation3d(0, 0.0, 0), new Rotation3d(0, 0, 0));
+            new Transform3d(new Translation3d(Units.inchesToMeters(14.5), Units.inchesToMeters(8.5), Units.inchesToMeters(10)), new Rotation3d(0, 0, 0));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =
@@ -221,7 +221,7 @@ public class Constants {
             
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.5, 0.4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
   }
 

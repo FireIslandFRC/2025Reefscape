@@ -189,8 +189,6 @@ public class RobotContainer extends SubsystemBase{
 
     ratchetEngage.onTrue(new CloseRatchet(climberSubs));
     ratchetDisengage.onTrue(new OpenRatchet(climberSubs));
-
-    speedEmergency.whileTrue(new LimelightLineup(swerveSubs ,() -> -D_CONTROLLER.getY(), () -> -D_CONTROLLER.getTwist()));
   
     targetSlice1.onTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s1"));  //FIXME end after other button pressed
     targetSlice2.onTrue(new PathToPose(TargetLocationConstants.slicePose2, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s2"));
@@ -198,6 +196,9 @@ public class RobotContainer extends SubsystemBase{
     targetSlice4.onTrue(new PathToPose(TargetLocationConstants.slicePose4, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s4"));
     targetSlice5.onTrue(new PathToPose(TargetLocationConstants.slicePose5, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s5"));
     targetSlice6.onTrue(new PathToPose(TargetLocationConstants.slicePose6, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_s6"));
+
+    speedEmergency.whileTrue(new PathToPose(TargetLocationConstants.slicePose1, swerveSubs));
+
 
     //FIXME: figure out better buttons, and how to implament
     //targetCoralLoading1.onTrue(new PathToPose(TargetLocationConstants.coralLoad1, swerveSubs)).onTrue(new InstantCommand(() -> currentTarget = Robot.color + "_cl1"));
